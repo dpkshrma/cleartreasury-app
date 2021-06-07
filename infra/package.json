@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@aws-cdk/core": "1.108.0",
+    "@sls-next/cdk-construct": "^1.19.0",
+    "@sls-next/lambda-at-edge": "^1.8.0",
     "source-map-support": "0.5.19"
   }
 }

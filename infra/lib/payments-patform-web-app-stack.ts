@@ -1,9 +1,14 @@
 import * as cdk from "@aws-cdk/core";
+import { NextJSLambdaEdge } from "@sls-next/cdk-construct";
 
 export class PaymentsPatformWebAppStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const branch = this.node.tryGetContext("branch");
+
+    new NextJSLambdaEdge(this, "NextJsApp", {
+      serverlessBuildOutDir: "../.serverless_nextjs",
+    });
   }
 }

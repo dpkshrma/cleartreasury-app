@@ -1,0 +1,64 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: cache npm
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          npm i -g npm@7
+          npm i && cd infra && npm i
+
+      - uses: clear-treasury/github-actions/action-gardener@latest
+
+      - name: Define branches we're juggling to build
+        uses: actions/github-script@v4
+        id: branches
+        with:
+          script: |
+            const refParts = context.ref.split('/');
+            const shortRef = refParts.slice(2).join('/');
+            core.exportVariable('BRANCH', shortRef);
+            core.setOutput('branch', shortRef);
+          result-encoding: string
+
+      - name: Configure nonprod AWS credentials
+        if: steps.branches.outputs.branch != 'main'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.NONPROD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.NONPROD_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.NONPROD_AWS_DEFAULT_REGION }}
+
+      - name: Configure prod AWS credentials
+        if: steps.branches.outputs.branch == 'main'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.PROD_AWS_DEFAULT_REGION }}
+
+      - name: Deploy
+        run: |
+          cd infra && \
+          npx cdk bootstrap && \
+          npx cdk deploy --require-approval=never -c branch="${BRANCH}" -c stack_name="${BRANCH}-${{ github.event.repository.id }}" -c stack_description="${{ github.event.repository.html_url }}/tree/${BRANCH}"
