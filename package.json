@@ -17,8 +17,8 @@
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
-      "lint",
-      "format"
+      "npm run lint",
+      "npm run format"
     ]
   },
   "dependencies": {
