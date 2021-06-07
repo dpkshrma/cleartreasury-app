@@ -1,7 +1,8 @@
 {
-  "name": "with-typescript-eslint-jest",
-  "author": "@erikdstock",
-  "license": "MIT",
+  "name": "payments-patform-web-app",
+  "author": "Clear Treasury Ltd.",
+  "license": "Apache-2.0",
+  "private": "true",
   "version": "1.0.0",
   "scripts": {
     "dev": "next dev",
@@ -11,18 +12,18 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "test": "jest",
-    "test-all": "yarn lint && yarn type-check && yarn test"
+    "test-all": "npm run lint && npm run type-check && npm test"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn run type-check"
+      "pre-push": "type-check"
     }
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
-      "yarn lint",
-      "yarn format"
+      "lint",
+      "format"
     ]
   },
   "dependencies": {
