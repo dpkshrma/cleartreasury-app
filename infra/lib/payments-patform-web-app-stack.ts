@@ -7,8 +7,16 @@ export class PaymentsPatformWebAppStack extends cdk.Stack {
 
     const branch = this.node.tryGetContext("branch");
 
-    new NextJSLambdaEdge(this, "NextJsApp", {
+    const serverlessNext = new NextJSLambdaEdge(this, "NextJsApp", {
       serverlessBuildOutDir: "../.serverless_nextjs",
+    });
+
+    new cdk.CfnOutput(this, "DistributionId", {
+      value: serverlessNext.distribution.distributionId,
+    });
+
+    new cdk.CfnOutput(this, "DomainName", {
+      value: serverlessNext.distribution.domainName,
     });
   }
 }
