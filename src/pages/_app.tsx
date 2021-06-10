@@ -7,12 +7,21 @@ import Button from "../components/button/Button";
 import "../../configureAmplify";
 import "../styles.css";
 
+import {
+  HomeIcon,
+  UserCircleIcon,
+  GlobeAltIcon,
+  PlusCircleIcon,
+  SupportIcon,
+  MenuIcon,
+} from "@heroicons/react/outline";
+
 const navigation = [
-  { href: "/", text: "Dashboard" },
-  { href: "/", text: "Beneficiaries" },
-  { href: "/", text: "My Transfers" },
-  { href: "/", text: "Add ons" },
-  { href: "/", text: "Help and Support" },
+  { href: "/", icon: HomeIcon, text: "Dashboard" },
+  { href: "/", icon: UserCircleIcon, text: "Beneficiaries" },
+  { href: "/", icon: GlobeAltIcon, text: "My Transfers" },
+  { href: "/", icon: PlusCircleIcon, text: "Add ons" },
+  { href: "/", icon: SupportIcon, text: "Help and Support" },
 ];
 
 function MyApp({ Component, pageProps }) {
@@ -45,7 +54,7 @@ function MyApp({ Component, pageProps }) {
         <div className="mt-5 flex-1 flex flex-col">
           <Link href="/transfer">
             <a
-              className={`mx-4 ${Button.STYLES.PRIMARY} ${Button.SIZES.MEDIUM}`}
+              className={`m-4 ${Button.STYLES.PRIMARY} ${Button.SIZES.MEDIUM}`}
             >
               Make a transfer
             </a>
@@ -53,14 +62,18 @@ function MyApp({ Component, pageProps }) {
 
           <nav className="flex-1 space-y-1">
             <ul>
-              {navigation.map(({ href, text }, index) => (
+              {navigation.map((item, index) => (
                 <li
                   key={index}
                   className={index === 3 ? "border-t border-teal-400" : ""}
                 >
-                  <Link href={href}>
+                  <Link href={item.href}>
                     <a className="text-white hover:bg-teal-500 group flex items-center px-4 py-4">
-                      {text}
+                      <item.icon
+                        className="mr-3 flex-shrink-0 h-6 w-6 text-white"
+                        aria-hidden="true"
+                      />
+                      {item.text}
                     </a>
                   </Link>
                 </li>
@@ -81,7 +94,7 @@ function MyApp({ Component, pageProps }) {
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
             <span className="sr-only">Open sidebar</span>
-            Sidebar Toggle
+            <MenuIcon className="h-6 w-6" aria-hidden="true" />
           </button>
 
           <div className="flex-1 px-4 flex items-center justify-end">
