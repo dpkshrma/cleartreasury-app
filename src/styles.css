@@ -1,5 +1,10 @@
 @import url("https://use.typekit.net/xen1fxp.css");
 
+/* TODO: Abstract the theming somehow so we can move components to a shared design system */
+:root {
+  --amplify-primary-color: #01d0a2;
+}
+
 @tailwind base;
 
 * {
@@ -15,6 +20,10 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+amplify-container {
+  @apply bg-teal-700;
 }
 
 @tailwind components;
