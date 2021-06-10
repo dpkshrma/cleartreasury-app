@@ -1,5 +1,7 @@
-import "../configureAmplify";
+import "../../configureAmplify";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
+
+import "../styles.css";
 
 function MyApp({ Component, pageProps }) {
   return (

@@ -3,96 +3,100 @@
 exports[`Home page matches snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="jsx-1276654382 container"
+    class="min-h-screen px-2 flex flex-col justify-center items-center"
   >
     <main
-      class="jsx-1276654382"
+      class="py-20 flex flex-1 flex-col justify-center items-center"
     >
       <h1
-        class="jsx-1276654382 title"
+        class="font-bold m-0 text-6xl leading-tight text-center"
       >
         Welcome to 
         <a
-          class="jsx-1276654382"
+          class="text-blue-600"
           href="https://nextjs.org"
         >
           Next.js!
         </a>
       </h1>
       <p
-        class="jsx-1276654382 description"
+        class="text-2xl text-center leading-normal my-6"
       >
         Get started by editing 
         <code
-          class="jsx-1276654382"
+          class="bg-gray-100 rounded-md p-3 text-lg font-mono"
         >
           pages/index.tsx
         </code>
       </p>
       <button
-        class="jsx-1276654382"
+        class="bg-gray-200 px-1.5 py-px border border-solid border-gray-600 rounded-sm hover:bg-gray-300"
       >
         Test Button
       </button>
       <div
-        class="jsx-1276654382 grid"
+        class="mt-12 flex flex-col sm:flex-row flex-wrap justify-center items-center"
       >
         <a
-          class="jsx-1276654382 card"
+          class="m-4 p-6 border block rounded-lg transition-colors ease-linear hover:text-blue-600 hover:border-blue-600"
           href="https://nextjs.org/docs"
+          style="width: 45%;"
         >
           <h3
-            class="jsx-1276654382"
+            class="font-bold mb-4 text-2xl"
           >
             Documentation →
           </h3>
           <p
-            class="jsx-1276654382"
+            class="m-0 text-xl leading-6"
           >
             Find in-depth information about Next.js features and API.
           </p>
         </a>
         <a
-          class="jsx-1276654382 card"
+          class="m-4 p-6 border block rounded-lg transition-colors ease-linear hover:text-blue-600 hover:border-blue-600"
           href="https://nextjs.org/learn"
+          style="width: 45%;"
         >
           <h3
-            class="jsx-1276654382"
+            class="font-bold mb-4 text-2xl"
           >
             Learn →
           </h3>
           <p
-            class="jsx-1276654382"
+            class="m-0 text-xl leading-6"
           >
             Learn about Next.js in an interactive course with quizzes!
           </p>
         </a>
         <a
-          class="jsx-1276654382 card"
+          class="m-4 p-6 border block rounded-lg transition-colors ease-linear hover:text-blue-600 hover:border-blue-600"
           href="https://github.com/vercel/next.js/tree/master/examples"
+          style="width: 45%;"
         >
           <h3
-            class="jsx-1276654382"
+            class="font-bold mb-4 text-2xl"
           >
             Examples →
           </h3>
           <p
-            class="jsx-1276654382"
+            class="m-0 text-xl leading-6"
           >
             Discover and deploy boilerplate example Next.js projects.
           </p>
         </a>
         <a
-          class="jsx-1276654382 card"
+          class="m-4 p-6 border block rounded-lg transition-colors ease-linear hover:text-blue-600 hover:border-blue-600"
           href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          style="width: 45%;"
         >
           <h3
-            class="jsx-1276654382"
+            class="font-bold mb-4 text-2xl"
           >
             Deploy →
           </h3>
           <p
-            class="jsx-1276654382"
+            class="m-0 text-xl leading-6"
           >
             Instantly deploy your Next.js site to a public URL with Vercel.
           </p>
@@ -100,10 +104,10 @@ exports[`Home page matches snapshot 1`] = `
       </div>
     </main>
     <footer
-      class="jsx-1276654382"
+      class="w-full h-24 border-t border-solid border-gray-200 flex justify-center items-center"
     >
       <a
-        class="jsx-1276654382"
+        class="flex justify-center items-center"
         href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
         rel="noopener noreferrer"
         target="_blank"
@@ -126,6 +130,7 @@ exports[`Home page matches snapshot 1`] = `
           <noscript />
           <img
             alt="Vercel Logo"
+            class="ml-2"
             decoding="async"
             src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
             style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"
