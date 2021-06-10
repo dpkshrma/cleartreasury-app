@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
+import { Auth } from "aws-amplify";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
 import Button from "../components/button/Button";
 
@@ -14,7 +15,13 @@ import {
   PlusCircleIcon,
   SupportIcon,
   MenuIcon,
+  ChevronDownIcon,
 } from "@heroicons/react/outline";
+
+interface User {
+  email: string;
+  username: string;
+}
 
 const navigation = [
   { href: "/", icon: HomeIcon, text: "Dashboard" },
@@ -27,6 +34,18 @@ const navigation = [
 function MyApp({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
+  const [user, setUser] = React.useState<User | undefined>();
+
+  React.useEffect(() => {
+    const getUser = async () => {
+      const { attributes } = await Auth.currentAuthenticatedUser();
+      // TODO: Quick'n'Dirty hack to get a username. This will come from the FXOps client record eventually
+      attributes.username = attributes.email.split("@")[0];
+      setUser(attributes);
+    };
+
+    getUser();
+  }, []);
 
   return (
     <div className="h-screen flex overflow-hidden bg-gray-100">
@@ -43,11 +62,13 @@ function MyApp({ Component, pageProps }) {
       >
         <div className="flex items-center flex-shrink-0 px-4">
           <Link href="/">
-            <img
-              className="h-6 sm:h-8 w-full"
-              src="/clear_full_logo_light.svg"
-              alt="Clear Currency Logo"
-            />
+            <a>
+              <img
+                className="h-6 sm:h-8 w-full"
+                src="/clear_full_logo_light.svg"
+                alt="Clear Currency Logo"
+              />
+            </a>
           </Link>
         </div>
 
@@ -103,7 +124,14 @@ function MyApp({ Component, pageProps }) {
                 className="flex items-center"
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
               >
-                User
+                <span className="rounded-full text-white font-bold bg-gray-500 p-1.5 mr-2">
+                  {user?.username.split("-")[0][0].toUpperCase()}{" "}
+                  {user?.username.split("-")[1][0].toUpperCase()}
+                </span>
+
+                {user?.username}
+
+                <ChevronDownIcon className="h-5 w-5 ml-2" />
               </button>
 
               <div

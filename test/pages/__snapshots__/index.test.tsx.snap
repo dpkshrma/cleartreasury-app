@@ -2,10 +2,19 @@
 
 exports[`Dashboard page matches snapshot 1`] = `
 <DocumentFragment>
-  <h1
-    class="m-12 font-bold text-6xl"
+  <div
+    class="m-12"
   >
-    Welcome
-  </h1>
+    <h1
+      class="text-4xl"
+    >
+      Welcome
+    </h1>
+    <p
+      class="text-lg text-gray-500"
+    >
+      Where would you like to start?
+    </p>
+  </div>
 </DocumentFragment>
 `;

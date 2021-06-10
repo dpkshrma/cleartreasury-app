@@ -24,4 +24,4 @@ const CDKConfig = {
   // aws_appsync_apiKey: CdkBackendStack.awsappsyncapiKey,
 };
 
-Amplify.configure({ ...config, ...CDKConfig });
+Amplify.configure({ ...config, ...CDKConfig, ssr: true });

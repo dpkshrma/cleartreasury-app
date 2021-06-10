@@ -5,15 +5,15 @@
   "private": "true",
   "version": "1.0.0",
   "scripts": {
+    "prepare": "husky install",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "type-check": "tsc --pretty --noEmit",
-    "format": "prettier --write .",
-    "lint": "eslint . --ext ts --ext tsx --ext js",
     "test": "jest",
-    "test-all": "npm run lint && npm run type-check && npm test",
-    "prepare": "husky install"
+    "lint": "eslint . --ext ts --ext tsx --ext js",
+    "format": "prettier --write .",
+    "type-check": "tsc --pretty --noEmit",
+    "test-all": "npm run lint && npm run type-check && npm test"
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
