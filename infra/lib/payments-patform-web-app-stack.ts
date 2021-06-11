@@ -9,6 +9,7 @@ export class PaymentsPatformWebAppStack extends cdk.Stack {
 
     const serverlessNext = new NextJSLambdaEdge(this, "NextJsApp", {
       serverlessBuildOutDir: "../.serverless_nextjs",
+      withLogging: true,
     });
 
     new cdk.CfnOutput(this, "DistributionId", {
