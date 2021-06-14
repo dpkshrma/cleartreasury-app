@@ -15,14 +15,14 @@ export class PaymentsPatformWebAppStack extends cdk.Stack {
 
     new ssm.StringParameter(this, 'DistributionId', {
       allowedPattern: '.*',
-      parameterName: 'payments-platform-web-app/distributionId',
+      parameterName: '/payments-platform-web-app/distributionId',
       stringValue: serverlessNext.distribution.distributionId,
       tier: ssm.ParameterTier.STANDARD,
     });
 
     new ssm.StringParameter(this, 'DomainName', {
       allowedPattern: '.*',
-      parameterName: 'payments-platform-web-app/domainName',
+      parameterName: '/payments-platform-web-app/domainName',
       stringValue: serverlessNext.distribution.domainName,
       tier: ssm.ParameterTier.STANDARD,
     });
