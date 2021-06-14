@@ -1,8 +1,8 @@
 import * as cdk from "@aws-cdk/core";
 import { NextJSLambdaEdge } from "@sls-next/cdk-construct";
-import * as ssm from '@aws-cdk/aws-ssm';
+import * as ssm from "@aws-cdk/aws-ssm";
 
-export class PaymentsPatformWebAppStack extends cdk.Stack {
+export class PaymentsPlatformWebAppStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -13,16 +13,16 @@ export class PaymentsPatformWebAppStack extends cdk.Stack {
       withLogging: true,
     });
 
-    new ssm.StringParameter(this, 'DistributionIdSsm', {
-      allowedPattern: '.*',
-      parameterName: '/payments-platform-web-app/distributionId',
+    new ssm.StringParameter(this, "DistributionIdSsm", {
+      allowedPattern: ".*",
+      parameterName: "/payments-platform-web-app/distributionId",
       stringValue: serverlessNext.distribution.distributionId,
       tier: ssm.ParameterTier.STANDARD,
     });
 
-    new ssm.StringParameter(this, 'DomainNameSsm', {
-      allowedPattern: '.*',
-      parameterName: '/payments-platform-web-app/domainName',
+    new ssm.StringParameter(this, "DomainNameSsm", {
+      allowedPattern: ".*",
+      parameterName: "/payments-platform-web-app/domainName",
       stringValue: serverlessNext.distribution.domainName,
       tier: ssm.ParameterTier.STANDARD,
     });

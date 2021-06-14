@@ -1,8 +1,8 @@
 {
-  "name": "payments-patform-web-app",
+  "name": "payments-platform-web-app",
   "version": "0.1.0",
   "bin": {
-    "payments-patform-web-app": "bin/payments-patform-web-app.js"
+    "payments-platform-web-app": "bin/payments-platform-web-app.js"
   },
   "scripts": {
     "build": "tsc",

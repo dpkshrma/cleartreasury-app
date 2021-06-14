@@ -4,12 +4,12 @@ import {
   MatchStyle,
 } from "@aws-cdk/assert";
 import * as cdk from "@aws-cdk/core";
-import * as PaymentsPatformWebApp from "../lib/payments-patform-web-app-stack";
+import * as PaymentsPlatformWebApp from "../lib/payments-platform-web-app-stack";
 
 test("Empty Stack", () => {
   const app = new cdk.App();
   // WHEN
-  const stack = new PaymentsPatformWebApp.PaymentsPatformWebAppStack(
+  const stack = new PaymentsPlatformWebApp.PaymentsPlatformWebAppStack(
     app,
     "MyTestStack"
   );

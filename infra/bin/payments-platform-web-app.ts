@@ -2,7 +2,7 @@
 import "source-map-support/register";
 import * as path from "path";
 import * as cdk from "@aws-cdk/core";
-import { PaymentsPatformWebAppStack } from "../lib/payments-patform-web-app-stack";
+import { PaymentsPlatformWebAppStack } from "../lib/payments-platform-web-app-stack";
 import { Builder } from "@sls-next/lambda-at-edge";
 
 const nextConfigPath = path.resolve("..");
@@ -17,7 +17,7 @@ builder
   .build()
   .then(() => {
     const app = new cdk.App();
-    new PaymentsPatformWebAppStack(app, "PaymentsPatformWebAppStack", {
+    new PaymentsPlatformWebAppStack(app, "PaymentsPlatformWebAppStack", {
       env: {
         account: process.env.CDK_DEFAULT_ACCOUNT,
         region: "us-east-1",
