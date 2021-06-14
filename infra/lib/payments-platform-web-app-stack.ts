@@ -32,7 +32,7 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, "DomainName", {
-      value: serverlessNext.distribution.domainName,
+      value: `https://${serverlessNext.distribution.domainName}`,
     });
   }
 }
