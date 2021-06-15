@@ -4,8 +4,8 @@ import * as ssm from "@aws-cdk/aws-ssm";
 import * as route53 from "@aws-cdk/aws-route53";
 import * as alias from "@aws-cdk/aws-route53-targets";
 import * as cloudfront from "@aws-cdk/aws-cloudfront";
-import * as certificatemanager from '@aws-cdk/aws-certificatemanager';
-import { SSMParameterReader } from './ssm-parameter-reader';
+import * as certificatemanager from "@aws-cdk/aws-certificatemanager";
+import { SSMParameterReader } from "./ssm-parameter-reader";
 import { RecordTarget } from "@aws-cdk/aws-route53";
 
 export class PaymentsPlatformWebAppStack extends cdk.Stack {
@@ -13,9 +13,13 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
     super(scope, id, props);
 
     const branch = this.node.tryGetContext("branch");
+    const clearTreasuryCoUkDomainName = getDomainNameFromBranch(branch);
 
-    const clearTreasuryCoUkDomainName = `${branch === "main" ? "" : branch + ".nonprod"}.cleartreasury.co.uk`;
-    const certificate  = certificatemanager.Certificate.fromCertificateArn(this, "Certificate", cdk.Fn.importValue(`${branch}:certificate:ClearTreasuryCoUk:Arn`));
+    const certificate = certificatemanager.Certificate.fromCertificateArn(
+      this,
+      "Certificate",
+      cdk.Fn.importValue(`${branch}:certificate:ClearTreasuryCoUk:Arn`)
+    );
 
     const serverlessNext = new NextJSLambdaEdge(this, "NextJsApp", {
       serverlessBuildOutDir: "../.serverless_nextjs",
@@ -23,7 +27,7 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
       domain: {
         certificate: certificate,
         domainNames: [clearTreasuryCoUkDomainName],
-      }
+      },
     });
 
     new ssm.StringParameter(this, "DistributionIdSsm", {
@@ -55,35 +59,51 @@ export class PaymentsPlatformWebAppLinkStack extends cdk.Stack {
     super(scope, id, props);
 
     const branch = this.node.tryGetContext("branch");
+    const clearTreasuryCoUkDomainName = getDomainNameFromBranch(branch);
 
-    const clearTreasuryCoUkDomainName = `${branch === "main" ? "" : branch + ".nonprod"}.cleartreasury.co.uk`;
+    const domainName = getParameterValue(
+      new SSMParameterReader(this, "DomainNameSsmReader", {
+        parameterName: "/payments-platform-web-app/domainName",
+        region: "us-east-1",
+      })
+    );
 
-    const domainNameSsmReader = new SSMParameterReader(this, 'DomainNameSsmReader', {
-      parameterName: '/payments-platform-web-app/domainName',
-      region: 'us-east-1'
-    });
-    const domainName: string = domainNameSsmReader.getResponseField('Parameter.Value');
+    const distributionId = getParameterValue(
+      new SSMParameterReader(this, "DistributionIdSsmReader", {
+        parameterName: "/payments-platform-web-app/distributionId",
+        region: "us-east-1",
+      })
+    );
 
-    const distributionIdSsmReader = new SSMParameterReader(this, 'DistributionIdSsmReader', {
-      parameterName: '/payments-platform-web-app/domainName',
-      region: 'us-east-1'
-    });
-    const distributionId: string = distributionIdSsmReader.getResponseField('Parameter.Value');
-
+    const dns = `${branch}:dns:ClearTreasuryCoUk`;
     const zone = route53.HostedZone.fromHostedZoneAttributes(this, "Zone", {
-      hostedZoneId: cdk.Fn.importValue(`${branch}:dns:ClearTreasuryCoUk:hostedZoneId`),
-      zoneName: cdk.Fn.importValue(`${branch}:dns:ClearTreasuryCoUk:zoneName`),
-    })
-
-    const cloudFront = cloudfront.Distribution.fromDistributionAttributes(this, "cloudFront", {
-      distributionId: distributionId,
-      domainName: domainName,
+      hostedZoneId: cdk.Fn.importValue(`${dns}:hostedZoneId`),
+      zoneName: cdk.Fn.importValue(`${dns}:zoneName`),
     });
+
+    const cloudFront = cloudfront.Distribution.fromDistributionAttributes(
+      this,
+      "cloudFront",
+      { distributionId, domainName }
+    );
 
     const dnsRecord = new route53.CnameRecord(this, "fxopsDns", {
-      zone: zone,
+      zone,
       recordName: clearTreasuryCoUkDomainName,
-      domainName: domainName,
-    })
+      domainName,
+    });
+
+    new cdk.CfnOutput(this, "DomainName", {
+      value: dnsRecord.domainName,
+    });
   }
+}
+
+function getDomainNameFromBranch(branch: string): string {
+  const subDomain = branch === "main" ? "" : branch + ".nonprod";
+  return `${subDomain}.cleartreasury.co.uk`;
+}
+
+function getParameterValue(fn: SSMParameterReader) {
+  return fn.getResponseField("Parameter.Value");
 }
