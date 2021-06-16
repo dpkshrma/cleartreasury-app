@@ -1,6 +1,6 @@
 import Amplify from "aws-amplify";
 
-const config = {
+export const config = {
   Auth: {
     // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
     identityPoolId: "eu-west-2:35055f54-cc32-4f20-9c61-7df201ae0f58",
