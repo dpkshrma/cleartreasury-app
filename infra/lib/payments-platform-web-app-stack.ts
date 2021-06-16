@@ -6,7 +6,6 @@ import * as alias from "@aws-cdk/aws-route53-targets";
 import * as cloudfront from "@aws-cdk/aws-cloudfront";
 import * as certificatemanager from "@aws-cdk/aws-certificatemanager";
 import { SSMParameterReader } from "./ssm-parameter-reader";
-import { RecordTarget } from "@aws-cdk/aws-route53";
 
 export class PaymentsPlatformWebAppStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -59,7 +58,6 @@ export class PaymentsPlatformWebAppLinkStack extends cdk.Stack {
     super(scope, id, props);
 
     const branch = this.node.tryGetContext("branch");
-    const clearTreasuryCoUkDomainName = getDomainNameFromBranch(branch);
 
     const domainName = getParameterValue(
       new SSMParameterReader(this, "DomainNameSsmReader", {
@@ -87,14 +85,15 @@ export class PaymentsPlatformWebAppLinkStack extends cdk.Stack {
       { distributionId, domainName }
     );
 
-    const dnsRecord = new route53.CnameRecord(this, "fxopsDns", {
+    const aliasRecord = new route53.ARecord(this, "AliasRecord", {
       zone,
-      recordName: clearTreasuryCoUkDomainName,
-      domainName,
+      target: route53.RecordTarget.fromAlias(
+        new alias.CloudFrontTarget(cloudFront)
+      ),
     });
 
     new cdk.CfnOutput(this, "DomainName", {
-      value: dnsRecord.domainName,
+      value: aliasRecord.domainName,
     });
   }
 }
