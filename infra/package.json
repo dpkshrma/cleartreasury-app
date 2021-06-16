@@ -27,7 +27,7 @@
     "@aws-cdk/aws-ssm": "^1.108.0",
     "@aws-cdk/core": "1.108.0",
     "@sls-next/cdk-construct": "^1.19.0",
-    "@sls-next/lambda-at-edge": "^1.8.0",
+    "@sls-next/lambda-at-edge": "1.9.0-alpha.7",
     "source-map-support": "0.5.19"
   }
 }
