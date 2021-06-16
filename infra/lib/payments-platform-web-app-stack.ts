@@ -100,8 +100,10 @@ export class PaymentsPlatformWebAppLinkStack extends cdk.Stack {
 }
 
 function getDomainNameFromBranch(branch: string): string {
-  const subDomain = branch === "main" ? "" : branch + ".nonprod";
-  return `${subDomain}.cleartreasury.co.uk`;
+  const env = branch === "main" ? "" : "nonprod";
+  const domain = "cleartreasury.co.uk";
+
+  return [branch, env, domain].filter(Boolean).join(".");
 }
 
 function getParameterValue(fn: SSMParameterReader) {
