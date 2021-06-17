@@ -2,9 +2,11 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { Auth } from "aws-amplify";
+import { useRouter } from "next/router";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
 import Button from "../components/button/Button";
 
+import * as gtag from "../lib/gtag";
 import "../../configureAmplify";
 import "../styles.css";
 
@@ -32,9 +34,22 @@ const navigation = [
 ];
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState<User | undefined>();
+
+  React.useEffect(() => {
+    const handleRouteChange = (url) => {
+      gtag.pageview(url);
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
 
   React.useEffect(() => {
     const getUser = async () => {

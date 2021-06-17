@@ -1,6 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
-const GA_TRACKING_ID = "G-TNW3Y5RTLZ";
+import { GA_TRACKING_ID } from "../lib/gtag";
 
 export default class MyDocument extends Document {
   render() {

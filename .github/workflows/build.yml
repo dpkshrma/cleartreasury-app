@@ -61,6 +61,8 @@ jobs:
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
 
       - name: Deploy
+        env:
+          NEXT_PUBLIC_GA_ID: "${{ steps.branches.outputs.branch == 'main' && secrets.PROD_GA_ID || secrets.NONPROD_GA_ID }}"
         run: |
           cd infra && \
           npx cdk bootstrap && \
