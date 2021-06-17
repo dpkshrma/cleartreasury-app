@@ -1,10 +1,11 @@
 import * as cdk from "@aws-cdk/core";
-import { NextJSLambdaEdge } from "@sls-next/cdk-construct";
+import * as iam from "@aws-cdk/aws-iam";
 import * as ssm from "@aws-cdk/aws-ssm";
 import * as route53 from "@aws-cdk/aws-route53";
 import * as alias from "@aws-cdk/aws-route53-targets";
 import * as cloudfront from "@aws-cdk/aws-cloudfront";
 import * as certificatemanager from "@aws-cdk/aws-certificatemanager";
+import { NextJSLambdaEdge } from "@sls-next/cdk-construct";
 import { SSMParameterReader } from "./ssm-parameter-reader";
 
 export class PaymentsPlatformWebAppStack extends cdk.Stack {
@@ -32,6 +33,10 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
       memory: 512,
       timeout: cdk.Duration.seconds(10),
     });
+
+    serverlessNext.edgeLambdaRole.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonCognitoPowerUser")
+    );
 
     new ssm.StringParameter(this, "DistributionIdSsm", {
       allowedPattern: ".*",
