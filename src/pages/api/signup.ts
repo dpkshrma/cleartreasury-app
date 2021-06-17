@@ -21,16 +21,18 @@ const handler = async (
     ],
   };
 
+  console.info("PARAMS\n", params);
+
   const provider = new CognitoIdentityProvider({ region: config.Auth.region });
 
   try {
     const user = await provider.adminCreateUser(params);
     // eslint-disable-next-line no-console
-    console.log("Signup success. Result: ", res);
+    console.info("Signup success. Result: ", res);
     res.status(200).json(user);
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.log("Signup fail. Error: ", e);
+    console.warn("Signup fail. Error: ", e);
     res.status(500).json({ error: e.message });
   }
 };
