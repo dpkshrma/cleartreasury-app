@@ -41,21 +41,24 @@ jobs:
             core.setOutput('branch', shortRef);
           result-encoding: string
 
-      - name: Configure nonprod AWS credentials
-        if: steps.branches.outputs.branch != 'main'
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.NONPROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.NONPROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.NONPROD_AWS_DEFAULT_REGION }}
+      - name: Set environment variables
+        run: |
+          if [[ ${{ steps.branches.outputs.branch }} == 'main' ]]; then
+            echo "AWS_ACCESS_KEY_ID=${{ secrets.PROD_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+            echo "AWS_SECRET_ACCESS_KEY=${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+            echo "AWS_DEFAULT_REGION=${{ secrets.PROD_AWS_DEFAULT_REGION }}" >> $GITHUB_ENV
+          else
+            echo "AWS_ACCESS_KEY_ID=${{ secrets.NONPROD_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+            echo "AWS_SECRET_ACCESS_KEY=${{ secrets.NONPROD_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+            echo "AWS_DEFAULT_REGION=${{ secrets.NONPROD_AWS_DEFAULT_REGION }}" >> $GITHUB_ENV
+          fi
 
-      - name: Configure prod AWS credentials
-        if: steps.branches.outputs.branch == 'main'
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.PROD_AWS_DEFAULT_REGION }}
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
 
       - name: Deploy
         run: |
