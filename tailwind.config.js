@@ -1,5 +1,6 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 
+// TODO: Abstract into a shared design system config somehow
 module.exports = {
   purge: {
     content: ["./src/**/*.{js,ts,jsx,tsx}"],
