@@ -18,6 +18,10 @@ const handler = async (
         Name: "email",
         Value: req.body.email,
       },
+      {
+        Name: "phone_number",
+        Value: req.body.phone_number,
+      },
     ],
   };
 
