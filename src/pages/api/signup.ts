@@ -12,11 +12,14 @@ const handler = async (
     Username: req.body.email,
     ForceAliasCreation: false,
     DesiredDeliveryMediums: ["EMAIL"],
-    // SecretHash: hashSecret(clientSecret, email, clientId),
     UserAttributes: [
       {
         Name: "email",
         Value: req.body.email,
+      },
+      {
+        Name: "email_verified",
+        Value: "True",
       },
       {
         Name: "phone_number",
