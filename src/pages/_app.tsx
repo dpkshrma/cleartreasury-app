@@ -66,7 +66,7 @@ function MyApp({ Component, pageProps }) {
               <img
                 className="h-6 sm:h-8 w-full"
                 src="/clear_full_logo_light.svg"
-                alt="Clear Currency Logo"
+                alt="Clear Currency"
               />
             </a>
           </Link>
