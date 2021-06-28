@@ -35,6 +35,7 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
     });
 
     serverlessNext.edgeLambdaRole.addManagedPolicy(
+      // TODO: Reduce this to least privilege for going to prod
       iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonCognitoPowerUser")
     );
 
