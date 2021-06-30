@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { Auth } from "aws-amplify";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
-import Button from "../components/button/Button";
+import { Button } from "design-system";
 
 import "../../configureAmplify";
 import "../styles.css";
@@ -48,7 +48,7 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <div className="h-screen flex overflow-hidden bg-gray-100">
+    <div className="h-screen flex overflow-hidden bg-theme-color-background">
       <Head>
         <title>Clear Payments Platform</title>
         <link rel="icon" href="/favicon.png" />
@@ -74,11 +74,12 @@ function MyApp({ Component, pageProps }) {
 
         <div className="mt-5 flex-1 flex flex-col">
           <Link href="/transfer">
-            <a
+            {/* <a
               className={`m-4 ${Button.STYLES.PRIMARY} ${Button.SIZES.MEDIUM}`}
             >
               Make a transfer
-            </a>
+            </a> */}
+            <Button>Button</Button>
           </Link>
 
           <nav className="flex-1 space-y-1">
@@ -108,7 +109,7 @@ function MyApp({ Component, pageProps }) {
         data-ui="Page scroll container"
         className="flex flex-col w-0 flex-1 overflow-hidden"
       >
-        <header className="relative z-10 flex-shrink-0 flex h-14 bg-white shadow">
+        <header className="relative z-10 flex-shrink-0 flex h-14 bg-theme-color-surface shadow">
           <button
             type="button"
             className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
