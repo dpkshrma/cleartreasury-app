@@ -8,11 +8,8 @@ export const config = {
     // REQUIRED - Amazon Cognito Region
     region: "eu-west-2",
 
-    // OPTIONAL - Amazon Cognito User Pool ID
-    userPoolId: "eu-west-2_3z2bX5wbu",
-
-    // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-    userPoolWebClientId: "3tj693du068qaucri8quhlq7hp",
+    userPoolId: "eu-west-2_KJVpOC6Th",
+    userPoolWebClientId: "57qp2vvtsidncdb0anpbpb8qqr",
 
     // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
     mandatorySignIn: true,
