@@ -1,6 +1,6 @@
 import React from "react";
 import Page from "../components/page/Page";
-import { Button } from "design-system";
+import { Button } from "@clear-treasury/design-system";
 
 export const Dashboard = (): JSX.Element => (
   <Page>
