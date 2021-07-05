@@ -2,11 +2,18 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { Auth } from "aws-amplify";
-import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
-import Button from "../components/button/Button";
+import {
+  AmplifyAuthenticator,
+  AmplifySignOut,
+  AmplifySignIn,
+  AmplifyContainer,
+} from "@aws-amplify/ui-react";
+import { AuthState } from "@aws-amplify/ui-components";
+import { Button } from "@clear-treasury/design-system";
 
 import "../../configureAmplify";
 import "../styles.css";
+import "../app.css";
 
 import {
   HomeIcon,
@@ -35,6 +42,7 @@ function MyApp({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState<User | undefined>();
+  const [authState] = React.useState<AuthState>();
 
   React.useEffect(() => {
     const getUser = async () => {
@@ -47,8 +55,8 @@ function MyApp({ Component, pageProps }) {
     getUser();
   }, []);
 
-  return (
-    <div className="h-screen flex overflow-hidden bg-gray-100">
+  return authState === AuthState.SignedIn && user ? (
+    <div className="h-screen flex overflow-hidden bg-theme-color-background">
       <Head>
         <title>Clear Payments Platform</title>
         <link rel="icon" href="/favicon.png" />
@@ -74,12 +82,10 @@ function MyApp({ Component, pageProps }) {
 
         <div className="mt-5 flex-1 flex flex-col">
           <Link href="/transfer">
-            <a
-              className={`m-4 ${Button.STYLES.PRIMARY} ${Button.SIZES.MEDIUM}`}
-            >
-              Make a transfer
-            </a>
+            <a>make a transfer</a>
           </Link>
+
+          <Button>Button</Button>
 
           <nav className="flex-1 space-y-1">
             <ul>
@@ -108,7 +114,7 @@ function MyApp({ Component, pageProps }) {
         data-ui="Page scroll container"
         className="flex flex-col w-0 flex-1 overflow-hidden"
       >
-        <header className="relative z-10 flex-shrink-0 flex h-14 bg-white shadow">
+        <header className="relative z-10 flex-shrink-0 flex h-14 bg-theme-color-surface shadow">
           <button
             type="button"
             className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
@@ -153,7 +159,30 @@ function MyApp({ Component, pageProps }) {
         </main>
       </div>
     </div>
+  ) : (
+    <AmplifyContainer>
+      <AmplifyAuthenticator usernameAlias="email">
+        <AmplifySignIn
+          headerText="Sign in to your account"
+          slot="sign-in"
+          hideSignUp={true}
+          usernameAlias="email"
+          formFields={[
+            {
+              type: "email",
+              label: "Email address",
+              placeholder: "Enter your email",
+            },
+            {
+              type: "password",
+              label: "Password",
+              placeholder: "Enter your password",
+            },
+          ]}
+        ></AmplifySignIn>
+      </AmplifyAuthenticator>
+    </AmplifyContainer>
   );
 }
 
-export default withAuthenticator(MyApp, { usernameAlias: "email" });
+export default MyApp;
