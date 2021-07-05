@@ -2,11 +2,18 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { Auth } from "aws-amplify";
-import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
+import {
+  AmplifyAuthenticator,
+  AmplifySignOut,
+  AmplifySignIn,
+  AmplifyContainer,
+} from "@aws-amplify/ui-react";
+import { AuthState } from "@aws-amplify/ui-components";
 import { Button } from "@clear-treasury/design-system";
 
 import "../../configureAmplify";
 import "../styles.css";
+import "../app.css";
 
 import {
   HomeIcon,
@@ -35,6 +42,7 @@ function MyApp({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState<User | undefined>();
+  const [authState] = React.useState<AuthState>();
 
   React.useEffect(() => {
     const getUser = async () => {
@@ -47,7 +55,7 @@ function MyApp({ Component, pageProps }) {
     getUser();
   }, []);
 
-  return (
+  return authState === AuthState.SignedIn && user ? (
     <div className="h-screen flex overflow-hidden bg-theme-color-background">
       <Head>
         <title>Clear Payments Platform</title>
@@ -151,7 +159,30 @@ function MyApp({ Component, pageProps }) {
         </main>
       </div>
     </div>
+  ) : (
+    <AmplifyContainer>
+      <AmplifyAuthenticator usernameAlias="email">
+        <AmplifySignIn
+          headerText="Sign in to your account"
+          slot="sign-in"
+          hideSignUp={true}
+          usernameAlias="email"
+          formFields={[
+            {
+              type: "email",
+              label: "Email address",
+              placeholder: "Enter your email",
+            },
+            {
+              type: "password",
+              label: "Password",
+              placeholder: "Enter your password",
+            },
+          ]}
+        ></AmplifySignIn>
+      </AmplifyAuthenticator>
+    </AmplifyContainer>
   );
 }
 
-export default withAuthenticator(MyApp, { usernameAlias: "email" });
+export default MyApp;
