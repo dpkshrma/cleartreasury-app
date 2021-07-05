@@ -74,13 +74,10 @@ function MyApp({ Component, pageProps }) {
 
         <div className="mt-5 flex-1 flex flex-col">
           <Link href="/transfer">
-            {/* <a
-              className={`m-4 ${Button.STYLES.PRIMARY} ${Button.SIZES.MEDIUM}`}
-            >
-              Make a transfer
-            </a> */}
-            <Button>Button</Button>
+            <a>make a transfer</a>
           </Link>
+
+          <Button>Button</Button>
 
           <nav className="flex-1 space-y-1">
             <ul>
