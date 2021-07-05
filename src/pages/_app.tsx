@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { Auth } from "aws-amplify";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
-import { Button } from "design-system";
+import { Button } from "@clear-treasury/design-system";
 
 import "../../configureAmplify";
 import "../styles.css";
