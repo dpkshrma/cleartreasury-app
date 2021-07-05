@@ -25,6 +25,10 @@ const handler = async (
         Name: "phone_number",
         Value: req.body.phone_number,
       },
+      {
+        Name: "custom:client_ref",
+        Value: req.body.client_ref,
+      },
     ],
   };
 
