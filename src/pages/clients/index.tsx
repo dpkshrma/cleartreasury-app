@@ -3,10 +3,12 @@ import { Client } from "./clients";
 import { clientsQueryMock } from "./apollo/mocks";
 import { ApolloProviderHoc } from "../../apollo-config/ApolloProviderHoc/apolloProviderHoc";
 
-export const ClientsContainer: React.FC = () => {
+const ClientsContainer: React.FC = () => {
   return (
     <ApolloProviderHoc mocks={[clientsQueryMock]}>
       <Client />
     </ApolloProviderHoc>
   );
 };
+
+export default ClientsContainer;
