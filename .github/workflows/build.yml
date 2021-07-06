@@ -25,22 +25,19 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
 
-      - name: Install npm 7
-        run: npm i -g npm@7
-
       # Skip post-install scripts here, as a malicious
       # script could steal NODE_AUTH_TOKEN.
       - name: Install app dependencies (without scripts)
-        run: npm install --ignore-scripts
+        run: npm i -g npm@7 && npm install --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install infra dependencies
-        run: cd infra && npm install
 
       # `npm rebuild` will run all those post-install scripts for us.
       - name: Run post-install scripts
         run: npm rebuild && npm run prepare --if-present
+
+      - name: Install infra dependencies
+        run: cd infra && npm install
 
       - uses: clear-treasury/github-actions/action-gardener@latest
 
