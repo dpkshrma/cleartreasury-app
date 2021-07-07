@@ -16,8 +16,6 @@ jobs:
         with:
           node-version: "14"
           registry-url: "https://npm.pkg.github.com"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: cache npm
         uses: actions/cache@v2
@@ -31,7 +29,8 @@ jobs:
       - name: Install app dependencies (without scripts)
         run: npm i -g npm@7 && npm install --ignore-scripts
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # See https://github.com/actions/setup-node/issues/49#issuecomment-818681403
+          NODE_AUTH_TOKEN: ${{ secrets.GPR_READ_TOKEN }}
 
       # `npm rebuild` will run all those post-install scripts for us.
       - name: Run post-install scripts
