@@ -73,6 +73,8 @@ jobs:
 
       - name: Deploy
         env:
+          NEXT_PUBLIC_CMS_PROJECT_ID: ${{ secrets.CMS_PROJECT_ID }}
+          NEXT_PUBLIC_CMS_DATASET: ${{ secrets.NONPROD_CMS_DATASET }}
           NEXT_PUBLIC_GA_ID:
             "${{ steps.branches.outputs.branch == 'main' && secrets.PROD_GA_ID
             || secrets.NONPROD_GA_ID }}"
