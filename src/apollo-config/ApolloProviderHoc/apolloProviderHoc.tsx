@@ -4,7 +4,7 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "../config";
 
 interface ProviderProps {
-  mocks?: [MockedResponse];
+  mocks?: MockedResponse[];
 }
 
 export const ApolloProviderHoc: React.FC<ProviderProps> = ({

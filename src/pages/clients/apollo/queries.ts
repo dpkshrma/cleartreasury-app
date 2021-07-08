@@ -1,132 +1,23 @@
-export const GET_CLIENTS = gql`
-  query getClients {
-    clients {
+import gql from "graphql-tag";
+
+export const GET_CLIENT = gql`
+  query getClient($id: ID) {
+    client(id: $id) {
       id
-      cli_id
-      cli_reference
-      cli_trader_id
-      cli_cold_caller_id
-      cli_affiliate_id
-      cli_affiliate2_id
-      cli_type_id
-      cli_name
-      cli_address1
-      cli_address2
-      cli_address3
-      cli_postcode
-      cli_city
-      cli_country_id
-      cli_fax
-      cli_switchboard
-      cli_creation_date
-      cli_company_sic
-      cli_company_number
-      cli_status_id
-      cli_email
-      cli_web
-      cli_primary_contact_id
-      cli_alert
-      cli_comment
-      cli_old_reference
-      cli_trader_commission
-      cli_archived
-      cli_web_login
-      cli_web_password
-      cli_web_commission
-      cli_web_disable_trading
-      cli_web_must_change_pwd
-      cli_account_verified
-      cli_call_back_date
-      cli_call_back_time
-      cli_call_back_alert
-      cli_callback_priority_id
-      cli_competitor_note
-      cli_activity_id
-      cli_profit_limit
-      cli_referer
-      cli_unsubscribe_emails
-      cli_default_charge
-      cli_ding_type
-      cli_kyc_source
-      cli_kyc_nature
-      cli_kyc_country_origin_id
-      cli_kyc_avg_trade_size
-      cli_kyc_max_trade_size
-      cli_kyc_annual_volume
-      cli_kyc_frequency
-      cli_kyc_risk_profile
-      cli_kyc_ccy
-      cli_kyc_authorised
-      cli_company_id
-      cli_admin_note
-      cli_cold_caller_commission
-      cli_note1
-      cli_note2
-      cli_affiliate1_commission
-      cli_affiliate2_commission
-      cli_pool_commission
-      cli_registration_cost
-      cli_registred_IP_address
-      cli_language_id
-      cli_kyc_pep
-      cli_kyc_fatca
-      cli_kyc_unlocked_until
-      cli_cos_id
-      cli_start_business_date
-      cli_balance_sheet
-      cli_companies_house_up_to_date
-      cli_kyc_hpi
-      cli_can_trade_forward
-      cli_max_open_position
-      cli_max_open_position_ccy
-      cli_is_internal
-      cli_legal_status_id
-      cli_in_administration
-      cli_trading_as_name
-      cli_trading_address1
-      cli_trading_address2
-      cli_trading_address3
-      cli_trading_city
-      cli_trading_postcode
-      cli_trading_country_id
-      cli_company_vat
-      cli_reason
-      cli_kyc_source_of_wealth
-      cli_kyc_Relationship_with_beneficiaries
-      cli_agree_marketing_conditions
-      cli_agree_marketing_conditions_affiliates
-      cli_forward_margin
-      cli_credit_limit
-      cli_beneficiary_special_permission
-      cli_credit_agreement
-      cli_credit_percentage
-      cli_kyc_complex_ownership_chain
-      cli_kyc_face_to_face
-      cli_kyc_adverse_news
-      cli_kyc_bearer_shares
-      cli_industry_group_id
-      cli_override_risk_profile
-      cli_incorporated_under_id
-      cli_kyc_note
-      cli_web_disable_instructions
-      cli_license_expiry_date
-      cli_regulator_name
-      cli_web_currency_threshold_template_id
-      cli_web_disable_statement
-      cli_web_currency_threshold_template_overnight_id
-      cli_operator_id
-      cli_trading_status_id
-      cli_kyc_non_UK_shareholder
-      cli_inc_avg_trade_size
-      cli_inc_annual_volume
-      cli_inc_frequency
-      cli_inc_ccy
-      cli_inc_max_trade_size
-      cli_manager_id
-      cli_web_tfa
-      cli_trust_pilot
+      reference
+      name
+      email
     }
   }
 `;
 
-import gql from "graphql-tag";
+export const GET_CLIENTS = gql`
+  query getClients {
+    clients {
+      id
+      reference
+      name
+      email
+    }
+  }
+`;
