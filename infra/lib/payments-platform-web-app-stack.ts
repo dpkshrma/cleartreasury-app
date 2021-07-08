@@ -23,6 +23,9 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
 
     const serverlessNext = new NextJSLambdaEdge(this, "NextJsApp", {
       serverlessBuildOutDir: "../.serverless_nextjs",
+      s3Props: {
+        bucketName: `payments-platform-web-app-${branch}`,
+      },
       withLogging: true,
       domain: {
         certificate: certificate,
