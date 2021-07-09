@@ -12,6 +12,7 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    const appName = "PaymentsPlatformWebApp";
     const branch = this.node.tryGetContext("branch");
     const clearTreasuryCoUkDomainName = getDomainNameFromBranch(branch);
 
@@ -21,11 +22,8 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
       cdk.Fn.importValue(`${branch}:certificate:ClearTreasuryCoUk:Arn`)
     );
 
-    const serverlessNext = new NextJSLambdaEdge(this, "NextJsApp", {
+    const serverlessNext = new NextJSLambdaEdge(this, appName, {
       serverlessBuildOutDir: "../.serverless_nextjs",
-      s3Props: {
-        bucketName: `payments-platform-web-app-${branch}`,
-      },
       withLogging: true,
       domain: {
         certificate: certificate,
