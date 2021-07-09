@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Hub } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import { AmplifySignOut } from "@aws-amplify/ui-react";
 import { Button } from "@clear-treasury/design-system";
 
@@ -39,10 +39,17 @@ function MyApp({ Component, pageProps }) {
   const [user, setUser] = React.useState<User | undefined>();
 
   React.useEffect(() => {
-    Hub.listen("auth", (event) => {
-      setUser(event.payload.data);
-    });
+    checkUser();
   }, []);
+
+  async function checkUser() {
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      setUser(user);
+    } catch (error) {
+      setUser(null);
+    }
+  }
 
   return (
     <div className="h-screen flex overflow-hidden bg-theme-color-background">
