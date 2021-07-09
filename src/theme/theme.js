@@ -27,7 +27,7 @@ module.exports = {
     "theme-button-secondary-visited": tokens.colors.gray[400],
     "theme-button-secondary-active": tokens.colors.gray[500],
 
-    "theme-text-color-primary": tokens.colors.gray[800]
+    "theme-text-color-primary": tokens.colors.gray[800],
   },
   borderRadius: {
     "theme-radius": "0.125rem",

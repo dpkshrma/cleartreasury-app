@@ -1,11 +1,10 @@
 .login-form {
-    width: 100%;
-    max-width: 410px;
+  width: 100%;
+  max-width: 410px;
 }
 
-
 .login-form .form-group label {
-    font-size: 16px;
-    color: #363636;
-    margin-bottom: 8px;
+  font-size: 16px;
+  color: #363636;
+  margin-bottom: 8px;
 }
