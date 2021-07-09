@@ -29,10 +29,6 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
         certificate: certificate,
         domainNames: [clearTreasuryCoUkDomainName],
       },
-      // TODO: These will become the default after this PR is released
-      // https://github.com/serverless-nextjs/serverless-next.js/pull/1167/files
-      memory: 512,
-      timeout: cdk.Duration.seconds(10),
     });
 
     serverlessNext.edgeLambdaRole.addManagedPolicy(
