@@ -20,6 +20,7 @@ export const Clients: React.FC = () => {
       <>
         <div>
           <p>Single Client:</p>
+          <hr />
           <h2>id: {singleData.client.id}</h2>
           <p>reference: {singleData.client.reference}</p>
           <p>name: {singleData.client.name}</p>
@@ -28,18 +29,22 @@ export const Clients: React.FC = () => {
         <hr />
         <br />
         <br />
-        <ul>
-          {data.clients.map((client) => (
-            <li key={client.id}>
-              <h2>id: {client.id}</h2>
-              <p>reference: {client.reference}</p>
-              <p>name: {client.name}</p>
-              <p>email: {client.email}</p>
-              <hr />
-              <br />
-            </li>
-          ))}
-        </ul>
+        <div>
+          <p>Clients List</p>
+          <hr />
+          <ul>
+            {data.clients.map((client) => (
+              <li key={client.id}>
+                <h2>id: {client.id}</h2>
+                <p>reference: {client.reference}</p>
+                <p>name: {client.name}</p>
+                <p>email: {client.email}</p>
+                <hr />
+                <br />
+              </li>
+            ))}
+          </ul>
+        </div>
       </>
     );
   return null;

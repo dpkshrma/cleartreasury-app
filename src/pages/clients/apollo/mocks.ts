@@ -2,14 +2,6 @@ import * as Factory from "factory.ts";
 import { MockedResponse } from "@apollo/client/testing";
 import { GET_CLIENT, GET_CLIENTS } from "./queries";
 
-export const ClientMock = Factory.Sync.makeFactory({
-  __typename: "Clients",
-  id: 1,
-  reference: "C000013901",
-  name: "CLEAR CURRENCY LLP1",
-  email: "test-clients+signup@clearcurrency.co.uk1",
-});
-
 export const ClientsMock = Factory.Sync.makeFactory({
   __typename: "Clients",
   id: Factory.each((i) => i + 1),
@@ -18,6 +10,8 @@ export const ClientsMock = Factory.Sync.makeFactory({
   email: Factory.each((i) => `test-clients+signup@clearcurrency.co.uk${i + 1}`),
 });
 
+const clients = ClientsMock.buildList(2);
+
 export const clientByIdMock: MockedResponse = {
   request: {
     query: GET_CLIENT,
@@ -25,7 +19,7 @@ export const clientByIdMock: MockedResponse = {
   },
   result: {
     data: {
-      client: ClientMock.build(),
+      client: clients.find((item) => item.id === 1),
     },
   },
 };
@@ -36,7 +30,7 @@ export const clientsQueryMock: MockedResponse = {
   },
   result: {
     data: {
-      clients: ClientsMock.buildList(2),
+      clients: clients,
     },
   },
 };
