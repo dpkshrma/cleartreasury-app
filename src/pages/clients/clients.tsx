@@ -1,39 +1,92 @@
-import React from "react";
-import { useQuery } from "@apollo/client";
-import { GET_CLIENT, GET_CLIENTS } from "./apollo/queries";
+import React, { useEffect, useState } from "react";
+import { API, graphqlOperation } from "aws-amplify";
+import { GET_CLIENT, GET_CLIENTS } from "./graphql/queries";
 
 export const Clients: React.FC = () => {
-  const { data, loading, error } = useQuery(GET_CLIENTS);
-  const {
-    data: singleData,
-    loading: clientLoading,
-    error: clientError,
-  } = useQuery(GET_CLIENT, { variables: { id: 1 } });
+  const [client, setClient] = useState(null);
+  const [clients, setClients] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  if (error || clientError)
-    return (
-      <p>{error && error.message ? error.message : clientError.message}</p>
-    );
-  if (loading || clientLoading) return <p>Loading...</p>;
-  if (data && singleData)
-    return (
-      <>
+  const fetchClient = async () => {
+    try {
+      if (!client) {
+        setIsLoading(true);
+
+        const clientResponse: any = await API.graphql(
+          graphqlOperation(GET_CLIENT, { id: 1 })
+        );
+
+        if (
+          clientResponse &&
+          clientResponse.data &&
+          clientResponse.data.client
+        ) {
+          setClient(clientResponse.data.client);
+        }
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchClients = async () => {
+    try {
+      if (!clients) {
+        setIsLoading(true);
+
+        const clientsResponse: any = await API.graphql(
+          graphqlOperation(GET_CLIENTS)
+        );
+
+        if (
+          clientsResponse &&
+          clientsResponse.data &&
+          clientsResponse.data.clients
+        ) {
+          setClients(clientsResponse.data.clients);
+        }
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchClient();
+    fetchClients();
+  }, []);
+
+  if (error) return <p>{error && error.message && error.message}</p>;
+  if (isLoading) return <p>Loading...</p>;
+
+  return (
+    <>
+      {client && (
         <div>
-          <p>Single Client:</p>
+          <div>
+            <p>Single Client:</p>
+            <hr />
+            <h2>id: {client.id}</h2>
+            <p>reference: {client.reference}</p>
+            <p>name: {client.name}</p>
+            <p>email: {client.email}</p>
+          </div>
           <hr />
-          <h2>id: {singleData.client.id}</h2>
-          <p>reference: {singleData.client.reference}</p>
-          <p>name: {singleData.client.name}</p>
-          <p>email: {singleData.client.email}</p>
+          <br />
+          <br />
         </div>
-        <hr />
-        <br />
-        <br />
+      )}
+      {clients && clients.length && (
         <div>
           <p>Clients List</p>
           <hr />
           <ul>
-            {data.clients.map((client) => (
+            {clients.map((client) => (
               <li key={client.id}>
                 <h2>id: {client.id}</h2>
                 <p>reference: {client.reference}</p>
@@ -45,7 +98,8 @@ export const Clients: React.FC = () => {
             ))}
           </ul>
         </div>
-      </>
-    );
+      )}
+    </>
+  );
   return null;
 };

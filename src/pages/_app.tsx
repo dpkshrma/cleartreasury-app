@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Auth } from "aws-amplify";
+import Amplify, { Auth } from "aws-amplify";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
 import { Button } from "@clear-treasury/design-system";
 
@@ -17,6 +17,13 @@ import {
   MenuIcon,
   ChevronDownIcon,
 } from "@heroicons/react/outline";
+require("../mocks");
+
+Amplify.configure({
+  API: {
+    graphql_endpoint: "https://backend.dev.com/",
+  },
+});
 
 interface User {
   email: string;
