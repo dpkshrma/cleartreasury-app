@@ -18,7 +18,6 @@ import {
   MenuIcon,
   ChevronDownIcon,
 } from "@heroicons/react/outline";
-import Login from "./login";
 
 interface User {
   email: string;
@@ -58,8 +57,8 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      {user ? (
-        <React.Fragment>
+      <React.Fragment>
+        {user && (
           <div
             data-ui="Sidebar"
             className={`bg-teal-700 flex-col md:flex md:flex-shrink-0 w-64 pt-5 pb-4 ${
@@ -107,11 +106,13 @@ function MyApp({ Component, pageProps }) {
               </nav>
             </div>
           </div>
+        )}
 
-          <div
-            data-ui="Page scroll container"
-            className="flex flex-col w-0 flex-1 overflow-hidden"
-          >
+        <div
+          data-ui="Page scroll container"
+          className="flex flex-col w-0 flex-1 overflow-hidden"
+        >
+          {user && (
             <header className="relative z-10 flex-shrink-0 flex h-14 bg-theme-color-surface shadow">
               <button
                 type="button"
@@ -151,15 +152,13 @@ function MyApp({ Component, pageProps }) {
                 </div>
               </div>
             </header>
+          )}
 
-            <main className="flex-1 relative overflow-y-auto focus:outline-none">
-              <Component {...pageProps} />
-            </main>
-          </div>
-        </React.Fragment>
-      ) : (
-        <Login />
-      )}
+          <main className="flex-1 relative overflow-y-auto focus:outline-none">
+            <Component {...pageProps} />
+          </main>
+        </div>
+      </React.Fragment>
     </div>
   );
 }

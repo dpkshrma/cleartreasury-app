@@ -1,16 +1,9 @@
 @import url("https://use.typekit.net/xen1fxp.css");
-@import url("login.css");
 /* TODO: Abstract the theming somehow so we can move components to a shared design system */
 :root {
   --amplify-primary-color: #01d0a2;
   --amplify-primary-shade: #017d61;
   --amplify-primary-tint: #017d61;
-}
-
-body {
-  font-family: "Sofia Pro", sans-serif;
-  font-style: normal;
-  font-weight: normal;
 }
 
 @tailwind base;

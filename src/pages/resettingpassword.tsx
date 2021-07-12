@@ -7,34 +7,32 @@ import { Auth } from "aws-amplify";
 const initialFormState = {
   password: "",
   email: "",
-  authCode: "",
-  formType: "signIn",
+  passwordCode: "",
+  newPassword: "",
+  formType: "resetPassword",
 };
 
-function Login() {
+function ResettingPassword() {
   const [formState, setFormState] = React.useState(initialFormState);
   const { formType } = formState;
   const userEmail = React.useRef<HTMLInputElement | null>(null);
-  const userPassword = React.useRef<HTMLInputElement | null>(null);
-  const userAuthCode = React.useRef<HTMLInputElement | null>(null);
+  const userPasswordCode = React.useRef<HTMLInputElement | null>(null);
+  const userNewPassword = React.useRef<HTMLInputElement | null>(null);
 
-  async function signIn() {
-    if (userEmail.current !== null && userPassword.current !== null) {
-      await Auth.signIn(
-        userEmail.current.value,
-        userPassword.current.value
-      ).then(() => {
-        setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
-      });
-    }
+  async function sendResetCode() {
+    await Auth.forgotPassword(userEmail.current.value).then(() => {
+      setFormState(() => ({ ...formState, formType: "codeSend" }));
+    });
   }
 
-  async function confirmSignIn() {
-    await Auth.confirmSignIn(
+  async function resetPassword() {
+    await Auth.forgotPasswordSubmit(
       userEmail.current.value,
-      userAuthCode.current.value
-    );
-    setFormState(() => ({ ...formState, formType: "signedIn" }));
+      userPasswordCode.current.value,
+      userNewPassword.current.value
+    ).then(() => {
+      setFormState(() => ({ ...formState, formType: "signIn" }));
+    });
   }
 
   return (
@@ -48,7 +46,7 @@ function Login() {
           />
           <div className="p-6 bg-white rounded-md flex justify-center flex-col shadow-md">
             <h1 className="block w-full text-center mb-6 text-gray-800 text-2xl">
-              Sign in to your account
+              Reset your password
             </h1>
             <Input
               name="email"
@@ -57,41 +55,36 @@ function Login() {
               placeholder="Enter your email"
               ref={userEmail}
             />
-            {formType === "signIn" && (
+            {formType === "resetPassword" && (
               <React.Fragment>
-                <Input
-                  name="password"
-                  type="password"
-                  label="Password"
-                  placeholder="Enter your password"
-                  ref={userPassword}
-                />
-                <Link href="/resettingpassword">
+                <Link href="/login">
                   <a className="text-gray-600 text-sm mb-16 cursor-pointer">
-                    Reset Password
+                    Back to Sign In
                   </a>
                 </Link>
-                <Button size={Button.Size.LARGE} onClick={signIn}>
-                  Sign in
+                <Button size={Button.Size.LARGE} onClick={sendResetCode}>
+                  Send Code
                 </Button>
               </React.Fragment>
             )}
-            {formType === "confirmSignIn" && (
+            {formType === "codeSend" && (
               <React.Fragment>
                 <Input
-                  name="authCode"
+                  name="passwordCode"
                   type="text"
                   label="Enter verification code"
                   placeholder="Enter your code"
-                  ref={userAuthCode}
+                  ref={userPasswordCode}
                 />
-                <Link href="/">
-                  <a href="#" className="text-gray-600 text-sm mb-16">
-                    Resend verification code
-                  </a>
-                </Link>
-                <Button size={Button.Size.LARGE} onClick={confirmSignIn}>
-                  Sign in
+                <Input
+                  name="newPassword"
+                  type="password"
+                  label="Enter new password"
+                  placeholder="Enter your new password"
+                  ref={userNewPassword}
+                />
+                <Button size={Button.Size.LARGE} onClick={resetPassword}>
+                  Send Code
                 </Button>
               </React.Fragment>
             )}
@@ -102,4 +95,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ResettingPassword;
