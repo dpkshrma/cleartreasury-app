@@ -83,4 +83,5 @@ jobs:
         run: |
           cd infra && \
           npx cdk bootstrap && \
+          npx cdk deploy --require-approval=never -c branch="${BRANCH}" -c stack_name="${BRANCH}-${{ github.event.repository.id }}" -c stack_description="${{ github.event.repository.html_url }}/tree/${BRANCH}" PaymentsPlatformWebAppStack
           npx cdk deploy --require-approval=never -c branch="${BRANCH}" -c stack_name="${BRANCH}-${{ github.event.repository.id }}" -c stack_description="${{ github.event.repository.html_url }}/tree/${BRANCH}" --all
