@@ -26,7 +26,7 @@ builder
   .then(() => {
     const app = new cdk.App();
 
-    new PaymentsPlatformWebAppStack(app, "PaymentsPlatformWebAppStack", {
+    const paymentsPlatformWebAppStack = new PaymentsPlatformWebAppStack(app, "PaymentsPlatformWebAppStack", {
       env: { ...env, region: "us-east-1" },
       stackName: app.node.tryGetContext("stack_name"),
       description: app.node.tryGetContext("stack_description"),
@@ -39,6 +39,8 @@ builder
         env,
         stackName: app.node.tryGetContext("stack_name"),
         description: app.node.tryGetContext("stack_description"),
+        ssmDistributionId: paymentsPlatformWebAppStack.ssmDistributionId,
+        ssmDomainName: paymentsPlatformWebAppStack.ssmDomainName,
       }
     );
   })
