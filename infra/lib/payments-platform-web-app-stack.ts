@@ -12,6 +12,7 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    const appName = "PaymentsPlatformWebApp";
     const branch = this.node.tryGetContext("branch");
     const clearTreasuryCoUkDomainName = getDomainNameFromBranch(branch);
 
@@ -21,17 +22,13 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
       cdk.Fn.importValue(`${branch}:certificate:ClearTreasuryCoUk:Arn`)
     );
 
-    const serverlessNext = new NextJSLambdaEdge(this, "NextJsApp", {
+    const serverlessNext = new NextJSLambdaEdge(this, appName, {
       serverlessBuildOutDir: "../.serverless_nextjs",
       withLogging: true,
       domain: {
         certificate: certificate,
         domainNames: [clearTreasuryCoUkDomainName],
       },
-      // TODO: These will become the default after this PR is released
-      // https://github.com/serverless-nextjs/serverless-next.js/pull/1167/files
-      memory: 512,
-      timeout: cdk.Duration.seconds(10),
     });
 
     serverlessNext.edgeLambdaRole.addManagedPolicy(

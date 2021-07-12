@@ -12,10 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2.1.2
         with:
           node-version: "14"
-          scope: "@clear-treasury"
           registry-url: "https://npm.pkg.github.com"
 
       - name: cache npm
@@ -30,7 +29,8 @@ jobs:
       - name: Install app dependencies (without scripts)
         run: npm i -g npm@7 && npm install --ignore-scripts
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # See https://github.com/actions/setup-node/issues/49#issuecomment-818681403
+          NODE_AUTH_TOKEN: ${{ secrets.GPR_READ_TOKEN }}
 
       # `npm rebuild` will run all those post-install scripts for us.
       - name: Run post-install scripts
@@ -73,6 +73,10 @@ jobs:
 
       - name: Deploy
         env:
+          NEXT_PUBLIC_CMS_PROJECT_ID: ${{ secrets.CMS_PROJECT_ID }}
+          NEXT_PUBLIC_CMS_DATASET:
+            "${{ steps.branches.outputs.branch == 'main' &&
+            secrets.PROD_CMS_DATASET || secrets.NONPROD_CMS_DATASET }}"
           NEXT_PUBLIC_GA_ID:
             "${{ steps.branches.outputs.branch == 'main' && secrets.PROD_GA_ID
             || secrets.NONPROD_GA_ID }}"
