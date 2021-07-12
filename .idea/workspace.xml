@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2ae8a2eb-fc50-4cc6-bdcf-c7982b3e7cfa" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configureAmplify.ts" beforeDir="false" afterPath="$PROJECT_DIR$/configureAmplify.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/apollo-config/ApolloProviderHoc/apolloProviderHoc.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/apollo-config/config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mocks/browser.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mocks/browser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mocks/handlers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mocks/handlers/clientHandlers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mocks/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mocks/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/_app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/clients/clients.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/clients/graphql/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/graphql/clients/queries.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/clients/index.tsx" beforeDir="false" />
-    </list>
+    <list default="true" id="2ae8a2eb-fc50-4cc6-bdcf-c7982b3e7cfa" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -82,7 +68,7 @@
       <workItem from="1625502239136" duration="16298000" />
       <workItem from="1625576967996" duration="367000" />
       <workItem from="1625577361668" duration="21660000" />
-      <workItem from="1625749117641" duration="20294000" />
+      <workItem from="1625749117641" duration="20456000" />
     </task>
     <task id="LOCAL-00001" summary="- created apollo client configuration&#10;- created schemes, queries, mocks for clients page&#10;- created apollo hoc to correctly fetch clients with mocked or real data(real data needs further improvements for sure)">
       <created>1625521337980</created>
@@ -133,7 +119,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625789058901</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="removed clients, updated aws config, moved queries to app.tsx">
+      <created>1626097280194</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1626097280194</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -158,6 +151,7 @@
     <MESSAGE value="- created apollo client mocks for single and clients list&#10;- created test client component to perform queries for demo&#10;- updated schemas and queries to filter users by id too" />
     <MESSAGE value="- made mocking object generation a bit easier" />
     <MESSAGE value="added mocking with msw" />
-    <option name="LAST_COMMIT_MESSAGE" value="added mocking with msw" />
+    <MESSAGE value="removed clients, updated aws config, moved queries to app.tsx" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed clients, updated aws config, moved queries to app.tsx" />
   </component>
 </project>
