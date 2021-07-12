@@ -38,12 +38,16 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
       iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonCognitoPowerUser")
     );
 
-    this.ssmDistributionId = new ssm.StringParameter(this, "DistributionIdSsm", {
-      allowedPattern: ".*",
-      parameterName: "/payments-platform-web-app/distributionId",
-      stringValue: serverlessNext.distribution.distributionId,
-      tier: ssm.ParameterTier.STANDARD,
-    });
+    this.ssmDistributionId = new ssm.StringParameter(
+      this,
+      "DistributionIdSsm",
+      {
+        allowedPattern: ".*",
+        parameterName: "/payments-platform-web-app/distributionId",
+        stringValue: serverlessNext.distribution.distributionId,
+        tier: ssm.ParameterTier.STANDARD,
+      }
+    );
 
     this.ssmDomainName = new ssm.StringParameter(this, "DomainNameSsm", {
       allowedPattern: ".*",
@@ -68,7 +72,11 @@ interface PaymentsPlatformWebAppLinkStackProps extends cdk.StackProps {
 }
 
 export class PaymentsPlatformWebAppLinkStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: PaymentsPlatformWebAppLinkStackProps) {
+  constructor(
+    scope: cdk.Construct,
+    id: string,
+    props: PaymentsPlatformWebAppLinkStackProps
+  ) {
     super(scope, id, props);
 
     const branch = this.node.tryGetContext("branch");
