@@ -17,7 +17,7 @@ import {
   MenuIcon,
   ChevronDownIcon,
 } from "@heroicons/react/outline";
-import { GET_CLIENT, GET_CLIENTS } from "./graphql/clients/queries";
+import { GET_CLIENT, GET_CLIENTS } from "../graphql/clients/queries";
 
 require("../mocks");
 
