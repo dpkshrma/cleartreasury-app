@@ -4,8 +4,6 @@
     <list default="true" id="2ae8a2eb-fc50-4cc6-bdcf-c7982b3e7cfa" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.npmrc" beforeDir="false" afterPath="$PROJECT_DIR$/.npmrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/infra/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +72,7 @@
       <workItem from="1625576967996" duration="367000" />
       <workItem from="1625577361668" duration="21660000" />
       <workItem from="1625749117641" duration="20456000" />
-      <workItem from="1626097415688" duration="2265000" />
+      <workItem from="1626097415688" duration="2701000" />
     </task>
     <task id="LOCAL-00001" summary="- created apollo client configuration&#10;- created schemes, queries, mocks for clients page&#10;- created apollo hoc to correctly fetch clients with mocked or real data(real data needs further improvements for sure)">
       <created>1625521337980</created>
@@ -146,7 +144,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626097488196</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="fixed package lock">
+      <created>1626100078053</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1626100078054</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,6 +179,7 @@
     <MESSAGE value="removed clients, updated aws config, moved queries to app.tsx" />
     <MESSAGE value="fixed merge issues" />
     <MESSAGE value="moved graphql folder outside" />
-    <option name="LAST_COMMIT_MESSAGE" value="moved graphql folder outside" />
+    <MESSAGE value="fixed package lock" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed package lock" />
   </component>
 </project>
