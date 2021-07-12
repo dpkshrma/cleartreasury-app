@@ -1,27 +1,33 @@
-# NextJS Typescript Boilerplate
+# Payments Platform Web App
 
-Bootstrap a developer-friendly NextJS app configured with:
+This is the repository for the Clear Treasury Payments Platform.
 
-- [Typescript](https://www.typescriptlang.org/)
-- Linting with [ESLint](https://eslint.org/)
-- Formatting with [Prettier](https://prettier.io/)
-- Linting, typechecking and formatting on by default using [`husky`](https://github.com/typicode/husky) for commit hooks
-- Testing with [Jest](https://jestjs.io/) and [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro)
+## Getting Started
 
-## Deploy your own
+### Pre-requisites:
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+In order to install the
+[Design System](https://github.com/clear-treasury/design-system), you'll need to
+set up a GitHub Personal Access Token. Follow these steps to do so:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-typescript-eslint-jest&project-name=with-typescript-eslint-jest&repository-name=with-typescript-eslint-jest)
+1.  Set up a GitHub Personal Access Token
+    1. Go to the
+       [New personal access token](https://github.com/settings/tokens/new)
+       settings page
+    2. Give it a descriptive name in the note field (e.g.
+       `CT Private GitHub Packages`)
+    3. Make sure the `repo` and `read:packages` scopes are checked
+    4. Hit the "Generate token" button and copy the token value
+2.  Configure your local npm environment 1. In your terminal, run
+    `npm login --scope=@clear-treasury --registry=https://npm.pkg.github.com` 2.
+    When prompted, enter your GitHub username 3. For your password, enter the
+    Personal Access Token from step 1 4. Then enter the email address that's
+    associated with your GitHub account Npm will now be configured to intall
+    packages to pull from GitHub private repositories
 
-## How to use
+### Running the app locally
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-typescript-eslint-jest with-typescript-eslint-jest-app
-# or
-yarn create next-app --example with-typescript-eslint-jest with-typescript-eslint-jest-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+3.  Clone this repo
+4.  Run `npm install`
+5.  Run `npm run dev`
+6.  Open [localhost:3000](http://localhost:3000) in your browser

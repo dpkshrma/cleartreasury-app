@@ -9,9 +9,12 @@ import { NextJSLambdaEdge } from "@sls-next/cdk-construct";
 import { SSMParameterReader } from "./ssm-parameter-reader";
 
 export class PaymentsPlatformWebAppStack extends cdk.Stack {
+  public readonly ssmDistributionId: ssm.IParameter;
+  public readonly ssmDomainName: ssm.IParameter;
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    const appName = "PaymentsPlatformWebApp";
     const branch = this.node.tryGetContext("branch");
     const clearTreasuryCoUkDomainName = getDomainNameFromBranch(branch);
 
@@ -21,17 +24,13 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
       cdk.Fn.importValue(`${branch}:certificate:ClearTreasuryCoUk:Arn`)
     );
 
-    const serverlessNext = new NextJSLambdaEdge(this, "NextJsApp", {
+    const serverlessNext = new NextJSLambdaEdge(this, appName, {
       serverlessBuildOutDir: "../.serverless_nextjs",
       withLogging: true,
       domain: {
         certificate: certificate,
         domainNames: [clearTreasuryCoUkDomainName],
       },
-      // TODO: These will become the default after this PR is released
-      // https://github.com/serverless-nextjs/serverless-next.js/pull/1167/files
-      memory: 512,
-      timeout: cdk.Duration.seconds(10),
     });
 
     serverlessNext.edgeLambdaRole.addManagedPolicy(
@@ -39,14 +38,18 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
       iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonCognitoPowerUser")
     );
 
-    new ssm.StringParameter(this, "DistributionIdSsm", {
-      allowedPattern: ".*",
-      parameterName: "/payments-platform-web-app/distributionId",
-      stringValue: serverlessNext.distribution.distributionId,
-      tier: ssm.ParameterTier.STANDARD,
-    });
+    this.ssmDistributionId = new ssm.StringParameter(
+      this,
+      "DistributionIdSsm",
+      {
+        allowedPattern: ".*",
+        parameterName: "/payments-platform-web-app/distributionId",
+        stringValue: serverlessNext.distribution.distributionId,
+        tier: ssm.ParameterTier.STANDARD,
+      }
+    );
 
-    new ssm.StringParameter(this, "DomainNameSsm", {
+    this.ssmDomainName = new ssm.StringParameter(this, "DomainNameSsm", {
       allowedPattern: ".*",
       parameterName: "/payments-platform-web-app/domainName",
       stringValue: serverlessNext.distribution.domainName,
@@ -63,22 +66,31 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
   }
 }
 
+interface PaymentsPlatformWebAppLinkStackProps extends cdk.StackProps {
+  ssmDistributionId: ssm.IParameter;
+  ssmDomainName: ssm.IParameter;
+}
+
 export class PaymentsPlatformWebAppLinkStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(
+    scope: cdk.Construct,
+    id: string,
+    props: PaymentsPlatformWebAppLinkStackProps
+  ) {
     super(scope, id, props);
 
     const branch = this.node.tryGetContext("branch");
 
     const domainName = getParameterValue(
       new SSMParameterReader(this, "DomainNameSsmReader", {
-        parameterName: "/payments-platform-web-app/domainName",
+        parameterName: props.ssmDomainName.parameterName,
         region: "us-east-1",
       })
     );
 
     const distributionId = getParameterValue(
       new SSMParameterReader(this, "DistributionIdSsmReader", {
-        parameterName: "/payments-platform-web-app/distributionId",
+        parameterName: props.ssmDistributionId.parameterName,
         region: "us-east-1",
       })
     );

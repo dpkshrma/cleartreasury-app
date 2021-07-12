@@ -7,7 +7,6 @@ import { Button } from "@clear-treasury/design-system";
 
 import "../../configureAmplify";
 import "../styles.css";
-import "../app.css";
 
 import {
   HomeIcon,

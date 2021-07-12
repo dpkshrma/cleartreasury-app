@@ -12,9 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2.1.2
         with:
           node-version: "14"
+          registry-url: "https://npm.pkg.github.com"
 
       - name: cache npm
         uses: actions/cache@v2
@@ -23,10 +24,20 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
 
-      - name: Install dependencies
-        run: |
-          npm i -g npm@7
-          npm i && cd infra && npm i
+      # Skip post-install scripts here, as a malicious
+      # script could steal NODE_AUTH_TOKEN.
+      - name: Install app dependencies (without scripts)
+        run: npm i -g npm@7 && npm install --ignore-scripts
+        env:
+          # See https://github.com/actions/setup-node/issues/49#issuecomment-818681403
+          NODE_AUTH_TOKEN: ${{ secrets.GPR_READ_TOKEN }}
+
+      # `npm rebuild` will run all those post-install scripts for us.
+      - name: Run post-install scripts
+        run: npm rebuild && npm run prepare --if-present
+
+      - name: Install infra dependencies
+        run: cd infra && npm install
 
       - uses: clear-treasury/github-actions/action-gardener@latest
 
@@ -62,8 +73,16 @@ jobs:
 
       - name: Deploy
         env:
-          NEXT_PUBLIC_GA_ID: "${{ steps.branches.outputs.branch == 'main' && secrets.PROD_GA_ID || secrets.NONPROD_GA_ID }}"
+          NEXT_PUBLIC_CMS_PROJECT_ID: ${{ secrets.CMS_PROJECT_ID }}
+          NEXT_PUBLIC_CMS_DATASET:
+            "${{ steps.branches.outputs.branch == 'main' &&
+            secrets.PROD_CMS_DATASET || secrets.NONPROD_CMS_DATASET }}"
+          NEXT_PUBLIC_GA_ID:
+            "${{ steps.branches.outputs.branch == 'main' && secrets.PROD_GA_ID
+            || secrets.NONPROD_GA_ID }}"
+          NODE_OPTIONS: '--max_old_space_size=4096'
         run: |
           cd infra && \
           npx cdk bootstrap && \
+          npx cdk deploy --require-approval=never -c branch="${BRANCH}" -c stack_name="${BRANCH}-${{ github.event.repository.id }}" -c stack_description="${{ github.event.repository.html_url }}/tree/${BRANCH}" PaymentsPlatformWebAppStack
           npx cdk deploy --require-approval=never -c branch="${BRANCH}" -c stack_name="${BRANCH}-${{ github.event.repository.id }}" -c stack_description="${{ github.event.repository.html_url }}/tree/${BRANCH}" --all
