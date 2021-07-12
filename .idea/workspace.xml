@@ -2,28 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2ae8a2eb-fc50-4cc6-bdcf-c7982b3e7cfa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/payments-platform-web-app.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/mockServiceWorker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/mocks/browser.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/mocks/data/clients.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/mocks/handlers.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/mocks/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/mocks/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configureAmplify.ts" beforeDir="false" afterPath="$PROJECT_DIR$/configureAmplify.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apollo-config/ApolloProviderHoc/apolloProviderHoc.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apollo-config/config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mocks/browser.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mocks/browser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mocks/handlers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mocks/handlers/clientHandlers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mocks/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mocks/server.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/_app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/clients/apollo/mocks.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/clients/apollo/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/clients/graphql/queries.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/clients/apollo/schema.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/clients/clients.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/clients/clients.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/clients/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/clients/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/clients/clients.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/clients/graphql/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/graphql/clients/queries.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/clients/index.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +46,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/clients/graphql" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/mocks/handlers" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -67,16 +58,17 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/mocks/handlers" />
       <recent name="$PROJECT_DIR$/src/pages/clients/graphql" />
       <recent name="$PROJECT_DIR$/src/pages/clients" />
       <recent name="$PROJECT_DIR$/src/pages/clients/apollo" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/pages/graphql/clients" />
+      <recent name="$PROJECT_DIR$/src/pages" />
       <recent name="$PROJECT_DIR$/src/pages/clients/components" />
       <recent name="$PROJECT_DIR$/src/pages/clients/appsync" />
       <recent name="$PROJECT_DIR$/src/graphql" />
-      <recent name="$PROJECT_DIR$/src/pages/clients" />
-      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -90,7 +82,7 @@
       <workItem from="1625502239136" duration="16298000" />
       <workItem from="1625576967996" duration="367000" />
       <workItem from="1625577361668" duration="21660000" />
-      <workItem from="1625749117641" duration="16557000" />
+      <workItem from="1625749117641" duration="20294000" />
     </task>
     <task id="LOCAL-00001" summary="- created apollo client configuration&#10;- created schemes, queries, mocks for clients page&#10;- created apollo hoc to correctly fetch clients with mocked or real data(real data needs further improvements for sure)">
       <created>1625521337980</created>

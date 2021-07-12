@@ -22,18 +22,15 @@
     ]
   },
   "dependencies": {
-    "@apollo/client": "^3.3.20",
     "@aws-amplify/ui-react": "^1.2.1",
     "@aws-sdk/client-cognito-identity-provider": "^3.18.0",
     "@clear-treasury/design-system": "^1.0.0-alpha.3",
-    "@graphql-tools/schema": "^7.1.5",
     "@heroicons/react": "^1.0.1",
     "@sanity/block-content-to-react": "^3.0.0",
     "@sanity/client": "^2.11.0",
     "aws-amplify": "^3.4.3",
-    "factory.ts": "^0.5.2",
+    "graphql-tag": "^2.12.5",
     "groq": "^2.2.6",
-    "json-graphql-server": "^2.2.3",
     "next": "latest",
     "react": "17.0.2",
     "react-dom": "17.0.2"

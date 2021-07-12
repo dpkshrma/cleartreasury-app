@@ -17,6 +17,9 @@ export const config = {
     // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
     mandatorySignIn: true,
   },
+  API: {
+    graphql_endpoint: "https://backend.dev.com/",
+  },
 };
 
 const CDKConfig = {
