@@ -18,12 +18,14 @@ function Dashboard({ user }) {
 
 export async function getServerSideProps({ req, res }) {
   const { Auth } = withSSRContext({ req });
+
   try {
     const user = await Auth.currentAuthenticatedUser();
+
     return {
       props: {
         authenticated: true,
-        user: user,
+        user: user.attributes,
       },
     };
   } catch (err) {

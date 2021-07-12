@@ -12,6 +12,7 @@ const initialFormState = {
 };
 
 function Login() {
+  const [user, setUser] = React.useState();
   const [formState, setFormState] = React.useState(initialFormState);
   const { formType } = formState;
   const userEmail = React.useRef<HTMLInputElement | null>(null);
@@ -20,20 +21,18 @@ function Login() {
 
   async function signIn() {
     if (userEmail.current !== null && userPassword.current !== null) {
-      await Auth.signIn(
+      const user = await Auth.signIn(
         userEmail.current.value,
         userPassword.current.value
-      ).then(() => {
-        setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
-      });
+      );
+
+      setUser(user);
+      setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
     }
   }
 
   async function confirmSignIn() {
-    await Auth.confirmSignIn(
-      userEmail.current.value,
-      userAuthCode.current.value
-    );
+    await Auth.confirmSignIn(user, userAuthCode.current.value);
     setFormState(() => ({ ...formState, formType: "signedIn" }));
   }
 
