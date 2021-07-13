@@ -80,7 +80,9 @@ jobs:
           NEXT_PUBLIC_GA_ID:
             "${{ steps.branches.outputs.branch == 'main' && secrets.PROD_GA_ID
             || secrets.NONPROD_GA_ID }}"
+          NODE_OPTIONS: "--max_old_space_size=4096"
         run: |
           cd infra && \
           npx cdk bootstrap && \
+          npx cdk deploy --require-approval=never -c branch="${BRANCH}" -c stack_name="${BRANCH}-${{ github.event.repository.id }}" -c stack_description="${{ github.event.repository.html_url }}/tree/${BRANCH}" PaymentsPlatformWebAppStack
           npx cdk deploy --require-approval=never -c branch="${BRANCH}" -c stack_name="${BRANCH}-${{ github.event.repository.id }}" -c stack_description="${{ github.event.repository.html_url }}/tree/${BRANCH}" --all

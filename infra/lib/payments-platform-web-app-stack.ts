@@ -9,6 +9,8 @@ import { NextJSLambdaEdge } from "@sls-next/cdk-construct";
 import { SSMParameterReader } from "./ssm-parameter-reader";
 
 export class PaymentsPlatformWebAppStack extends cdk.Stack {
+  public readonly ssmDistributionId: ssm.IParameter;
+  public readonly ssmDomainName: ssm.IParameter;
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -36,14 +38,18 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
       iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonCognitoPowerUser")
     );
 
-    new ssm.StringParameter(this, "DistributionIdSsm", {
-      allowedPattern: ".*",
-      parameterName: "/payments-platform-web-app/distributionId",
-      stringValue: serverlessNext.distribution.distributionId,
-      tier: ssm.ParameterTier.STANDARD,
-    });
+    this.ssmDistributionId = new ssm.StringParameter(
+      this,
+      "DistributionIdSsm",
+      {
+        allowedPattern: ".*",
+        parameterName: "/payments-platform-web-app/distributionId",
+        stringValue: serverlessNext.distribution.distributionId,
+        tier: ssm.ParameterTier.STANDARD,
+      }
+    );
 
-    new ssm.StringParameter(this, "DomainNameSsm", {
+    this.ssmDomainName = new ssm.StringParameter(this, "DomainNameSsm", {
       allowedPattern: ".*",
       parameterName: "/payments-platform-web-app/domainName",
       stringValue: serverlessNext.distribution.domainName,
@@ -60,22 +66,31 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
   }
 }
 
+interface PaymentsPlatformWebAppLinkStackProps extends cdk.StackProps {
+  ssmDistributionId: ssm.IParameter;
+  ssmDomainName: ssm.IParameter;
+}
+
 export class PaymentsPlatformWebAppLinkStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(
+    scope: cdk.Construct,
+    id: string,
+    props: PaymentsPlatformWebAppLinkStackProps
+  ) {
     super(scope, id, props);
 
     const branch = this.node.tryGetContext("branch");
 
     const domainName = getParameterValue(
       new SSMParameterReader(this, "DomainNameSsmReader", {
-        parameterName: "/payments-platform-web-app/domainName",
+        parameterName: props.ssmDomainName.parameterName,
         region: "us-east-1",
       })
     );
 
     const distributionId = getParameterValue(
       new SSMParameterReader(this, "DistributionIdSsmReader", {
-        parameterName: "/payments-platform-web-app/distributionId",
+        parameterName: props.ssmDistributionId.parameterName,
         region: "us-east-1",
       })
     );

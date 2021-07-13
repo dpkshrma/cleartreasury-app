@@ -1,12 +1,5 @@
 @import url("https://use.typekit.net/xen1fxp.css");
 
-/* TODO: Abstract the theming somehow so we can move components to a shared design system */
-:root {
-  --amplify-primary-color: #01d0a2;
-  --amplify-primary-shade: #017d61;
-  --amplify-primary-tint: #017d61;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
