@@ -1,8 +1,9 @@
-import { Button, Input } from "@clear-treasury/design-system";
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
+import Router from "next/router";
+import { Auth, withSSRContext } from "aws-amplify";
+import { Button, Input } from "@clear-treasury/design-system";
 import Page from "../components/page/Page";
-import { Auth } from "aws-amplify";
 
 const initialFormState = {
   password: "",
@@ -32,8 +33,12 @@ function Login() {
   }
 
   async function confirmSignIn() {
-    await Auth.confirmSignIn(user, userAuthCode.current.value);
+    const success = await Auth.confirmSignIn(user, userAuthCode.current.value);
     setFormState(() => ({ ...formState, formType: "signedIn" }));
+
+    if (success) {
+      Router.push("/");
+    }
   }
 
   return (
@@ -99,6 +104,28 @@ function Login() {
       </div>
     </Page>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const { Auth } = withSSRContext({ req });
+
+  try {
+    await Auth.currentAuthenticatedUser();
+
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  } catch (err) {
+    return {
+      props: {
+        authenticated: false,
+        user: null,
+      },
+    };
+  }
 }
 
 export default Login;
