@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Auth } from "aws-amplify";
+import { API, Auth, graphqlOperation } from "aws-amplify";
 import { AmplifySignOut } from "@aws-amplify/ui-react";
 import { Button } from "@clear-treasury/design-system";
 
@@ -17,6 +17,9 @@ import {
   MenuIcon,
   ChevronDownIcon,
 } from "@heroicons/react/outline";
+import { GET_CLIENT, GET_CLIENTS } from "../graphql/clients/queries";
+
+require("../mocks");
 
 interface User {
   email: string;
@@ -35,6 +38,67 @@ function MyApp({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState<User | undefined>();
+
+  const [client, setClient] = React.useState(null);
+  const [clients, setClients] = React.useState(null);
+  // TODO: remove this later
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isClientsLoading, setIsClientLoading] = React.useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [clientsError, setClientsError] = React.useState(null);
+
+  const fetchClient = async () => {
+    try {
+      if (!client) {
+        setIsClientLoading(true);
+
+        const clientResponse: any = await API.graphql(
+          graphqlOperation(GET_CLIENT, { id: 1 })
+        );
+
+        if (
+          clientResponse &&
+          clientResponse.data &&
+          clientResponse.data.client
+        ) {
+          setClient(clientResponse.data.client);
+        }
+      }
+    } catch (error) {
+      setClientsError(error);
+    } finally {
+      setIsClientLoading(false);
+    }
+  };
+
+  const fetchClients = async () => {
+    try {
+      if (!clients) {
+        setIsClientLoading(true);
+
+        const clientsResponse: any = await API.graphql(
+          graphqlOperation(GET_CLIENTS)
+        );
+
+        if (
+          clientsResponse &&
+          clientsResponse.data &&
+          clientsResponse.data.clients
+        ) {
+          setClients(clientsResponse.data.clients);
+        }
+      }
+    } catch (error) {
+      setClientsError(error);
+    } finally {
+      setIsClientLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchClient();
+    fetchClients();
+  }, []);
 
   React.useEffect(() => {
     checkUser();
