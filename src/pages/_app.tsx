@@ -4,10 +4,6 @@ import Link from "next/link";
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import { AmplifySignOut } from "@aws-amplify/ui-react";
 import { Button } from "@clear-treasury/design-system";
-
-import "../../configureAmplify";
-import "../styles.css";
-
 import {
   HomeIcon,
   UserCircleIcon,
@@ -17,7 +13,11 @@ import {
   MenuIcon,
   ChevronDownIcon,
 } from "@heroicons/react/outline";
+
 import { GET_CLIENT, GET_CLIENTS } from "../graphql/clients/queries";
+
+import "../../configureAmplify";
+import "../styles.css";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING) {
   require("../mocks");
@@ -39,15 +39,24 @@ const navigation = [
 function MyApp({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
-  const [user, setUser] = React.useState<User | undefined>();
-
+  const [user, setUser] = React.useState<User | null>(null);
   const [client, setClient] = React.useState(null);
   const [clients, setClients] = React.useState(null);
+
   // TODO: remove this later
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isClientsLoading, setIsClientLoading] = React.useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [clientsError, setClientsError] = React.useState(null);
+
+  const checkUser = async () => {
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      setUser(user);
+    } catch (error) {
+      setUser(null);
+    }
+  };
 
   const fetchClient = async () => {
     try {
@@ -107,15 +116,6 @@ function MyApp({ Component, pageProps }) {
       fetchClients();
     }
   }, [user]);
-
-  async function checkUser() {
-    try {
-      const user = await Auth.currentAuthenticatedUser();
-      setUser(user);
-    } catch (error) {
-      setUser(null);
-    }
-  }
 
   return (
     <div className="h-screen flex overflow-hidden bg-theme-color-background">
@@ -197,11 +197,11 @@ function MyApp({ Component, pageProps }) {
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
                   >
                     <span className="rounded-full text-white font-bold bg-gray-500 p-1.5 mr-2">
-                      {user?.username.split("-")[0][0].toUpperCase()}{" "}
-                      {user?.username.split("-")[1][0].toUpperCase()}
+                      {client?.name.split(" ")[0][0].toUpperCase()}{" "}
+                      {client?.name.split(" ")[1][0].toUpperCase()}
                     </span>
 
-                    {user?.username}
+                    {client?.name}
 
                     <ChevronDownIcon className="h-5 w-5 ml-2" />
                   </button>
