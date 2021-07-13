@@ -22,9 +22,10 @@ export const config = {
   },
 };
 
-const CDKConfig = {
-  // aws_appsync_authenticationType: CdkBackendStack.awsappsyncauthenticationType,
-  // aws_appsync_apiKey: CdkBackendStack.awsappsyncapiKey,
-};
+// TODO: Generate the config from CDK stack output
+// const CDKConfig = {
+//   aws_appsync_authenticationType: CdkBackendStack.awsappsyncauthenticationType,
+//   aws_appsync_apiKey: CdkBackendStack.awsappsyncapiKey,
+// };
 
-Amplify.configure({ ...config, ...CDKConfig, ssr: true });
+Amplify.configure({ ...config, ssr: true });

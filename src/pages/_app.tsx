@@ -19,7 +19,9 @@ import {
 } from "@heroicons/react/outline";
 import { GET_CLIENT, GET_CLIENTS } from "../graphql/clients/queries";
 
-require("../mocks");
+if (process.env.NEXT_PUBLIC_API_MOCKING) {
+  require("../mocks");
+}
 
 interface User {
   email: string;
@@ -96,13 +98,15 @@ function MyApp({ Component, pageProps }) {
   };
 
   React.useEffect(() => {
-    fetchClient();
-    fetchClients();
+    checkUser();
   }, []);
 
   React.useEffect(() => {
-    checkUser();
-  }, []);
+    if (user) {
+      fetchClient();
+      fetchClients();
+    }
+  }, [user]);
 
   async function checkUser() {
     try {
