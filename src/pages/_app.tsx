@@ -38,10 +38,7 @@ const navigation = [
 function MyApp({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
-  const [user, setUser] = React.useState<User | null>({
-    email: "test@test.com",
-    username: "test",
-  });
+  const [user, setUser] = React.useState<User | null>(null);
   const router = useRouter();
 
   const checkUser = async () => {
