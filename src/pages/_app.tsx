@@ -1,8 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { API, Auth, graphqlOperation } from "aws-amplify";
-import { AmplifySignOut } from "@aws-amplify/ui-react";
+import { API, Auth, graphqlOperation, Hub } from "aws-amplify";
 import { Button } from "@clear-treasury/design-system";
 import {
   HomeIcon,
@@ -18,6 +17,7 @@ import { GET_CLIENT, GET_CLIENTS } from "../graphql/clients/queries";
 
 import "../../configureAmplify";
 import "../styles.css";
+import { useRouter } from "next/router";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING) {
   require("../mocks");
@@ -42,6 +42,7 @@ function MyApp({ Component, pageProps }) {
   const [user, setUser] = React.useState<User | null>(null);
   const [client, setClient] = React.useState(null);
   const [clients, setClients] = React.useState(null);
+  const router = useRouter();
 
   // TODO: remove this later
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -106,6 +107,18 @@ function MyApp({ Component, pageProps }) {
     }
   };
 
+  async function signOut() {
+    try {
+      await Auth.signOut().then(() => {
+        router.push("login");
+        setUser(null);
+      });
+    } catch (error) {
+      router.push("login");
+      setUser(null);
+    }
+  }
+
   React.useEffect(() => {
     checkUser();
   }, []);
@@ -114,6 +127,9 @@ function MyApp({ Component, pageProps }) {
     if (user) {
       fetchClient();
       fetchClients();
+      Hub.listen("auth", checkUser);
+    } else {
+      router.push("login");
     }
   }, [user]);
 
@@ -214,7 +230,9 @@ function MyApp({ Component, pageProps }) {
                     aria-orientation="vertical"
                     aria-labelledby="user-menu-button"
                   >
-                    <AmplifySignOut />
+                    <Button onClick={signOut} size={Button.Size.LARGE}>
+                      SIGN OUT
+                    </Button>
                   </div>
                 </div>
               </div>

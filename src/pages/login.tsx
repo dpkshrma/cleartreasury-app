@@ -18,26 +18,68 @@ function Login() {
   const { formType } = formState;
   const userEmail = React.useRef<HTMLInputElement | null>(null);
   const userPassword = React.useRef<HTMLInputElement | null>(null);
+  const userNewPassword = React.useRef<HTMLInputElement | null>(null);
   const userAuthCode = React.useRef<HTMLInputElement | null>(null);
+  const passwordRegex =
+    /^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/;
+
+  function handleSubmit(e: any) {
+    e.preventDefault();
+    if (formState.formType == "signIn") {
+      setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
+      signIn();
+    } else if (formState.formType == "confirmSignIn") {
+      confirmSignIn();
+    } else if (formState.formType == "newPasswordRequired") {
+      setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
+      newPasswordRequired();
+    }
+  }
 
   async function signIn() {
-    if (userEmail.current !== null && userPassword.current !== null) {
+    if (
+      userEmail.current !== null &&
+      userPassword.current.value.match(passwordRegex)
+    ) {
       const user = await Auth.signIn(
         userEmail.current.value,
         userPassword.current.value
-      );
-
+      ).then((res: any) => {
+        if (res.challengeName === "NEW_PASSWORD_REQUIRED") {
+          setFormState(() => ({
+            ...formState,
+            formType: "newPasswordRequired",
+          }));
+          setUser(res);
+        } else {
+          return res;
+        }
+      });
       setUser(user);
       setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
     }
   }
 
   async function confirmSignIn() {
-    const success = await Auth.confirmSignIn(user, userAuthCode.current.value);
-    setFormState(() => ({ ...formState, formType: "signedIn" }));
+    const userData = await Auth.confirmSignIn(user, userAuthCode.current.value);
 
-    if (success) {
+    setUser(userData);
+
+    if (userData) {
       Router.push("/");
+    }
+  }
+
+  async function newPasswordRequired() {
+    if (userNewPassword.current.value.match(passwordRegex)) {
+      const userData = await Auth.completeNewPassword(
+        user,
+        userNewPassword.current.value,
+        { email: formState.email }
+      );
+
+      setUser(userData);
+      setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
     }
   }
 
@@ -54,51 +96,64 @@ function Login() {
             <h1 className="block w-full text-center mb-6 text-gray-800 text-2xl">
               Sign in to your account
             </h1>
-            <Input
-              name="email"
-              type="email"
-              label="Email address"
-              placeholder="Enter your email"
-              ref={userEmail}
-            />
-            {formType === "signIn" && (
-              <React.Fragment>
-                <Input
-                  name="password"
-                  type="password"
-                  label="Password"
-                  placeholder="Enter your password"
-                  ref={userPassword}
-                />
-                <Link href="/resettingpassword">
-                  <a className="text-gray-600 text-sm mb-16 cursor-pointer">
-                    Reset Password
-                  </a>
-                </Link>
-                <Button size={Button.Size.LARGE} onClick={signIn}>
-                  Sign in
-                </Button>
-              </React.Fragment>
-            )}
-            {formType === "confirmSignIn" && (
-              <React.Fragment>
-                <Input
-                  name="authCode"
-                  type="text"
-                  label="Enter verification code"
-                  placeholder="Enter your code"
-                  ref={userAuthCode}
-                />
-                <Link href="/">
-                  <a href="#" className="text-gray-600 text-sm mb-16">
-                    Resend verification code
-                  </a>
-                </Link>
-                <Button size={Button.Size.LARGE} onClick={confirmSignIn}>
-                  Sign in
-                </Button>
-              </React.Fragment>
-            )}
+            <form
+              onSubmit={handleSubmit}
+              className="flex justify-center flex-col"
+            >
+              <Input
+                name="email"
+                type="email"
+                label="Email address"
+                placeholder="Enter your email"
+                ref={userEmail}
+              />
+              {formType === "signIn" && (
+                <React.Fragment>
+                  <Input
+                    name="password"
+                    type="password"
+                    label="Password"
+                    placeholder="Enter your password"
+                    ref={userPassword}
+                  />
+                  <Link href="/resettingpassword">
+                    <a className="text-gray-600 text-sm mb-16 cursor-pointer">
+                      Forgot your password?
+                    </a>
+                  </Link>
+                  <Button size={Button.Size.LARGE}>Sign in</Button>
+                </React.Fragment>
+              )}
+              {formType === "confirmSignIn" && (
+                <React.Fragment>
+                  <Input
+                    name="authCode"
+                    type="text"
+                    label="Enter verification code"
+                    placeholder="Enter your code"
+                    ref={userAuthCode}
+                  />
+                  <Link href="/">
+                    <a href="#" className="text-gray-600 text-sm mb-16">
+                      Resend verification code
+                    </a>
+                  </Link>
+                  <Button size={Button.Size.LARGE}>Sign in</Button>
+                </React.Fragment>
+              )}
+              {formType === "newPasswordRequired" && (
+                <React.Fragment>
+                  <Input
+                    name="password"
+                    type="password"
+                    label="Password"
+                    placeholder="Enter your password"
+                    ref={userNewPassword}
+                  />
+                  <Button size={Button.Size.LARGE}>Set new password</Button>
+                </React.Fragment>
+              )}
+            </form>
           </div>
         </div>
       </div>
