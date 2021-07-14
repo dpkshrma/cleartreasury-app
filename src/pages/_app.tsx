@@ -1,8 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Auth } from "aws-amplify";
-import { AmplifySignOut } from "@aws-amplify/ui-react";
+import { Auth, Hub } from "aws-amplify";
 import { Button } from "@clear-treasury/design-system";
 import {
   HomeIcon,
@@ -17,6 +16,7 @@ import { GET_CLIENT } from "../graphql/clients/queries";
 import { useQuery } from "../helpers/hooks/useQuery";
 import "../../configureAmplify";
 import "../styles.css";
+import { useRouter } from "next/router";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING) {
   require("../mocks");
@@ -42,6 +42,7 @@ function MyApp({ Component, pageProps }) {
     email: "test@test.com",
     username: "test",
   });
+  const router = useRouter();
 
   const checkUser = async () => {
     try {
@@ -52,17 +53,38 @@ function MyApp({ Component, pageProps }) {
     }
   };
 
+  async function signOut() {
+    try {
+      await Auth.signOut().then(() => {
+        router.push("login");
+        setUser(null);
+      });
+    } catch (error) {
+      router.push("login");
+      setUser(null);
+    }
+  }
+
   React.useEffect(() => {
     checkUser();
   }, []);
 
   // TODO: remove redundant console logs and eslint suppressors later
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {
     data: client,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     loading: clientLoading,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     error: clientError,
   } = useQuery(GET_CLIENT, { id: 1 });
+
+  React.useEffect(() => {
+    if (user) {
+      Hub.listen("auth", checkUser);
+    } else {
+      router.push("login");
+    }
+  }, [user]);
 
   return (
     <div className="h-screen flex overflow-hidden bg-theme-color-background">
@@ -161,7 +183,9 @@ function MyApp({ Component, pageProps }) {
                     aria-orientation="vertical"
                     aria-labelledby="user-menu-button"
                   >
-                    <AmplifySignOut />
+                    <Button onClick={signOut} size={Button.Size.LARGE}>
+                      SIGN OUT
+                    </Button>
                   </div>
                 </div>
               </div>
