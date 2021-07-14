@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { API, Auth, graphqlOperation, Hub } from "aws-amplify";
+import { Auth, Hub } from "aws-amplify";
 import { Button } from "@clear-treasury/design-system";
 import {
   HomeIcon,
@@ -12,9 +12,8 @@ import {
   MenuIcon,
   ChevronDownIcon,
 } from "@heroicons/react/outline";
-
-import { GET_CLIENT, GET_CLIENTS } from "../graphql/clients/queries";
-
+import { GET_CLIENT } from "../graphql/clients/queries";
+import { useQuery } from "../helpers/hooks/useQuery";
 import "../../configureAmplify";
 import "../styles.css";
 import { useRouter } from "next/router";
@@ -40,15 +39,7 @@ function MyApp({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState<User | null>(null);
-  const [client, setClient] = React.useState(null);
-  const [clients, setClients] = React.useState(null);
   const router = useRouter();
-
-  // TODO: remove this later
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isClientsLoading, setIsClientLoading] = React.useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [clientsError, setClientsError] = React.useState(null);
 
   const checkUser = async () => {
     try {
@@ -56,54 +47,6 @@ function MyApp({ Component, pageProps }) {
       setUser(user);
     } catch (error) {
       setUser(null);
-    }
-  };
-
-  const fetchClient = async () => {
-    try {
-      if (!client) {
-        setIsClientLoading(true);
-
-        const clientResponse: any = await API.graphql(
-          graphqlOperation(GET_CLIENT, { id: 1 })
-        );
-
-        if (
-          clientResponse &&
-          clientResponse.data &&
-          clientResponse.data.client
-        ) {
-          setClient(clientResponse.data.client);
-        }
-      }
-    } catch (error) {
-      setClientsError(error);
-    } finally {
-      setIsClientLoading(false);
-    }
-  };
-
-  const fetchClients = async () => {
-    try {
-      if (!clients) {
-        setIsClientLoading(true);
-
-        const clientsResponse: any = await API.graphql(
-          graphqlOperation(GET_CLIENTS)
-        );
-
-        if (
-          clientsResponse &&
-          clientsResponse.data &&
-          clientsResponse.data.clients
-        ) {
-          setClients(clientsResponse.data.clients);
-        }
-      }
-    } catch (error) {
-      setClientsError(error);
-    } finally {
-      setIsClientLoading(false);
     }
   };
 
@@ -123,10 +66,17 @@ function MyApp({ Component, pageProps }) {
     checkUser();
   }, []);
 
+  // TODO: remove redundant console logs and eslint suppressors later
+  const {
+    data: client,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    loading: clientLoading,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    error: clientError,
+  } = useQuery(GET_CLIENT, { id: 1 });
+
   React.useEffect(() => {
     if (user) {
-      fetchClient();
-      fetchClients();
       Hub.listen("auth", checkUser);
     } else {
       router.push("login");
@@ -213,8 +163,8 @@ function MyApp({ Component, pageProps }) {
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
                   >
                     <span className="rounded-full text-white font-bold bg-gray-500 p-1.5 mr-2">
-                      {client?.name.split(" ")[0][0].toUpperCase()}{" "}
-                      {client?.name.split(" ")[1][0].toUpperCase()}
+                      {client?.data?.name.split(" ")[0][0].toUpperCase()}{" "}
+                      {client?.data?.name.split(" ")[1][0].toUpperCase()}
                     </span>
 
                     {client?.name}

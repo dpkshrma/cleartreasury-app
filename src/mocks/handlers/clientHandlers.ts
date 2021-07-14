@@ -16,4 +16,19 @@ export const clientHandlers = [
       })
     );
   }),
+  graphql.mutation("CreateClient", (req, res, ctx) => {
+    const data = req.variables as {
+      id: number;
+      reference: string;
+      email: string;
+      name: string;
+    };
+    clients.push(data);
+
+    return res(
+      ctx.data({
+        ...data,
+      })
+    );
+  }),
 ];
