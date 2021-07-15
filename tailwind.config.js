@@ -6,6 +6,10 @@ module.exports = {
   ...designSystem,
   theme: {
     ...designSystem.theme,
-    extend: { colors: theme.color, borderRadius: theme.borderRadius },
+    extend: {
+      ...designSystem.theme.extend,
+      colors: theme.color,
+      borderRadius: theme.borderRadius,
+    },
   },
 };
