@@ -73,7 +73,7 @@ function Login() {
       const userData = await Auth.completeNewPassword(
         user,
         userNewPassword.current.value,
-        { email: formState.email }
+        { email: userEmail.current.value }
       );
 
       setUser(userData);

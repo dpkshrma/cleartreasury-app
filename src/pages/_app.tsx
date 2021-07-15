@@ -64,7 +64,7 @@ function MyApp({ Component, pageProps }) {
 
   React.useEffect(() => {
     checkUser();
-  }, []);
+  }, [pageProps.authenticated]);
 
   // TODO: remove redundant console logs and eslint suppressors later
   const {
