@@ -2,14 +2,17 @@ import React from "react";
 import Link from "next/link";
 import Router from "next/router";
 import { Auth, withSSRContext } from "aws-amplify";
-import { Button, Input } from "@clear-treasury/design-system";
+import { Button, Input, Alert } from "@clear-treasury/design-system";
 import Page from "../components/page/Page";
+import { MailIcon } from "@heroicons/react/outline";
 
 const initialFormState = {
   password: "",
   email: "",
   authCode: "",
   formType: "signIn",
+  error: false,
+  errorMessage: "",
 };
 
 function Login() {
@@ -22,6 +25,7 @@ function Login() {
   const userAuthCode = React.useRef<HTMLInputElement | null>(null);
   const passwordRegex =
     /^(?=.{6,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/;
+  const [loading, setLoading] = React.useState(false);
 
   function handleSubmit(e: any) {
     e.preventDefault();
@@ -40,26 +44,43 @@ function Login() {
       userEmail.current !== null &&
       userPassword.current.value.match(passwordRegex)
     ) {
-      await Auth.signIn(
-        userEmail.current.value,
-        userPassword.current.value
-      ).then((res: any) => {
-        if (res.challengeName == "NEW_PASSWORD_REQUIRED") {
+      setLoading(true);
+      await Auth.signIn(userEmail.current.value, userPassword.current.value)
+        .then((res: any) => {
+          if (res.challengeName == "NEW_PASSWORD_REQUIRED") {
+            setFormState(() => ({
+              ...formState,
+              formType: "newPasswordRequired",
+            }));
+            setUser(res);
+            setLoading(false);
+          } else {
+            setUser(res);
+            setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
+            setLoading(false);
+          }
+        })
+        .catch((err: any) => {
           setFormState(() => ({
             ...formState,
-            formType: "newPasswordRequired",
+            error: true,
+            errorMessage: err.message,
           }));
-          setUser(res);
-        } else {
-          setUser(res);
-          setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
-        }
-      });
+          setLoading(false);
+        });
     }
   }
 
   async function confirmSignIn() {
-    const userData = await Auth.confirmSignIn(user, userAuthCode.current.value);
+    setLoading(true);
+    const userData = await Auth.confirmSignIn(user, userAuthCode.current.value)
+      .then((res: any) => {
+        setLoading(false);
+        return res;
+      })
+      .catch(() => {
+        setLoading(false);
+      });
 
     setUser(userData);
 
@@ -70,11 +91,18 @@ function Login() {
 
   async function newPasswordRequired() {
     if (userNewPassword.current.value.match(passwordRegex)) {
+      setLoading(true);
       const userData = await Auth.completeNewPassword(
         user,
         userNewPassword.current.value,
         { email: userEmail.current.value }
-      );
+      )
+        .then((res: any) => {
+          return res;
+        })
+        .catch(() => {
+          setLoading(false);
+        });
 
       setUser(userData);
       setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
@@ -98,6 +126,9 @@ function Login() {
               onSubmit={handleSubmit}
               className="flex justify-center flex-col"
             >
+              {formState.error && (
+                <Alert icon={MailIcon} text={formState.errorMessage} />
+              )}
               <Input
                 name="email"
                 type="email"
@@ -119,7 +150,9 @@ function Login() {
                       Forgot your password?
                     </a>
                   </Link>
-                  <Button size={Button.Size.LARGE}>Sign in</Button>
+                  <Button size={Button.Size.LARGE} loading={loading}>
+                    Sign in
+                  </Button>
                 </React.Fragment>
               )}
               {formType === "confirmSignIn" && (
@@ -136,7 +169,9 @@ function Login() {
                       Resend verification code
                     </a>
                   </Link>
-                  <Button size={Button.Size.LARGE}>Sign in</Button>
+                  <Button size={Button.Size.LARGE} loading={loading}>
+                    Sign in
+                  </Button>
                 </React.Fragment>
               )}
               {formType === "newPasswordRequired" && (
@@ -144,11 +179,13 @@ function Login() {
                   <Input
                     name="password"
                     type="password"
-                    label="Password"
-                    placeholder="Enter your password"
+                    label="Change your password"
+                    placeholder="Enter your new password"
                     ref={userNewPassword}
                   />
-                  <Button size={Button.Size.LARGE}>Set new password</Button>
+                  <Button size={Button.Size.LARGE} loading={loading}>
+                    Set new password
+                  </Button>
                 </React.Fragment>
               )}
             </form>
