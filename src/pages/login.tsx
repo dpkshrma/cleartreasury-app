@@ -26,7 +26,6 @@ function Login() {
   function handleSubmit(e: any) {
     e.preventDefault();
     if (formState.formType == "signIn") {
-      setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
       signIn();
     } else if (formState.formType == "confirmSignIn") {
       confirmSignIn();
@@ -41,22 +40,21 @@ function Login() {
       userEmail.current !== null &&
       userPassword.current.value.match(passwordRegex)
     ) {
-      const user = await Auth.signIn(
+      await Auth.signIn(
         userEmail.current.value,
         userPassword.current.value
       ).then((res: any) => {
-        if (res.challengeName === "NEW_PASSWORD_REQUIRED") {
+        if (res.challengeName == "NEW_PASSWORD_REQUIRED") {
           setFormState(() => ({
             ...formState,
             formType: "newPasswordRequired",
           }));
           setUser(res);
         } else {
-          return res;
+          setUser(res);
+          setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
         }
       });
-      setUser(user);
-      setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
     }
   }
 
