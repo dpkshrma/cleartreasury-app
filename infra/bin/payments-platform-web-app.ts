@@ -3,10 +3,8 @@ import "source-map-support/register";
 import * as path from "path";
 import * as cdk from "@aws-cdk/core";
 import { Builder } from "@sls-next/lambda-at-edge";
-import {
-  PaymentsPlatformWebAppStack,
-  PaymentsPlatformWebAppLinkStack,
-} from "../lib/payments-platform-web-app-stack";
+import { PaymentsPlatformWebAppStack } from "../lib/payments-platform-web-app-stack";
+import { PaymentsPlatformWebAppLinkStack } from "../lib/payments-platform-web-app-link-stack";
 
 const env = {
   account: process.env.CDK_DEFAULT_ACCOUNT,
@@ -26,7 +24,7 @@ builder
   .then(() => {
     const app = new cdk.App();
 
-    const paymentsPlatformWebAppStack = new PaymentsPlatformWebAppStack(
+    const webAppStack = new PaymentsPlatformWebAppStack(
       app,
       "PaymentsPlatformWebAppStack",
       {
@@ -36,17 +34,19 @@ builder
       }
     );
 
-    new PaymentsPlatformWebAppLinkStack(
+    const domainStack = new PaymentsPlatformWebAppLinkStack(
       app,
       "PaymentsPlatformWebAppLinkStack",
       {
         env,
         stackName: app.node.tryGetContext("stack_name"),
         description: app.node.tryGetContext("stack_description"),
-        ssmDistributionId: paymentsPlatformWebAppStack.ssmDistributionId,
-        ssmDomainName: paymentsPlatformWebAppStack.ssmDomainName,
+        ssmDistributionId: webAppStack.ssmDistributionId,
+        ssmDomainName: webAppStack.ssmDomainName,
       }
     );
+
+    domainStack.addDependency(webAppStack);
   })
   .catch((e) => {
     console.log(e);
