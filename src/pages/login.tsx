@@ -7,6 +7,7 @@ import Page from "../components/page/Page";
 import { MailIcon, InformationCircleIcon } from "@heroicons/react/outline";
 
 const initialFormState = {
+  username: "",
   password: "",
   email: "",
   authCode: "",
@@ -17,8 +18,8 @@ const initialFormState = {
   alertIcon: MailIcon,
 };
 
-function Login() {
-  const [user, setUser] = React.useState();
+function Login(props) {
+  const [user, setUser]: any = React.useState();
   const [formState, setFormState] = React.useState(initialFormState);
   const { formType } = formState;
   const userEmail = React.useRef<HTMLInputElement | null>(null);
@@ -64,17 +65,8 @@ function Login() {
             setLoading(false);
           } else {
             setUser(res);
-            setFormState(() => ({
-              ...formState,
-              formType: "confirmSignIn",
-              alert: true,
-              alertMessage:
-                "A code has been sent to your phone number ending in " +
-                res.challengeParam.CODE_DELIVERY_DESTINATION,
-              alertIcon: InformationCircleIcon,
-              alertStatus: Alert.Status.PRIMARY,
-            }));
-            setLoading(false);
+            props.setContext(res);
+            Router.push("/authenticate");
           }
         })
         .catch((err: any) => {
@@ -94,13 +86,18 @@ function Login() {
     const userData = await Auth.confirmSignIn(user, userAuthCode.current.value)
       .then((res: any) => {
         setLoading(false);
+        setUser(res);
         return res;
       })
-      .catch(() => {
+      .catch((err: any) => {
+        setFormState(() => ({
+          ...formState,
+          alert: true,
+          alertMessage: err.message,
+          alertStatus: Alert.Status.CRITICAL,
+        }));
         setLoading(false);
       });
-
-    setUser(userData);
 
     if (userData) {
       Router.push("/");
@@ -124,6 +121,30 @@ function Login() {
 
       setUser(userData);
       setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
+    }
+  }
+
+  async function resendConfirmationCode() {
+    setLoading(true);
+    try {
+      await Auth.resendSignUp(user.username).then(() => {
+        setFormState(() => ({
+          ...formState,
+          alert: true,
+          alertMessage: "A code has been sent to your phone number again",
+          alertIcon: InformationCircleIcon,
+          alertStatus: Alert.Status.PRIMARY,
+        }));
+        setLoading(false);
+      });
+    } catch (err) {
+      setFormState(() => ({
+        ...formState,
+        alert: true,
+        alertMessage: err.message,
+        alertStatus: Alert.Status.CRITICAL,
+      }));
+      setLoading(false);
     }
   }
 
@@ -187,11 +208,12 @@ function Login() {
                       placeholder="Enter your code"
                       ref={userAuthCode}
                     />
-                    <Link href="/">
-                      <a href="#" className="text-gray-600 text-sm mb-16">
-                        Resend verification code
-                      </a>
-                    </Link>
+                    <span
+                      onClick={resendConfirmationCode}
+                      className="cursor-pointer text-gray-600 text-sm mb-16"
+                    >
+                      Resend verification code
+                    </span>
                     <Button size={Button.Size.LARGE} loading={loading}>
                       Sign in
                     </Button>

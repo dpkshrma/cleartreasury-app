@@ -17,6 +17,7 @@ import { useQuery } from "../helpers/hooks/useQuery";
 import "../../configureAmplify";
 import "../styles.css";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING) {
   require("../mocks");
@@ -34,6 +35,8 @@ const navigation = [
   { href: "/", icon: PlusCircleIcon, text: "Add ons" },
   { href: "/", icon: SupportIcon, text: "Help and Support" },
 ];
+
+const AppContext = React.createContext({});
 
 function MyApp({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
@@ -83,7 +86,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
 
       <React.Fragment>
-        {user && (
+        {pageProps.authenticated && (
           <div
             data-ui="Sidebar"
             className={`bg-teal-700 flex-col md:flex md:flex-shrink-0 w-64 pt-5 pb-4 ${
@@ -137,7 +140,7 @@ function MyApp({ Component, pageProps }) {
           data-ui="Page scroll container"
           className="flex flex-col w-0 flex-1 overflow-hidden"
         >
-          {user && (
+          {pageProps.authenticated && (
             <header className="relative z-10 flex-shrink-0 flex h-14 bg-theme-color-surface shadow">
               <button
                 type="button"
@@ -182,12 +185,18 @@ function MyApp({ Component, pageProps }) {
           )}
 
           <main className="flex-1 relative overflow-y-auto focus:outline-none">
-            <Component {...pageProps} />
+            <AppContext.Provider value={user}>
+              <Component {...pageProps} setContext={setUser} />
+            </AppContext.Provider>
           </main>
         </div>
       </React.Fragment>
     </div>
   );
+}
+
+export function useApp() {
+  return useContext(AppContext);
 }
 
 export default MyApp;
