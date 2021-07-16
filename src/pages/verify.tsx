@@ -2,6 +2,7 @@ import React from "react";
 import Router from "next/router";
 import { Auth, withSSRContext } from "aws-amplify";
 import { Button, Input, Alert } from "@clear-treasury/design-system";
+import { InformationCircleIcon } from "@heroicons/react/outline";
 import Page from "../components/page/Page";
 
 const initialFormState = {
@@ -15,7 +16,7 @@ const initialFormState = {
 };
 
 function Verify() {
-  const [user, setUser] = React.useState();
+  const [user, setUser] = React.useState(null);
   const [formState, setFormState] = React.useState(initialFormState);
   const [loading, setLoading] = React.useState(false);
 
@@ -119,8 +120,13 @@ function Verify() {
 
       setUser(userData);
       Router.push("/");
-    } catch (error) {
-      // TODO: handle errors
+    } catch (err) {
+      setFormState({
+        ...formState,
+        error: true,
+        errorMessage: err.message,
+      });
+
       setLoading(false);
     }
   }
@@ -162,12 +168,12 @@ function Verify() {
     <>
       <Input
         name="authCode"
-        label="Authentification code"
+        label="Authentication code"
         placeholder="Enter your code"
         ref={userAuthCode}
       />
 
-      <a href="#" onClick={resendCode} className="text-green-600 text-sm">
+      <a href="#" onClick={resendCode} className="text-green-600 text-sm mb-6">
         Resend code
       </a>
 
@@ -176,6 +182,12 @@ function Verify() {
       </Button>
     </>
   );
+
+  const title = {
+    verify: "Sign in to your account",
+    confirmSignIn: "Enter authentication code",
+    newPasswordRequired: "Set your password",
+  };
 
   return (
     <Page>
@@ -189,16 +201,12 @@ function Verify() {
 
           <div className="p-6 bg-white rounded-md flex justify-center flex-col shadow-md">
             <h1 className="block w-full text-center mb-6 text-gray-800 text-2xl">
-              {formType === "verify"
-                ? "Sign in to your account"
-                : "Set your password"}
+              {title[formType]}
             </h1>
 
             <form
               onSubmit={handleSubmit}
-              className={`flex justify-center flex-col ${
-                formState.error ? "space-y-6" : ""
-              }`}
+              className="flex justify-center flex-col space-y-6"
             >
               {formState.error && (
                 <Alert
@@ -207,14 +215,28 @@ function Verify() {
                 />
               )}
 
-              <Input
-                name="email"
-                type="email"
-                label="Email address"
-                placeholder="Enter your email"
-                disabled={formType == "newPasswordRequired"}
-                ref={userEmail}
-              />
+              {formType === "confirmSignIn" && (
+                <Alert
+                  text={`A code has been sent to your phone number ending in ${user?.challengeParam?.CODE_DELIVERY_DESTINATION.substr(
+                    -7
+                  )}`}
+                  status={Alert.Status.PRIMARY}
+                  icon={InformationCircleIcon}
+                />
+              )}
+
+              {formType !== "confirmSignIn" && (
+                <Input
+                  name="email"
+                  type="email"
+                  label="Email address"
+                  placeholder="Enter your email"
+                  disabled={
+                    formType === ("newPasswordRequired" || "confirmSignIn")
+                  }
+                  ref={userEmail}
+                />
+              )}
 
               {formType === "verify" && <VerifyForm />}
               {formType === "newPasswordRequired" && <SetPasswordForm />}
