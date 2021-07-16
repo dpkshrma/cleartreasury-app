@@ -7,6 +7,7 @@ module.exports = {
     "theme-color-background": tokens.colors.gray[100],
     "theme-color-surface": tokens.colors.white,
 
+    "theme-color-primary-background": tokens.colors.teal[100],
     "theme-color-error": tokens.colors.red[600],
     "theme-color-error-background": tokens.colors.red[100],
     "theme-color-positive": tokens.colors.green[600],
@@ -34,6 +35,6 @@ module.exports = {
     "theme-text-color-primary": tokens.colors.gray[800],
   },
   borderRadius: {
-    "theme-radius": "0.125rem",
+    "theme-radius": "0.25rem",
   },
 };

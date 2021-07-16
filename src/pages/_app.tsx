@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Auth, Hub } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import { Button } from "@clear-treasury/design-system";
 import {
   HomeIcon,
@@ -74,14 +74,6 @@ function MyApp({ Component, pageProps }) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     error: clientError,
   } = useQuery(GET_CLIENT, { id: 1 });
-
-  React.useEffect(() => {
-    if (user) {
-      Hub.listen("auth", checkUser);
-    } else {
-      router.push("login");
-    }
-  }, [user]);
 
   return (
     <div className="h-screen flex overflow-hidden bg-theme-color-background">
