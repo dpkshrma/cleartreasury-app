@@ -17,6 +17,7 @@ import {
   ChevronDownIcon,
   LogoutIcon,
   UserIcon,
+  SwitchHorizontalIcon,
 } from "@heroicons/react/outline";
 
 import "../../configureAmplify";
@@ -59,7 +60,9 @@ function MyApp({ Component, pageProps }) {
     }
   };
 
-  async function signOut() {
+  async function signOut(e) {
+    e.prevntDefault();
+
     try {
       await Auth.signOut().then(() => {
         router.push("login");
@@ -188,10 +191,25 @@ function MyApp({ Component, pageProps }) {
                   >
                     <a
                       href="#"
-                      // onClick={signOut}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setUserMenuOpen(false);
+                      }}
                       className="flex px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 justify-end"
                     >
                       Profile <UserIcon className="h-5 w-5 ml-2" />
+                    </a>
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setUserMenuOpen(false);
+                        setClient(null);
+                      }}
+                      className="flex px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 justify-end border-t border-gray-200"
+                    >
+                      Switch account{" "}
+                      <SwitchHorizontalIcon className="h-5 w-5 ml-2" />
                     </a>
                     <a
                       href="#"
