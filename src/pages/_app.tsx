@@ -11,6 +11,8 @@ import {
   SupportIcon,
   MenuIcon,
   ChevronDownIcon,
+  LogoutIcon,
+  UserIcon,
 } from "@heroicons/react/outline";
 import { GET_CLIENT } from "../graphql/clients/queries";
 import { useQuery } from "../helpers/hooks/useQuery";
@@ -33,7 +35,7 @@ const navigation = [
   { href: "/", icon: UserCircleIcon, text: "Beneficiaries" },
   { href: "/", icon: GlobeAltIcon, text: "My Transfers" },
   { href: "/", icon: PlusCircleIcon, text: "Add ons" },
-  { href: "/", icon: SupportIcon, text: "Help and Support" },
+  { href: "/help", icon: SupportIcon, text: "Help and Support" },
 ];
 
 const AppContext = React.createContext({});
@@ -89,7 +91,7 @@ function MyApp({ Component, pageProps }) {
         {pageProps.authenticated && (
           <div
             data-ui="Sidebar"
-            className={`bg-teal-700 flex-col md:flex md:flex-shrink-0 w-64 pt-5 pb-4 ${
+            className={`bg-teal-700 flex-wrap flex-col md:flex md:flex-shrink-0 w-64 pt-5 pb-4 ${
               sidebarOpen ? "flex" : "hidden"
             }`}
           >
@@ -97,7 +99,7 @@ function MyApp({ Component, pageProps }) {
               <Link href="/">
                 <a>
                   <img
-                    className="h-6 sm:h-8 w-full"
+                    className="w-full"
                     src="/clear_full_logo_light.svg"
                     alt="Clear Currency"
                   />
@@ -106,12 +108,9 @@ function MyApp({ Component, pageProps }) {
             </div>
 
             <div className="mt-5 flex-1 flex flex-col">
-              <Link href="/transfer">
-                <a>make a transfer</a>
-              </Link>
-
-              <Button>Button</Button>
-
+              <div className="px-3 flex-col flex">
+                <Button>Make a transfer</Button>
+              </div>
               <nav className="flex-1 space-y-1">
                 <ul>
                   {navigation.map((item, index) => (
@@ -120,7 +119,7 @@ function MyApp({ Component, pageProps }) {
                       className={index === 3 ? "border-t border-teal-400" : ""}
                     >
                       <Link href={item.href}>
-                        <a className="text-white hover:bg-teal-500 group flex items-center px-4 py-4">
+                        <a className="text-white border-teal-700 hover:bg-teal-500 hover:border-green-600 border-l-4 group flex items-center pl-2 pr-4 py-4 transition-colors duration-300">
                           <item.icon
                             className="mr-3 flex-shrink-0 h-6 w-6 text-white"
                             aria-hidden="true"
@@ -170,14 +169,25 @@ function MyApp({ Component, pageProps }) {
                   <div
                     className={`${
                       userMenuOpen ? "" : "hidden"
-                    } origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                    } origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-gray-100 focus:outline-none`}
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="user-menu-button"
                   >
-                    <Button onClick={signOut} size={Button.Size.LARGE}>
-                      SIGN OUT
-                    </Button>
+                    <a
+                      href="#"
+                      // onClick={signOut}
+                      className="flex px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 justify-end"
+                    >
+                      Profile <UserIcon className="h-5 w-5 ml-2" />
+                    </a>
+                    <a
+                      href="#"
+                      onClick={signOut}
+                      className="flex px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 justify-end border-t border-gray-200"
+                    >
+                      Sign out <LogoutIcon className="h-5 w-5 ml-2" />
+                    </a>
                   </div>
                 </div>
               </div>
