@@ -9,13 +9,13 @@ export const clientHandlers = [
       })
     );
   }),
-  graphql.query("getClients", (req, res, ctx) => {
-    return res(
-      ctx.data({
-        clients: clients,
-      })
-    );
-  }),
+  // graphql.query("getClients", (req, res, ctx) => {
+  //   return res(
+  //     ctx.data({
+  //       clients: clients,
+  //     })
+  //   );
+  // }),
   graphql.mutation("CreateClient", (req, res, ctx) => {
     const data = req.variables as {
       id: number;

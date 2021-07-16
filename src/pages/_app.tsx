@@ -2,7 +2,11 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { Auth } from "aws-amplify";
+import { useRouter } from "next/router";
 import { Button } from "@clear-treasury/design-system";
+import { GET_CLIENTS } from "../graphql/clients/queries";
+import { useQuery } from "../helpers/hooks/useQuery";
+import ChooserAccount from "../components/choose-account/ChooseAccount";
 import {
   HomeIcon,
   UserCircleIcon,
@@ -14,11 +18,9 @@ import {
   LogoutIcon,
   UserIcon,
 } from "@heroicons/react/outline";
-import { GET_CLIENT } from "../graphql/clients/queries";
-import { useQuery } from "../helpers/hooks/useQuery";
+
 import "../../configureAmplify";
 import "../styles.css";
-import { useRouter } from "next/router";
 import { useContext } from "react";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING) {
@@ -41,10 +43,12 @@ const navigation = [
 const AppContext = React.createContext({});
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState<User | null>(null);
-  const router = useRouter();
+  const [client, setClient] = React.useState(null);
 
   const checkUser = async () => {
     try {
@@ -73,12 +77,20 @@ function MyApp({ Component, pageProps }) {
 
   // TODO: remove redundant console logs and eslint suppressors later
   const {
-    data: client,
+    data,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     loading: clientLoading,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     error: clientError,
-  } = useQuery(GET_CLIENT, { id: 1 });
+  } = useQuery(GET_CLIENTS, {
+    cli_email: pageProps.user.email,
+  });
+
+  const clients = data?.getClients;
+
+  if (clients?.length > 1 && !client) {
+    return <ChooserAccount accounts={clients} onAccountSelect={setClient} />;
+  }
 
   return (
     <div className="h-screen flex overflow-hidden bg-theme-color-background">
@@ -157,11 +169,11 @@ function MyApp({ Component, pageProps }) {
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
                   >
                     <span className="rounded-full text-white font-bold bg-gray-500 p-1.5 mr-2">
-                      {client?.data?.name.split(" ")[0][0].toUpperCase()}{" "}
-                      {client?.data?.name.split(" ")[1][0].toUpperCase()}
+                      {client?.cli_name.split(" ")[0][0].toUpperCase()}{" "}
+                      {client?.cli_name.split(" ")[1][0].toUpperCase()}
                     </span>
 
-                    {client?.name}
+                    {client?.cli_name}
 
                     <ChevronDownIcon className="h-5 w-5 ml-2" />
                   </button>

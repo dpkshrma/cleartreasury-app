@@ -12,12 +12,11 @@ export const GET_CLIENT = gql`
 `;
 
 export const GET_CLIENTS = gql`
-  query getClients {
-    clients {
-      id
-      reference
-      name
-      email
+  query getClients($cli_email: String!) {
+    getClients(cli_email: $cli_email) {
+      cli_id
+      cli_name
+      cli_reference
     }
   }
 `;

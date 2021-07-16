@@ -18,7 +18,11 @@ export const config = {
     mandatorySignIn: true,
   },
   API: {
-    graphql_endpoint: "https://backend.dev.com/",
+    aws_appsync_graphqlEndpoint:
+      "https://ojljqi4kdjb3ve2qk5ghmw3veu.appsync-api.eu-west-2.amazonaws.com/graphql",
+    aws_appsync_region: "eu-west-2",
+    aws_appsync_authenticationType: "API_KEY",
+    aws_appsync_apiKey: "da2-yidxxrxde5aq5krfse5b2oqspm",
   },
 };
 
