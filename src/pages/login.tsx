@@ -4,15 +4,17 @@ import Router from "next/router";
 import { Auth, withSSRContext } from "aws-amplify";
 import { Button, Input, Alert } from "@clear-treasury/design-system";
 import Page from "../components/page/Page";
-import { MailIcon } from "@heroicons/react/outline";
+import { MailIcon, InformationCircleIcon } from "@heroicons/react/outline";
 
 const initialFormState = {
   password: "",
   email: "",
   authCode: "",
   formType: "signIn",
-  error: false,
-  errorMessage: "",
+  alert: false,
+  alertMessage: "",
+  alertStatus: null,
+  alertIcon: MailIcon,
 };
 
 function Login() {
@@ -44,6 +46,12 @@ function Login() {
       userEmail.current !== null &&
       userPassword.current.value.match(passwordRegex)
     ) {
+      if (formState.alertStatus) {
+        setFormState(() => ({
+          ...formState,
+          alert: false,
+        }));
+      }
       setLoading(true);
       await Auth.signIn(userEmail.current.value, userPassword.current.value)
         .then((res: any) => {
@@ -56,15 +64,25 @@ function Login() {
             setLoading(false);
           } else {
             setUser(res);
-            setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
+            setFormState(() => ({
+              ...formState,
+              formType: "confirmSignIn",
+              alert: true,
+              alertMessage:
+                "A code has been sent to your phone number ending in " +
+                res.challengeParam.CODE_DELIVERY_DESTINATION,
+              alertIcon: InformationCircleIcon,
+              alertStatus: Alert.Status.PRIMARY,
+            }));
             setLoading(false);
           }
         })
         .catch((err: any) => {
           setFormState(() => ({
             ...formState,
-            error: true,
-            errorMessage: err.message,
+            alert: true,
+            alertMessage: err.message,
+            alertStatus: Alert.Status.CRITICAL,
           }));
           setLoading(false);
         });
@@ -118,76 +136,82 @@ function Login() {
             src="/clear_full_logo_light.svg"
             alt="Clear Currency"
           />
-          <div className="p-6 bg-white rounded-md flex justify-center flex-col shadow-md">
-            <h1 className="block w-full text-center mb-6 text-gray-800 text-2xl">
+          <div className="p-6 space-y-6 bg-white rounded-md flex justify-center flex-col shadow-md">
+            <h1 className="block w-full text-center text-gray-800 text-2xl">
               Sign in to your account
             </h1>
             <form
               onSubmit={handleSubmit}
-              className="flex justify-center flex-col"
+              className="flex justify-center flex-col space-y-6"
             >
-              {formState.error && (
-                <Alert icon={MailIcon} text={formState.errorMessage} />
+              {formState.alert && (
+                <Alert
+                  icon={formState.alertIcon}
+                  status={formState.alertStatus}
+                  text={formState.alertMessage}
+                />
               )}
-              <Input
-                name="email"
-                type="email"
-                label="Email address"
-                placeholder="Enter your email"
-                ref={userEmail}
-              />
-              {formType === "signIn" && (
-                <React.Fragment>
-                  <Input
-                    name="password"
-                    type="password"
-                    label="Password"
-                    placeholder="Enter your password"
-                    ref={userPassword}
-                  />
-                  <Link href="/resettingpassword">
-                    <a className="text-gray-600 text-sm mb-16 cursor-pointer">
-                      Forgot your password?
-                    </a>
-                  </Link>
-                  <Button size={Button.Size.LARGE} loading={loading}>
-                    Sign in
-                  </Button>
-                </React.Fragment>
-              )}
-              {formType === "confirmSignIn" && (
-                <React.Fragment>
-                  <Input
-                    name="authCode"
-                    type="text"
-                    label="Enter verification code"
-                    placeholder="Enter your code"
-                    ref={userAuthCode}
-                  />
-                  <Link href="/">
-                    <a href="#" className="text-gray-600 text-sm mb-16">
-                      Resend verification code
-                    </a>
-                  </Link>
-                  <Button size={Button.Size.LARGE} loading={loading}>
-                    Sign in
-                  </Button>
-                </React.Fragment>
-              )}
-              {formType === "newPasswordRequired" && (
-                <React.Fragment>
-                  <Input
-                    name="password"
-                    type="password"
-                    label="Change your password"
-                    placeholder="Enter your new password"
-                    ref={userNewPassword}
-                  />
-                  <Button size={Button.Size.LARGE} loading={loading}>
-                    Set new password
-                  </Button>
-                </React.Fragment>
-              )}
+              <div className="flex justify-center flex-col">
+                {formType === "signIn" && (
+                  <React.Fragment>
+                    <Input
+                      name="email"
+                      type="email"
+                      label="Email address"
+                      placeholder="Enter your email"
+                      ref={userEmail}
+                    />
+                    <Input
+                      name="password"
+                      type="password"
+                      label="Password"
+                      placeholder="Enter your password"
+                      ref={userPassword}
+                    />
+                    <Link href="/resettingpassword">
+                      <a className="text-gray-600 text-sm mb-16 cursor-pointer">
+                        Forgot your password?
+                      </a>
+                    </Link>
+                    <Button size={Button.Size.LARGE} loading={loading}>
+                      Sign in
+                    </Button>
+                  </React.Fragment>
+                )}
+                {formType === "confirmSignIn" && (
+                  <React.Fragment>
+                    <Input
+                      name="authCode"
+                      type="text"
+                      label="Enter verification code"
+                      placeholder="Enter your code"
+                      ref={userAuthCode}
+                    />
+                    <Link href="/">
+                      <a href="#" className="text-gray-600 text-sm mb-16">
+                        Resend verification code
+                      </a>
+                    </Link>
+                    <Button size={Button.Size.LARGE} loading={loading}>
+                      Sign in
+                    </Button>
+                  </React.Fragment>
+                )}
+                {formType === "newPasswordRequired" && (
+                  <React.Fragment>
+                    <Input
+                      name="password"
+                      type="password"
+                      label="Change your password"
+                      placeholder="Enter your new password"
+                      ref={userNewPassword}
+                    />
+                    <Button size={Button.Size.LARGE} loading={loading}>
+                      Set new password
+                    </Button>
+                  </React.Fragment>
+                )}
+              </div>
             </form>
           </div>
         </div>
