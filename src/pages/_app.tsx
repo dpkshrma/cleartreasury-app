@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Auth } from "aws-amplify";
 import { useRouter } from "next/router";
 import { Button } from "@clear-treasury/design-system";
-import { GET_CLIENTS } from "../graphql/clients/queries";
 import { useQuery } from "../helpers/hooks/useQuery";
+import { GET_CLIENTS } from "../graphql/clients/queries";
 import ChooserAccount from "../components/choose-account/ChooseAccount";
 import {
   HomeIcon,
@@ -22,7 +22,6 @@ import {
 
 import "../../configureAmplify";
 import "../styles.css";
-import { useContext } from "react";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING) {
   require("../mocks");
@@ -236,7 +235,7 @@ function MyApp({ Component, pageProps }) {
 }
 
 export function useApp() {
-  return useContext(AppContext);
+  return React.useContext(AppContext);
 }
 
 export default MyApp;
