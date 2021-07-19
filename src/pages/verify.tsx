@@ -14,7 +14,7 @@ const initialFormState = {
   errorMessage: "",
 };
 
-function Verify() {
+function Verify(props) {
   const [user, setUser] = React.useState();
   const [formState, setFormState] = React.useState(initialFormState);
   const [loading, setLoading] = React.useState(false);
@@ -24,15 +24,12 @@ function Verify() {
   const userEmail = React.useRef<HTMLInputElement | null>(null);
   const verificationCode = React.useRef<HTMLInputElement | null>(null);
   const newPassword = React.useRef<HTMLInputElement | null>(null);
-  const userAuthCode = React.useRef<HTMLInputElement | null>(null);
 
   function handleSubmit(e: any) {
     e.preventDefault();
 
     if (formState.formType == "verify") {
       signIn();
-    } else if (formState.formType == "confirmSignIn") {
-      confirmSignIn();
     } else if (formState.formType == "newPasswordRequired") {
       newPasswordRequired();
     }
@@ -57,8 +54,8 @@ function Verify() {
           setLoading(false);
         } else {
           setUser(res);
-          setFormState(() => ({ ...formState, formType: "confirmSignIn" }));
-          setLoading(false);
+          props.setContext(res);
+          Router.push("/authenticate");
         }
       } catch (err) {
         if (err.message.includes("Incorrect username or password")) {
@@ -87,11 +84,8 @@ function Verify() {
       );
 
       setUser(userData);
-      setFormState(() => ({
-        ...formState,
-        error: false,
-        formType: "confirmSignIn",
-      }));
+      props.setContext(userData);
+      Router.push("/authenticate");
       setLoading(false);
     } catch (err) {
       setFormState({
@@ -100,27 +94,6 @@ function Verify() {
         errorMessage: err.message,
       });
 
-      setLoading(false);
-    }
-  }
-
-  const resendCode = (e) => {
-    e.preventDefault();
-  };
-
-  async function confirmSignIn() {
-    setLoading(true);
-
-    try {
-      const userData = await Auth.confirmSignIn(
-        user,
-        userAuthCode.current.value
-      );
-
-      setUser(userData);
-      Router.push("/");
-    } catch (error) {
-      // TODO: handle errors
       setLoading(false);
     }
   }
@@ -154,25 +127,6 @@ function Verify() {
 
       <Button size={Button.Size.LARGE} loading={loading}>
         Set password
-      </Button>
-    </>
-  );
-
-  const AuthenticateForm = () => (
-    <>
-      <Input
-        name="authCode"
-        label="Authentification code"
-        placeholder="Enter your code"
-        ref={userAuthCode}
-      />
-
-      <a href="#" onClick={resendCode} className="text-green-600 text-sm">
-        Resend code
-      </a>
-
-      <Button size={Button.Size.LARGE} loading={loading}>
-        Sign in
       </Button>
     </>
   );
@@ -218,7 +172,6 @@ function Verify() {
 
               {formType === "verify" && <VerifyForm />}
               {formType === "newPasswordRequired" && <SetPasswordForm />}
-              {formType === "confirmSignIn" && <AuthenticateForm />}
             </form>
           </div>
         </div>
