@@ -25,15 +25,23 @@ function Authenticate() {
   const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
-    setFormState(() => ({
-      ...formState,
-      alert: true,
-      alertMessage:
-        "A code has been sent to your phone number ending in " +
-        authContext.challengeParam.CODE_DELIVERY_DESTINATION,
-      alertStatus: Alert.Status.POSITIVE,
-    }));
+    if (authContext == null) {
+      Router.push("/login");
+    } else {
+      setFormState(() => ({
+        ...formState,
+        alert: true,
+        alertMessage:
+          "A code has been sent to your phone number ending in " +
+          authContext.challengeParam.CODE_DELIVERY_DESTINATION,
+        alertStatus: Alert.Status.POSITIVE,
+      }));
+    }
   }, []);
+
+  useEffect(() => {
+    setUser(authContext);
+  }, [user]);
 
   function handleSubmit(e: any) {
     e.preventDefault();
@@ -42,7 +50,11 @@ function Authenticate() {
 
   async function confirmSignIn() {
     setLoading(true);
-    const userData = await Auth.confirmSignIn(user, userAuthCode.current.value)
+    const userData = await Auth.confirmSignIn(
+      user,
+      userAuthCode.current.value,
+      "SMS_MFA"
+    )
       .then((res: any) => {
         setLoading(false);
         setUser(res);
