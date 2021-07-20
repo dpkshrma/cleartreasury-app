@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { Button } from "@clear-treasury/design-system";
 import { useQuery } from "../hooks/useQuery";
 import { GET_CLIENT } from "../graphql/clients/queries";
+
 import {
   HomeIcon,
   UserCircleIcon,

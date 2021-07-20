@@ -150,9 +150,7 @@ function Verify(props) {
 
             <form
               onSubmit={handleSubmit}
-              className={`flex justify-center flex-col ${
-                formState.error ? "space-y-6" : ""
-              }`}
+              className="flex justify-center flex-col space-y-6"
             >
               {formState.error && (
                 <Alert
