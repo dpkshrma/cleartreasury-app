@@ -157,10 +157,12 @@ function Login(props) {
             src="/clear_full_logo_light.svg"
             alt="Clear Currency"
           />
+
           <div className="p-6 space-y-6 bg-white rounded-md flex justify-center flex-col shadow-md">
             <h1 className="block w-full text-center text-gray-800 text-2xl">
               Sign in to your account
             </h1>
+
             <form
               onSubmit={handleSubmit}
               className="flex justify-center flex-col space-y-6"
@@ -172,68 +174,69 @@ function Login(props) {
                   text={formState.alertMessage}
                 />
               )}
-              <div className="flex justify-center flex-col">
-                {formType === "signIn" && (
-                  <React.Fragment>
-                    <Input
-                      name="email"
-                      type="email"
-                      label="Email address"
-                      placeholder="Enter your email"
-                      ref={userEmail}
-                    />
-                    <Input
-                      name="password"
-                      type="password"
-                      label="Password"
-                      placeholder="Enter your password"
-                      ref={userPassword}
-                    />
-                    <Link href="/resettingpassword">
-                      <a className="text-gray-600 text-sm mb-16 cursor-pointer">
-                        Forgot your password?
-                      </a>
-                    </Link>
-                    <Button size={Button.Size.LARGE} loading={loading}>
-                      Sign in
-                    </Button>
-                  </React.Fragment>
-                )}
-                {formType === "confirmSignIn" && (
-                  <React.Fragment>
-                    <Input
-                      name="authCode"
-                      type="text"
-                      label="Enter verification code"
-                      placeholder="Enter your code"
-                      ref={userAuthCode}
-                    />
-                    <span
-                      onClick={resendConfirmationCode}
-                      className="cursor-pointer text-gray-600 text-sm mb-16"
-                    >
-                      Resend verification code
-                    </span>
-                    <Button size={Button.Size.LARGE} loading={loading}>
-                      Sign in
-                    </Button>
-                  </React.Fragment>
-                )}
-                {formType === "newPasswordRequired" && (
-                  <React.Fragment>
-                    <Input
-                      name="password"
-                      type="password"
-                      label="Change your password"
-                      placeholder="Enter your new password"
-                      ref={userNewPassword}
-                    />
-                    <Button size={Button.Size.LARGE} loading={loading}>
-                      Set new password
-                    </Button>
-                  </React.Fragment>
-                )}
-              </div>
+
+              {formType === "signIn" && (
+                <React.Fragment>
+                  <Input
+                    name="email"
+                    type="email"
+                    label="Email address"
+                    placeholder="Enter your email"
+                    ref={userEmail}
+                  />
+                  <Input
+                    name="password"
+                    type="password"
+                    label="Password"
+                    placeholder="Enter your password"
+                    ref={userPassword}
+                  />
+                  <Link href="/resettingpassword">
+                    <a className="text-gray-600 text-sm mb-16 cursor-pointer">
+                      Forgot your password?
+                    </a>
+                  </Link>
+                  <Button size={Button.Size.LARGE} loading={loading}>
+                    Sign in
+                  </Button>
+                </React.Fragment>
+              )}
+
+              {formType === "confirmSignIn" && (
+                <React.Fragment>
+                  <Input
+                    name="authCode"
+                    type="text"
+                    label="Enter verification code"
+                    placeholder="Enter your code"
+                    ref={userAuthCode}
+                  />
+                  <span
+                    onClick={resendConfirmationCode}
+                    className="cursor-pointer text-gray-600 text-sm mb-16"
+                  >
+                    Resend verification code
+                  </span>
+                  <Button size={Button.Size.LARGE} loading={loading}>
+                    Sign in
+                  </Button>
+                </React.Fragment>
+              )}
+
+              {formType === "newPasswordRequired" && (
+                <React.Fragment>
+                  <Input
+                    name="password"
+                    type="password"
+                    label="Change your password"
+                    placeholder="Enter your new password"
+                    ref={userNewPassword}
+                  />
+                  <Button size={Button.Size.LARGE} loading={loading}>
+                    Set new password
+                  </Button>
+                </React.Fragment>
+              )}
             </form>
           </div>
         </div>
