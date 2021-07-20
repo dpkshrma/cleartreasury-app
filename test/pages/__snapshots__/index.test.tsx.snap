@@ -15,30 +15,6 @@ exports[`Dashboard page matches snapshot 1`] = `
     >
       Where would you like to start?
     </p>
-    <button
-      class="inline-flex items-center justify-center
-    border border-transparent
-    ring-theme-button-primary
-    text-center leading-snug
-    rounded-theme-radius
-    focus:outline-none focus:ring-2 focus:ring-offset-2
-    transition-all duration-300
-    hover:shadow-md hover:cursor-pointer bg-theme-button-primary text-theme-color-on-primary hover:bg-theme-button-primary-hover py-2 px-4"
-    >
-      Button
-    </button>
-    <button
-      class="inline-flex items-center justify-center
-    border border-transparent
-    ring-theme-button-primary
-    text-center leading-snug
-    rounded-theme-radius
-    focus:outline-none focus:ring-2 focus:ring-offset-2
-    transition-all duration-300
-    hover:shadow-md hover:cursor-pointer border-theme-button-primary text-theme-color-on-background py-2 px-4"
-    >
-      Button
-    </button>
   </div>
 </DocumentFragment>
 `;

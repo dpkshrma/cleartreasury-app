@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks";
 import Amplify from "aws-amplify";
 import { setupServer } from "msw/node";
-import { useQuery } from "../../../src/helpers/hooks/useQuery";
+import { useQuery } from "../../../src/hooks/useQuery";
 import { clientHandlers } from "../../../src/mocks/handlers/clientHandlers";
 import { CREATE_CLIENT } from "../../../src/graphql/clients/mutations";
 

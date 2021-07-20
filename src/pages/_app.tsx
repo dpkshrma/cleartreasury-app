@@ -2,7 +2,10 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { Auth } from "aws-amplify";
+import { useRouter } from "next/router";
 import { Button } from "@clear-treasury/design-system";
+import { useQuery } from "../hooks/useQuery";
+import { GET_CLIENT } from "../graphql/clients/queries";
 import {
   HomeIcon,
   UserCircleIcon,
@@ -14,12 +17,9 @@ import {
   LogoutIcon,
   UserIcon,
 } from "@heroicons/react/outline";
-import { GET_CLIENT } from "../graphql/clients/queries";
-import { useQuery } from "../helpers/hooks/useQuery";
+
 import "../../configureAmplify";
 import "../styles.css";
-import { useRouter } from "next/router";
-import { useContext } from "react";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING) {
   require("../mocks");
@@ -111,6 +111,7 @@ function MyApp({ Component, pageProps }) {
               <div className="px-3 flex-col flex">
                 <Button>Make a transfer</Button>
               </div>
+
               <nav className="flex-1 space-y-1">
                 <ul>
                   {navigation.map((item, index) => (
@@ -206,7 +207,7 @@ function MyApp({ Component, pageProps }) {
 }
 
 export function useApp() {
-  return useContext(AppContext);
+  return React.useContext(AppContext);
 }
 
 export default MyApp;
