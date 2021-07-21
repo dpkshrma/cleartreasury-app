@@ -3,3 +3,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.circle {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: stroke 20s linear forwards;
+}
+
+@keyframes stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
