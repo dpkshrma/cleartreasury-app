@@ -13,7 +13,9 @@
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "format": "prettier --write .",
     "type-check": "tsc --pretty --noEmit",
-    "test-all": "npm run lint && npm run type-check && npm test"
+    "test-all": "npm run lint && npm run type-check && npm test",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
@@ -36,6 +38,12 @@
     "react-dom": "17.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@storybook/addon-actions": "^6.3.4",
+    "@storybook/addon-essentials": "^6.3.4",
+    "@storybook/addon-links": "^6.3.4",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/react": "^6.3.4",
     "@tailwindcss/forms": "^0.3.3",
     "@testing-library/jest-dom": "^5.13.0",
     "@testing-library/react": "11.2.7",
@@ -47,6 +55,7 @@
     "@typescript-eslint/parser": "4.26.1",
     "autoprefixer": "^10.2.6",
     "babel-jest": "27.0.2",
+    "babel-loader": "^8.2.2",
     "eslint": "7.28.0",
     "eslint-config-next": "^11.0.1",
     "eslint-config-prettier": "8.3.0",
