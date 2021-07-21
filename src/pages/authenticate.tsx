@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Router from "next/router";
-import { Auth, withSSRContext } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import { Button, Input, Alert } from "@clear-treasury/design-system";
 import Page from "../components/page/Page";
 import { MailIcon, InformationCircleIcon } from "@heroicons/react/outline";
@@ -151,26 +151,33 @@ function Authenticate() {
   );
 }
 
-export async function getServerSideProps({ req }) {
-  const { Auth } = withSSRContext({ req });
+// TODO: Get redireccts working according to comments below
+// export async function getServerSideProps({ req }) {
+//   const { Auth } = withSSRContext({ req });
 
-  try {
-    await Auth.currentAuthenticatedUser();
+//   try {
+//     // If authenticated, redirect to dashboard
+//     await Auth.currentAuthenticatedUser();
 
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  } catch (err) {
-    return {
-      props: {
-        authenticated: false,
-        user: null,
-      },
-    };
-  }
-}
+//     return {
+//       redirect: {
+//         destination: "/",
+//         permanent: false,
+//       },
+//     };
+//   } catch (err) {
+//     try {
+//       // If signIn complete but not confirmSignIn, show this MFA page
+//     } catch (error) {
+//       // If not authenticated, redirect to login
+//       return {
+//         redirect: {
+//           destination: "/login",
+//           permanent: false,
+//         },
+//       };
+//     }
+//   }
+// }
 
 export default Authenticate;
