@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { Auth } from "aws-amplify";
-import { useRouter } from "next/router";
+import Router from "next/router";
 import { Button } from "@clear-treasury/design-system";
 import { useQuery } from "../hooks/useQuery";
 import { GET_CLIENT } from "../graphql/clients/queries";
@@ -45,7 +45,6 @@ function MyApp({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState<User | null>(null);
-  const router = useRouter();
 
   const checkUser = async () => {
     try {
@@ -56,14 +55,16 @@ function MyApp({ Component, pageProps }) {
     }
   };
 
-  async function signOut() {
+  async function signOut(event) {
+    event.preventDefault();
+
     try {
-      await Auth.signOut().then(() => {
-        router.push("login");
-        setUser(null);
-      });
+      await Auth.signOut();
+      Router.push("login");
+      setUser(null);
     } catch (error) {
-      router.push("login");
+      // TODO: Handle error
+      Router.push("login");
       setUser(null);
     }
   }
@@ -72,14 +73,7 @@ function MyApp({ Component, pageProps }) {
     checkUser();
   }, [pageProps.authenticated]);
 
-  // TODO: remove redundant console logs and eslint suppressors later
-  const {
-    data: client,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    loading: clientLoading,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    error: clientError,
-  } = useQuery(GET_CLIENT, { id: 1 });
+  const { data: client } = useQuery(GET_CLIENT, { id: 1 });
 
   return (
     <div className="h-screen flex overflow-hidden bg-theme-color-background">

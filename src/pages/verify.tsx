@@ -164,7 +164,7 @@ function Verify(props) {
                 type="email"
                 label="Email address"
                 placeholder="Enter your email"
-                disabled={formType == "newPasswordRequired"}
+                disabled={formType === "newPasswordRequired"}
                 ref={userEmail}
               />
 
