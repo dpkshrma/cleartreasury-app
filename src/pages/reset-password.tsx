@@ -12,7 +12,7 @@ const initialFormState = {
   formType: "resetPassword",
 };
 
-function ResettingPassword() {
+function ResetPassword() {
   const [formState, setFormState] = React.useState(initialFormState);
   const { formType } = formState;
   const userEmail = React.useRef<HTMLInputElement | null>(null);
@@ -95,4 +95,4 @@ function ResettingPassword() {
   );
 }
 
-export default ResettingPassword;
+export default ResetPassword;
