@@ -4,72 +4,107 @@ import { Auth, withSSRContext } from "aws-amplify";
 import { Button, Input, Alert } from "@clear-treasury/design-system";
 import Page from "../components/page/Page";
 
-const initialFormState = {
-  email: "",
-  verificationCode: "",
-  password: "",
-  authCode: "",
-  formType: "verify",
-  error: false,
-  errorMessage: "",
+type Error = {
+  message: string;
 };
+
+type Errors = {
+  alert?: Error;
+  email?: Error;
+  password?: Error;
+  verificationCode?: Error;
+};
+
+interface FormState {
+  formType: "verify" | "newPasswordRequired";
+  errors: Errors;
+}
 
 function Verify(props) {
   const [user, setUser] = React.useState();
-  const [formState, setFormState] = React.useState(initialFormState);
   const [loading, setLoading] = React.useState(false);
-
-  const { formType } = formState;
+  const [formState, setFormState] = React.useState<FormState>({
+    formType: "verify",
+    errors: {},
+  });
 
   const userEmail = React.useRef<HTMLInputElement | null>(null);
   const verificationCode = React.useRef<HTMLInputElement | null>(null);
   const newPassword = React.useRef<HTMLInputElement | null>(null);
 
-  function handleSubmit(e: any) {
-    e.preventDefault();
+  function handleSubmit(event: React.SyntheticEvent) {
+    event.preventDefault();
 
-    if (formState.formType == "verify") {
+    const isValid = validateForm();
+
+    if (!isValid) return false;
+
+    if (formState.formType === "verify") {
       signIn();
-    } else if (formState.formType == "newPasswordRequired") {
+    } else if (formState.formType === "newPasswordRequired") {
       newPasswordRequired();
     }
   }
 
+  function validateForm() {
+    const errors: Errors = {};
+
+    if (!userEmail?.current?.value) {
+      errors.email = { message: "You must enter an email" };
+    }
+
+    if (formState.formType === "verify" && !verificationCode?.current?.value) {
+      errors.verificationCode = {
+        message: "You must enter a verification code",
+      };
+    }
+
+    if (
+      formState.formType === "newPasswordRequired" &&
+      !newPassword?.current?.value
+    ) {
+      errors.password = { message: "You must enter a password" };
+    }
+
+    if (Object.keys(errors).length) {
+      setFormState({ ...formState, errors });
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   async function signIn() {
-    if (userEmail.current !== null && verificationCode.current) {
-      setLoading(true);
-      try {
-        const res = await Auth.signIn(
-          userEmail.current.value,
-          verificationCode.current.value
-        );
+    setLoading(true);
 
-        if (res.challengeName == "NEW_PASSWORD_REQUIRED") {
-          setFormState(() => ({
-            ...formState,
-            error: false,
-            formType: "newPasswordRequired",
-          }));
-          setUser(res);
-          setLoading(false);
-        } else {
-          setUser(res);
-          props.setContext(res);
-          Router.push("/authenticate");
-        }
-      } catch (err) {
-        if (err.message.includes("Incorrect username or password")) {
-          err.message = "Invalid verification code";
-        }
+    try {
+      const authData = await Auth.signIn(
+        userEmail.current.value,
+        verificationCode.current.value
+      );
 
-        setFormState(() => ({
+      setUser(authData);
+
+      if (authData.challengeName == "NEW_PASSWORD_REQUIRED") {
+        setFormState({
           ...formState,
-          error: true,
-          errorMessage: err.message,
-        }));
-
-        setLoading(false);
+          formType: "newPasswordRequired",
+        });
+      } else {
+        props.setContext(authData);
+        Router.push("/authenticate");
       }
+    } catch (error) {
+      if (error.message.includes("Incorrect username or password")) {
+        error.message = "Invalid verification code";
+      }
+
+      setFormState({
+        ...formState,
+        errors: { alert: { message: error.message } },
+      });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -86,14 +121,19 @@ function Verify(props) {
       setUser(userData);
       props.setContext(userData);
       Router.push("/authenticate");
-      setLoading(false);
-    } catch (err) {
+    } catch (error) {
       setFormState({
         ...formState,
-        error: true,
-        errorMessage: err.message,
+        errors: {
+          alert: {
+            message: error.message.replace(
+              "Password does not conform to policy: ",
+              ""
+            ),
+          },
+        },
       });
-
+    } finally {
       setLoading(false);
     }
   }
@@ -106,6 +146,7 @@ function Verify(props) {
         label="Verification code"
         placeholder="Enter your code"
         ref={verificationCode}
+        errors={formState.errors}
       />
 
       <Button size={Button.Size.LARGE} loading={loading}>
@@ -123,6 +164,7 @@ function Verify(props) {
         placeholder="Enter your new password"
         hint="Passwords should be 8 characters or more and contain at least one number and one special character"
         ref={newPassword}
+        errors={formState.errors}
       />
 
       <Button size={Button.Size.LARGE} loading={loading}>
@@ -143,7 +185,7 @@ function Verify(props) {
 
           <div className="p-6 bg-white rounded-md flex justify-center flex-col shadow-md">
             <h1 className="block w-full text-center mb-6 text-gray-800 text-2xl">
-              {formType === "verify"
+              {formState.formType === "verify"
                 ? "Sign in to your account"
                 : "Set your password"}
             </h1>
@@ -152,9 +194,9 @@ function Verify(props) {
               onSubmit={handleSubmit}
               className="flex justify-center flex-col space-y-6"
             >
-              {formState.error && (
+              {formState.errors.alert && (
                 <Alert
-                  text={formState.errorMessage}
+                  text={formState.errors.alert.message}
                   status={Alert.Status.CRITICAL}
                 />
               )}
@@ -164,12 +206,15 @@ function Verify(props) {
                 type="email"
                 label="Email address"
                 placeholder="Enter your email"
-                disabled={formType === "newPasswordRequired"}
+                disabled={formState.formType === "newPasswordRequired"}
                 ref={userEmail}
+                errors={formState.errors}
               />
 
-              {formType === "verify" && <VerifyForm />}
-              {formType === "newPasswordRequired" && <SetPasswordForm />}
+              {formState.formType === "verify" && <VerifyForm />}
+              {formState.formType === "newPasswordRequired" && (
+                <SetPasswordForm />
+              )}
             </form>
           </div>
         </div>
