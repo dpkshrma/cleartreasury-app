@@ -3,41 +3,34 @@ import Router from "next/router";
 import { Auth } from "aws-amplify";
 import { Button, Input, Alert } from "@clear-treasury/design-system";
 import Page from "../components/page/Page";
-import { MailIcon, InformationCircleIcon } from "@heroicons/react/outline";
 import { useApp } from "./_app";
 
-const initialFormState = {
-  username: "",
-  password: "",
-  email: "",
-  authCode: "",
-  alert: false,
-  alertMessage: "",
-  alertStatus: null,
-  alertIcon: MailIcon,
+type Values<T> = T[keyof T];
+
+type FormState = {
+  authCode: string;
+  alert: boolean;
+  alertMessage: string;
+  alertStatus: Values<typeof Alert.Status>;
 };
 
 function Authenticate() {
   const authContext: any = useApp();
-  const [user, setUser]: any = React.useState();
-  const [formState, setFormState] = React.useState(initialFormState);
-  const userAuthCode = React.useRef<HTMLInputElement | null>(null);
-  const [loading, setLoading] = React.useState(false);
 
-  useEffect(() => {
-    if (authContext == null) {
-      Router.push("/login");
-    } else {
-      setFormState(() => ({
-        ...formState,
-        alert: true,
-        alertMessage:
-          "A code has been sent to your phone number ending in " +
-          authContext?.challengeParam.CODE_DELIVERY_DESTINATION,
-        alertStatus: Alert.Status.POSITIVE,
-      }));
-    }
-  }, []);
+  const phoneNumber =
+    authContext?.challengeParam?.CODE_DELIVERY_DESTINATION || "";
+
+  const [user, setUser]: any = React.useState();
+  const [loading, setLoading] = React.useState(false);
+  const [formState, setFormState] = React.useState<FormState>({
+    authCode: "",
+    alert: true,
+    alertMessage:
+      "A code has been sent to your phone number ending in " + phoneNumber,
+    alertStatus: Alert.Status.POSITIVE,
+  });
+
+  const userAuthCode = React.useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     setUser(authContext);
@@ -61,12 +54,13 @@ function Authenticate() {
         return res;
       })
       .catch((err: any) => {
-        setFormState(() => ({
+        setFormState({
           ...formState,
           alert: true,
           alertMessage: err.message,
           alertStatus: Alert.Status.CRITICAL,
-        }));
+        });
+
         setLoading(false);
       });
 
@@ -79,22 +73,21 @@ function Authenticate() {
     setLoading(true);
     try {
       await Auth.resendSignUp(user.username).then(() => {
-        setFormState(() => ({
+        setFormState({
           ...formState,
           alert: true,
           alertMessage: "A code has been sent to your phone number again",
-          alertIcon: InformationCircleIcon,
           alertStatus: Alert.Status.PRIMARY,
-        }));
+        });
         setLoading(false);
       });
     } catch (err) {
-      setFormState(() => ({
+      setFormState({
         ...formState,
         alert: true,
         alertMessage: err.message,
         alertStatus: Alert.Status.CRITICAL,
-      }));
+      });
       setLoading(false);
     }
   }
@@ -117,7 +110,6 @@ function Authenticate() {
           >
             {formState.alert && (
               <Alert
-                icon={formState.alertIcon}
                 status={formState.alertStatus}
                 text={formState.alertMessage}
               />

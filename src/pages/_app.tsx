@@ -91,7 +91,7 @@ function App({ Component, pageProps, router }) {
   }
 
   // TODO: Sort out a proper loading screen
-  if (clientsLoading) {
+  if (pageProps.authenticated && clientsLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Page>

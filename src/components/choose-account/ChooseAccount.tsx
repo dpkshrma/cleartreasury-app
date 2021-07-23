@@ -12,7 +12,7 @@ const ChooseAccount = ({ accounts, onAccountSelect }) => {
 
   const accountTypes = {
     PRIVATE: { title: "Personal account", icon: UserCircleIcon },
-    COPORATE: { title: "Business account", icon: BriefcaseIcon },
+    CORPORATE: { title: "Business account", icon: BriefcaseIcon },
   };
 
   return (
