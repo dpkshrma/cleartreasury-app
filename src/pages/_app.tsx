@@ -26,7 +26,7 @@ import "../../configureAmplify";
 import "../styles.css";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING) {
-  require("../mocks");
+  // require("../mocks");
 }
 
 interface User {

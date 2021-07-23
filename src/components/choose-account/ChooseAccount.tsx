@@ -21,7 +21,7 @@ const ChooseAccount = ({ accounts, onAccountSelect }) => {
         Which account would you like to use?
       </h1>
 
-      <div className="w-3/5 m:w-2/5 mx-auto">
+      <div className="w-3/5 md:w-2/5 mx-auto">
         <h2 className="text-2xl">Account details</h2>
         <p className="text-lg text-gray-600">
           Your email address is associated with multiple accounts. Please select
@@ -29,7 +29,7 @@ const ChooseAccount = ({ accounts, onAccountSelect }) => {
         </p>
       </div>
 
-      <ul className="space-y-2 w-3/5 m:w-2/5 mx-auto">
+      <ul className="space-y-2 w-3/5 md:w-2/5 mx-auto">
         {accounts.map((account) => (
           <a
             href="#"
