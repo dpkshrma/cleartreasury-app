@@ -33,7 +33,7 @@ function Authenticate() {
         alert: true,
         alertMessage:
           "A code has been sent to your phone number ending in " +
-          authContext.challengeParam.CODE_DELIVERY_DESTINATION,
+          authContext?.challengeParam.CODE_DELIVERY_DESTINATION,
         alertStatus: Alert.Status.POSITIVE,
       }));
     }

@@ -3,18 +3,22 @@
 exports[`Dashboard page matches snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="m-12"
+    class="min-h-full flex w-full bg-theme-color-background"
   >
-    <h1
-      class="text-4xl"
+    <div
+      class="m-12"
     >
-      Welcome 
-    </h1>
-    <p
-      class="text-lg text-gray-500"
-    >
-      Where would you like to start?
-    </p>
+      <h1
+        class="text-4xl"
+      >
+        Welcome 
+      </h1>
+      <p
+        class="text-lg text-gray-500"
+      >
+        Where would you like to start?
+      </p>
+    </div>
   </div>
 </DocumentFragment>
 `;

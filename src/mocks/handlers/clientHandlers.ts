@@ -5,17 +5,21 @@ export const clientHandlers = [
   graphql.query("getClient", (req, res, ctx) => {
     return res(
       ctx.data({
-        client: clients.find((item) => item.id === req.variables.id),
+        getClient: clients.find((item) => item.id === req.variables.id),
       })
     );
   }),
+
   graphql.query("getClients", (req, res, ctx) => {
     return res(
       ctx.data({
-        clients: clients,
+        getClients: clients.filter(
+          (client) => client.email === req.body.variables.cli_email
+        ),
       })
     );
   }),
+
   graphql.mutation("CreateClient", (req, res, ctx) => {
     const data = req.variables as {
       id: number;
@@ -23,11 +27,12 @@ export const clientHandlers = [
       email: string;
       name: string;
     };
+
     clients.push(data);
 
     return res(
       ctx.data({
-        ...data,
+        CreateClient: data,
       })
     );
   }),

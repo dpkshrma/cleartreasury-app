@@ -1,11 +1,13 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Auth } from "aws-amplify";
 import Router from "next/router";
+import { Auth } from "aws-amplify";
 import { Button } from "@clear-treasury/design-system";
 import { useQuery } from "../hooks/useQuery";
-import { GET_CLIENT } from "../graphql/clients/queries";
+import { GET_CLIENTS } from "../graphql/clients/queries";
+import Page from "../components/page/Page";
+import ChooseAccount from "../components/choose-account/ChooseAccount";
 
 import {
   HomeIcon,
@@ -17,13 +19,14 @@ import {
   ChevronDownIcon,
   LogoutIcon,
   UserIcon,
+  SwitchHorizontalIcon,
 } from "@heroicons/react/outline";
 
 import "../../configureAmplify";
 import "../styles.css";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING) {
-  require("../mocks");
+  // require("../mocks");
 }
 
 interface User {
@@ -31,31 +34,49 @@ interface User {
   username: string;
 }
 
+interface Client {
+  cli_name: string;
+  cli_email: string;
+  cty_value: string;
+}
+
 const navigation = [
   { href: "/", icon: HomeIcon, text: "Dashboard" },
-  { href: "/", icon: UserCircleIcon, text: "Beneficiaries" },
-  { href: "/", icon: GlobeAltIcon, text: "My Transfers" },
-  { href: "/", icon: PlusCircleIcon, text: "Add ons" },
+  { href: "#", icon: UserCircleIcon, text: "Beneficiaries" },
+  { href: "#", icon: GlobeAltIcon, text: "My Transfers" },
+  { href: "#", icon: PlusCircleIcon, text: "Add ons" },
   { href: "/help", icon: SupportIcon, text: "Help and Support" },
 ];
 
 const AppContext = React.createContext({});
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps, router }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState<User | null>(null);
+  const [client, setClient] = React.useState<Client | null>(null);
 
-  const checkUser = async () => {
+  React.useEffect(() => {
+    checkUserAuth();
+  }, [pageProps.authenticated]);
+
+  const checkUserAuth = async () => {
     try {
-      const user = await Auth.currentAuthenticatedUser();
-      setUser(user);
+      const { attributes } = await Auth.currentAuthenticatedUser();
+      setUser(attributes);
     } catch (error) {
       setUser(null);
     }
   };
 
-  async function signOut(event) {
+  const { data: clients, loading: clientsLoading } = useQuery(
+    user ? GET_CLIENTS : null,
+    {
+      cli_email: user?.email,
+    }
+  );
+
+  async function signOut(event: React.SyntheticEvent) {
     event.preventDefault();
 
     try {
@@ -69,11 +90,20 @@ function MyApp({ Component, pageProps }) {
     }
   }
 
-  React.useEffect(() => {
-    checkUser();
-  }, [pageProps.authenticated]);
+  // TODO: Sort out a proper loading screen
+  if (clientsLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Page>
+          <h1 className="m-auto">Loading...</h1>
+        </Page>
+      </div>
+    );
+  }
 
-  const { data: client } = useQuery(GET_CLIENT, { id: 1 });
+  if (!client && clients?.length > 1) {
+    return <ChooseAccount accounts={clients} onAccountSelect={setClient} />;
+  }
 
   return (
     <div className="flex h-screen">
@@ -102,8 +132,8 @@ function MyApp({ Component, pageProps }) {
               </Link>
             </div>
 
-            <div className="mt-5 flex-1 flex flex-col">
-              <div className="px-3 flex-col flex">
+            <div className="flex flex-1 flex-col">
+              <div className="mx-3 my-5 flex-col flex">
                 <Button>Make a transfer</Button>
               </div>
 
@@ -115,7 +145,13 @@ function MyApp({ Component, pageProps }) {
                       className={index === 3 ? "border-t border-teal-400" : ""}
                     >
                       <Link href={item.href}>
-                        <a className="text-white border-teal-700 hover:bg-teal-500 hover:border-green-600 border-l-4 group flex items-center pl-2 pr-4 py-4 transition-colors duration-300">
+                        <a
+                          className={`text-white border-teal-700 hover:bg-teal-500 hover:border-green-600 border-l-4 group flex items-center pl-2 pr-4 py-4 transition-colors duration-300" ${
+                            item.href === router.asPath
+                              ? "bg-teal-500 border-green-600"
+                              : ""
+                          }`}
+                        >
                           <item.icon
                             className="mr-3 flex-shrink-0 h-6 w-6 text-white"
                             aria-hidden="true"
@@ -153,11 +189,11 @@ function MyApp({ Component, pageProps }) {
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
                   >
                     <span className="rounded-full text-white font-bold bg-gray-500 p-1.5 mr-2">
-                      {client?.data?.name.split(" ")[0][0].toUpperCase()}{" "}
-                      {client?.data?.name.split(" ")[1][0].toUpperCase()}
+                      {client?.cli_name.split(" ")[0][0].toUpperCase()}{" "}
+                      {client?.cli_name.split(" ")[1][0].toUpperCase()}
                     </span>
 
-                    {client?.name}
+                    {client?.cli_name}
 
                     <ChevronDownIcon className="h-5 w-5 ml-2" />
                   </button>
@@ -179,8 +215,20 @@ function MyApp({ Component, pageProps }) {
                     </a>
                     <a
                       href="#"
-                      onClick={signOut}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setClient(null);
+                        setUserMenuOpen(false);
+                      }}
                       className="flex px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 justify-end border-t border-gray-200"
+                    >
+                      Switch account{" "}
+                      <SwitchHorizontalIcon className="h-5 w-5 ml-2" />
+                    </a>
+                    <a
+                      href="#"
+                      onClick={signOut}
+                      className="flex px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 justify-end"
                     >
                       Sign out <LogoutIcon className="h-5 w-5 ml-2" />
                     </a>
@@ -205,4 +253,4 @@ export function useApp() {
   return React.useContext(AppContext);
 }
 
-export default MyApp;
+export default App;

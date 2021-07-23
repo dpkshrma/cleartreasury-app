@@ -3,7 +3,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 
 export const useMutation = (
-  queryName: string,
+  query: string,
   inputData?: any,
   onSuccess?: (data: any) => void,
   onError?: (error: any) => void
@@ -18,7 +18,7 @@ export const useMutation = (
         setLoading(true);
 
         const response: any = await API.graphql(
-          graphqlOperation(queryName, inputData)
+          graphqlOperation(query, inputData)
         );
         const data = response.data;
         setData(data);
