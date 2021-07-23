@@ -26,7 +26,7 @@ import "../../configureAmplify";
 import "../styles.css";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING) {
-  // require("../mocks");
+  require("../mocks");
 }
 
 interface User {
@@ -38,6 +38,8 @@ interface Client {
   cli_name: string;
   cli_email: string;
   cty_value: string;
+  ctc_first_name: string;
+  ctc_last_name: string;
 }
 
 const navigation = [
@@ -104,6 +106,9 @@ function App({ Component, pageProps, router }) {
   if (!client && clients?.length > 1) {
     return <ChooseAccount accounts={clients} onAccountSelect={setClient} />;
   }
+
+  const accountName =
+    client?.cli_name || `${client?.ctc_first_name} ${client?.ctc_last_name}`;
 
   return (
     <div className="flex h-screen">
@@ -189,11 +194,11 @@ function App({ Component, pageProps, router }) {
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
                   >
                     <span className="rounded-full text-white font-bold bg-gray-500 p-1.5 mr-2">
-                      {client?.cli_name.split(" ")[0][0].toUpperCase()}{" "}
-                      {client?.cli_name.split(" ")[1][0].toUpperCase()}
+                      {accountName.split(" ")[0][0].toUpperCase()}{" "}
+                      {accountName.split(" ")[1][0].toUpperCase()}
                     </span>
 
-                    {client?.cli_name}
+                    {accountName}
 
                     <ChevronDownIcon className="h-5 w-5 ml-2" />
                   </button>
@@ -240,7 +245,7 @@ function App({ Component, pageProps, router }) {
 
           <main className="flex-1 relative overflow-y-auto focus:outline-none">
             <AppContext.Provider value={user}>
-              <Component {...pageProps} setContext={setUser} />
+              <Component {...pageProps} setContext={setUser} client={client} />
             </AppContext.Provider>
           </main>
         </div>

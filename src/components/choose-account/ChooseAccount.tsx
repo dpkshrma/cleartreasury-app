@@ -42,7 +42,10 @@ const ChooseAccount = ({ accounts, onAccountSelect }) => {
                 className: "w-16 h-16 flex-shrink-0 text-teal-400 font-normmal",
               })}
               <div>
-                <h3 className="text-xl text-gray-600">{account.cli_name}</h3>
+                <h3 className="text-xl text-gray-600">
+                  {account.cli_name ||
+                    account.ctc_first_name + " " + account.ctc_last_name}
+                </h3>
                 <span className="text-gray-400">
                   {accountTypes[account.cty_value].title}
                 </span>

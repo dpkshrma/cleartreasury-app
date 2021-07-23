@@ -18,6 +18,8 @@ export const GET_CLIENTS = gql`
       cli_name
       cli_reference
       cty_value
+      ctc_first_name
+      ctc_last_name
     }
   }
 `;

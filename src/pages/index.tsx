@@ -2,11 +2,11 @@ import React from "react";
 import Page from "../components/page/Page";
 import { withSSRContext } from "aws-amplify";
 
-function Dashboard({ user }) {
+function Dashboard({ client }) {
   return (
     <Page>
       <div className="m-12">
-        <h1 className="text-4xl">Welcome {user.username}</h1>
+        <h1 className="text-4xl">Welcome {client?.ctc_first_name}</h1>
         <p className="text-lg text-gray-500">Where would you like to start?</p>
       </div>
     </Page>
