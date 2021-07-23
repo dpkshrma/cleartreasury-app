@@ -36,59 +36,57 @@ function ResetPassword() {
   }
 
   return (
-    <Page>
-      <div className="login-wrapper h-screen flex w-full bg-teal-700">
-        <div className="max-w-md w-full m-auto p-0">
-          <img
-            className="h-12 w-full mb-8"
-            src="/clear_full_logo_light.svg"
-            alt="Clear Currency"
+    <Page backgroundColor={Page.Color.TEAL}>
+      <div className="max-w-md w-full m-auto p-0">
+        <img
+          className="h-12 w-full mb-8"
+          src="/clear_full_logo_light.svg"
+          alt="Clear Currency"
+        />
+        <div className="p-6 bg-white rounded-md flex justify-center flex-col shadow-md">
+          <h1 className="block w-full text-center mb-6 text-gray-800 text-2xl">
+            Reset your password
+          </h1>
+          <Input
+            name="email"
+            type="email"
+            label="Email address"
+            placeholder="Enter your email"
+            ref={userEmail}
           />
-          <div className="p-6 bg-white rounded-md flex justify-center flex-col shadow-md">
-            <h1 className="block w-full text-center mb-6 text-gray-800 text-2xl">
-              Reset your password
-            </h1>
-            <Input
-              name="email"
-              type="email"
-              label="Email address"
-              placeholder="Enter your email"
-              ref={userEmail}
-            />
-            {formType === "resetPassword" && (
-              <React.Fragment>
-                <Link href="/login">
-                  <a className="text-gray-600 text-sm mb-16 cursor-pointer">
-                    Back to Sign In
-                  </a>
-                </Link>
-                <Button size={Button.Size.LARGE} onClick={sendResetCode}>
-                  Send Code
-                </Button>
-              </React.Fragment>
-            )}
-            {formType === "codeSend" && (
-              <React.Fragment>
-                <Input
-                  name="passwordCode"
-                  type="text"
-                  label="Enter verification code"
-                  placeholder="Enter your code"
-                  ref={userPasswordCode}
-                />
-                <Input
-                  name="newPassword"
-                  type="password"
-                  label="Enter new password"
-                  placeholder="Enter your new password"
-                  ref={userNewPassword}
-                />
-                <Button size={Button.Size.LARGE} onClick={resetPassword}>
-                  Send Code
-                </Button>
-              </React.Fragment>
-            )}
-          </div>
+          {formType === "resetPassword" && (
+            <React.Fragment>
+              <Link href="/login">
+                <a className="text-gray-600 text-sm mb-16 cursor-pointer">
+                  Back to Sign In
+                </a>
+              </Link>
+              <Button size={Button.Size.LARGE} onClick={sendResetCode}>
+                Send Code
+              </Button>
+            </React.Fragment>
+          )}
+          {formType === "codeSend" && (
+            <React.Fragment>
+              <Input
+                name="passwordCode"
+                type="text"
+                label="Enter verification code"
+                placeholder="Enter your code"
+                ref={userPasswordCode}
+              />
+              <Input
+                name="newPassword"
+                type="password"
+                label="Enter new password"
+                placeholder="Enter your new password"
+                ref={userNewPassword}
+              />
+              <Button size={Button.Size.LARGE} onClick={resetPassword}>
+                Send Code
+              </Button>
+            </React.Fragment>
+          )}
         </div>
       </div>
     </Page>

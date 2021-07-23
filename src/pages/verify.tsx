@@ -36,7 +36,6 @@ function Verify(props) {
     event.preventDefault();
 
     const isValid = validateForm();
-
     if (!isValid) return false;
 
     if (formState.formType === "verify") {
@@ -174,49 +173,47 @@ function Verify(props) {
   );
 
   return (
-    <Page>
-      <div className="h-screen flex w-full bg-teal-700">
-        <div className="max-w-md w-full m-auto p-0">
-          <img
-            className="h-12 w-full mb-8"
-            src="/clear_full_logo_light.svg"
-            alt="Clear Currency"
-          />
+    <Page backgroundColor={Page.Color.TEAL}>
+      <div className="max-w-md w-full m-auto p-0">
+        <img
+          className="h-12 w-full mb-8"
+          src="/clear_full_logo_light.svg"
+          alt="Clear Currency"
+        />
 
-          <div className="p-6 bg-white rounded-md flex justify-center flex-col shadow-md">
-            <h1 className="block w-full text-center mb-6 text-gray-800 text-2xl">
-              {formState.formType === "verify"
-                ? "Sign in to your account"
-                : "Set your password"}
-            </h1>
+        <div className="p-6 bg-white rounded-md flex justify-center flex-col shadow-md">
+          <h1 className="block w-full text-center mb-6 text-gray-800 text-2xl">
+            {formState.formType === "verify"
+              ? "Sign in to your account"
+              : "Set your password"}
+          </h1>
 
-            <form
-              onSubmit={handleSubmit}
-              className="flex justify-center flex-col space-y-6"
-            >
-              {formState.errors.alert && (
-                <Alert
-                  text={formState.errors.alert.message}
-                  status={Alert.Status.CRITICAL}
-                />
-              )}
-
-              <Input
-                name="email"
-                type="email"
-                label="Email address"
-                placeholder="Enter your email"
-                disabled={formState.formType === "newPasswordRequired"}
-                ref={userEmail}
-                errors={formState.errors}
+          <form
+            onSubmit={handleSubmit}
+            className="flex justify-center flex-col space-y-6"
+          >
+            {formState.errors.alert && (
+              <Alert
+                text={formState.errors.alert.message}
+                status={Alert.Status.CRITICAL}
               />
+            )}
 
-              {formState.formType === "verify" && <VerifyForm />}
-              {formState.formType === "newPasswordRequired" && (
-                <SetPasswordForm />
-              )}
-            </form>
-          </div>
+            <Input
+              name="email"
+              type="email"
+              label="Email address"
+              placeholder="Enter your email"
+              disabled={formState.formType === "newPasswordRequired"}
+              ref={userEmail}
+              errors={formState.errors}
+            />
+
+            {formState.formType === "verify" && <VerifyForm />}
+            {formState.formType === "newPasswordRequired" && (
+              <SetPasswordForm />
+            )}
+          </form>
         </div>
       </div>
     </Page>

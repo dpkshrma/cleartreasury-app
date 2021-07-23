@@ -76,7 +76,7 @@ function MyApp({ Component, pageProps }) {
   const { data: client } = useQuery(GET_CLIENT, { id: 1 });
 
   return (
-    <div className="h-screen flex overflow-hidden bg-theme-color-background">
+    <div className="flex h-screen">
       <Head>
         <title>Clear Payments Platform</title>
         <link rel="icon" href="/favicon.png" />
