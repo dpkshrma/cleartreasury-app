@@ -139,7 +139,9 @@ function App({ Component, pageProps, router }) {
 
             <div className="flex flex-1 flex-col">
               <div className="mx-3 my-5 flex-col flex">
-                <Button>Make a transfer</Button>
+                <Link href="/transfer">
+                  <Button>Make a transfer</Button>
+                </Link>
               </div>
 
               <nav className="flex-1 space-y-1">
