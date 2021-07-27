@@ -1,19 +1,17 @@
 import React from 'react';
-import Page from '../components/page/Page';
+import Page from '../../components/page/Page';
 import { withSSRContext } from 'aws-amplify';
+import Steps from './components/steps';
 
-const Dashboard: React.FC<{ client: any }> = ({client}) => {
+const Transfer: React.FC<{ client: any }> = ({client}) => {
+  // eslint-disable-next-line no-console
+  console.log(client, 'client');
   return (
     <Page>
-      <div className="flex-col">
-        <div className="m-12">
-          <h1 className="text-4xl">Welcome {client?.ctc_first_name}</h1>
-          <p className="text-lg text-gray-500">Where would you like to start?</p>
-        </div>
-      </div>
+      <Steps/>
     </Page>
   );
-}
+};
 
 export const getServerSideProps = async ({req, res}) => {
   const {Auth} = withSSRContext({req});
@@ -34,4 +32,4 @@ export const getServerSideProps = async ({req, res}) => {
   return {props: {}};
 }
 
-export default Dashboard;
+export default Transfer;
