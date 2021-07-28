@@ -9,15 +9,17 @@ import { Step3 } from '../step3';
 const initialSteps: { [key in TransferStepsEnum as string]: StepType } = {
   [TransferStepsEnum.AMOUNT]: {
     name: 'Amount',
-    enabled: true
+    enabled: true,
   },
   [TransferStepsEnum.BENEFICIARY]: {
     name: 'Beneficiary',
-    enabled: false
+    enabled: false,
+    completed: false
   },
   [TransferStepsEnum.CONFIRMATION]: {
     name: 'Confirmation',
-    enabled: false
+    enabled: false,
+    completed: false
   }
 }
 
@@ -41,7 +43,18 @@ const Steps = () => {
     setActiveStep(stepToEnable);
   }
 
-  const tabClicked = (stepKey: TransferStepsEnum) => {
+  const updateCompleteState = (step: TransferStepsEnum, completed?: boolean) => {
+    setSteps(prevState => ({
+        ...prevState,
+        [step]: {
+          ...prevState[step],
+          completed
+        }
+      })
+    );
+  }
+
+  const stepClicked = (stepKey: TransferStepsEnum) => {
     if (!steps[stepKey].enabled) return;
 
     setActiveStep(stepKey);
@@ -62,10 +75,12 @@ const Steps = () => {
     <div className="tabs w-full px-48 pt-20">
       <div className="flex justify-between">
         {
-          Object.keys(steps).map((key: any) =>
+          Object.keys(steps).map((key: any, index: number) =>
             (<Step key={key}
                    step={steps[key]}
-                   onClick={() => tabClicked(key as TransferStepsEnum)}
+                   index={index + 1}
+                   isActive={activeStep === key}
+                   onClick={() => stepClicked(key as TransferStepsEnum)}
             />)
           )
         }
