@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Router from "next/router";
-import { Auth, withSSRContext } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import { Button } from "@clear-treasury/design-system";
 import { useQuery } from "../hooks/useQuery";
 import { GET_CLIENTS } from "../graphql/clients/queries";
@@ -253,25 +253,6 @@ function App({ Component, pageProps, router }) {
     </div>
   );
 }
-
-export const getServerSideProps = async ({ req, res }) => {
-  const { Auth } = withSSRContext({ req });
-
-  try {
-    const user = await Auth.currentAuthenticatedUser();
-
-    return {
-      props: {
-        authenticated: true,
-        user: user.attributes,
-      },
-    };
-  } catch (err) {
-    res.writeHead(302, { Location: "/login" });
-    res.end();
-  }
-  return { props: {} };
-};
 
 export function useApp() {
   return React.useContext(AppContext);

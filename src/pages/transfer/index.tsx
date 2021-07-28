@@ -1,7 +1,7 @@
 import React from "react";
 import Page from "../../components/page/Page";
 import { withSSRContext } from "aws-amplify";
-import Steps from "./components/steps";
+import Steps from "../../components/steps";
 
 const Transfer: React.FC<{ client: any }> = ({ client }) => {
   // eslint-disable-next-line no-console

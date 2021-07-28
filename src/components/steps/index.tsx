@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import { TransferStepsEnum } from "../../enums/transfer-steps.enum";
-import { StepType } from "../../types/step.type";
+import { TransferStepsEnum } from "./enums/transfer-steps.enum";
+import { StepType } from "./types/step.type";
 import Step from "./step";
-import { Step1 } from "../step1";
-import { Step2 } from "../step2";
-import { Step3 } from "../step3";
 
 const initialSteps: { [key in TransferStepsEnum as string]: StepType } = {
   [TransferStepsEnum.AMOUNT]: {
@@ -66,11 +63,11 @@ const Steps = () => {
   const getActiveComponent = () => {
     switch (activeStep) {
       case TransferStepsEnum.AMOUNT:
-        return <Step1 />;
+        return <div>step 1</div>;
       case TransferStepsEnum.BENEFICIARY:
-        return <Step2 />;
+        return <div>step 2</div>;
       case TransferStepsEnum.CONFIRMATION:
-        return <Step3 />;
+        return <div>step 3</div>;
     }
   };
 

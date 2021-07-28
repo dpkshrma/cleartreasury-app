@@ -1,6 +1,6 @@
 import React from "react";
 import { CheckCircleIcon } from "@heroicons/react/solid";
-import { StepType } from "../../types/step.type";
+import { StepType } from "./types/step.type";
 
 const Step: React.FC<{
   step: StepType;
