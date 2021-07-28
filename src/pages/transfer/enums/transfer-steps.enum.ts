@@ -1,5 +1,5 @@
 export enum TransferStepsEnum {
-  AMOUNT = 'amount',
-  BENEFICIARY = 'beneficiary',
-  CONFIRMATION = 'confirmation'
+  AMOUNT = "amount",
+  BENEFICIARY = "beneficiary",
+  CONFIRMATION = "confirmation",
 }

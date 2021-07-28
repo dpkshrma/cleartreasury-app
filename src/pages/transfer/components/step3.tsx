@@ -1,3 +1,3 @@
-import React from 'react';
+import React from "react";
 
-export const Step3 = () => (<div>step 3</div>);
+export const Step3 = () => <div>step 3</div>;
