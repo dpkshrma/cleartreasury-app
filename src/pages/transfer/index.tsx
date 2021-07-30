@@ -1,20 +1,22 @@
 import React from "react";
 import Page from "../../components/page/Page";
 import { withSSRContext } from "aws-amplify";
-import Router from "next/router";
-import Steps from "../../components/steps";
-import TransferSteps from "../../components/transfer-steps";
-import { Step1 } from "../../components/transfer-steps/temp/step1";
-import { Step2 } from "../../components/transfer-steps/temp/step2";
-import { Step3 } from "../../components/transfer-steps/temp/step3";
+import Steps, { StepItem } from "../../components/steps";
+import Step from "../../components/steps/step";
+import { Form1, Form2A, Form2B, Form3 } from "../../components/steps/forms";
 
 const Transfer: React.FC<{ client: any }> = () => {
   return (
     <Page>
-      <Steps nav={<TransferSteps />} onComplete={() => Router.push("/")}>
-        <Step1 />
-        <Step2 />
-        <Step3 />
+      <Steps nav={<Step />}>
+        <StepItem title="Amount" form={<Form1 />} />
+        <StepItem title="Beneficiary">
+          <Steps>
+            <StepItem form={<Form2A />} />
+            <StepItem form={<Form2B />} />
+          </Steps>
+        </StepItem>
+        <StepItem title="Confirm & Pay" form={<Form3 />} />
       </Steps>
     </Page>
   );

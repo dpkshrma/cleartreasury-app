@@ -2,10 +2,10 @@ import React from "react";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 
 const Step: React.FC<{
-  step: number;
-  title: string;
-  activeStep: number;
-  onClick(): void;
+  step?: number;
+  title?: string;
+  activeStep?: number;
+  onClick?(): void;
 }> = ({ step, title, activeStep, onClick }) => {
   const isActive = activeStep === step;
   const isCompleted = activeStep > step;
@@ -17,10 +17,15 @@ const Step: React.FC<{
     ? "cursor-pointer"
     : "cursor-default text-gray-400";
 
+  const handleOnClick = () => {
+    if (!isEnabled) return;
+
+    onClick();
+  };
   return (
     <div
       className={`w-1/3 h-12 ${isActive || isCompleted ? "bg-white" : ""}`}
-      onClick={onClick}
+      onClick={handleOnClick}
     >
       <div
         className={`h-1 ${
