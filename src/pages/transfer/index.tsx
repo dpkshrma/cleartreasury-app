@@ -1,7 +1,7 @@
 import React from "react";
 import Page from "../../components/page/Page";
 import { withSSRContext } from "aws-amplify";
-import Steps, { StepItem } from "../../components/steps";
+import Steps from "../../components/steps";
 import Step from "../../components/steps/step";
 import { Form1, Form2A, Form2B, Form3 } from "../../components/steps/forms";
 
@@ -9,14 +9,14 @@ const Transfer = (): JSX.Element => {
   return (
     <Page>
       <Steps nav={<Step />}>
-        <StepItem key={0} title="Amount" form={<Form1 />} />
-        <StepItem key={1} title="Beneficiary">
+        <Steps.Step key={0} title="Amount" form={<Form1 />} />
+        <Steps.Step key={1} title="Beneficiary">
           <Steps>
-            <StepItem key={0} form={<Form2A />} />
-            <StepItem key={1} form={<Form2B />} />
+            <Steps.Step key={0} form={<Form2A />} />
+            <Steps.Step key={1} form={<Form2B />} />
           </Steps>
-        </StepItem>
-        <StepItem key={2} title="Confirm & Pay" form={<Form3 />} />
+        </Steps.Step>
+        <Steps.Step key={2} title="Confirm & Pay" form={<Form3 />} />
       </Steps>
     </Page>
   );

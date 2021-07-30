@@ -47,11 +47,7 @@ type StepItemProps = {
   children?: React.ReactElement;
 };
 
-export const StepItem = ({
-  form,
-  children,
-  ...props
-}: StepItemProps): JSX.Element => {
+Steps.Step = ({ form, children, ...props }: StepItemProps): JSX.Element => {
   return React.cloneElement(children || form, { ...props });
 };
 
