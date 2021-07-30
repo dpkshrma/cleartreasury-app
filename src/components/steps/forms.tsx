@@ -1,8 +1,8 @@
-import React from "react";
-
-export const Form1: React.FC<{
+type Props = {
   onComplete?(): void;
-}> = ({ onComplete }) => {
+};
+
+export const Form1 = ({ onComplete }: Props): JSX.Element => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Do stuff
@@ -17,9 +17,7 @@ export const Form1: React.FC<{
   );
 };
 
-export const Form2A: React.FC<{
-  onComplete?(): void;
-}> = ({ onComplete }) => {
+export const Form2A = ({ onComplete }: Props): JSX.Element => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Do stuff
@@ -34,9 +32,7 @@ export const Form2A: React.FC<{
   );
 };
 
-export const Form2B: React.FC<{
-  onComplete?(): void;
-}> = ({ onComplete }) => {
+export const Form2B = ({ onComplete }: Props): JSX.Element => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Do stuff
@@ -51,9 +47,7 @@ export const Form2B: React.FC<{
   );
 };
 
-export const Form3: React.FC<{
-  onComplete?(): void;
-}> = ({ onComplete }) => {
+export const Form3 = ({ onComplete }: Props): JSX.Element => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Do stuff

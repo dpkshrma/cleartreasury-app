@@ -1,12 +1,14 @@
 import React from "react";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 
-const Step: React.FC<{
+type Props = {
   step?: number;
-  title?: string;
   activeStep?: number;
+  title?: string;
   onClick?(): void;
-}> = ({ step, title, activeStep, onClick }) => {
+};
+
+const Step = ({ step, title, activeStep, onClick }: Props): JSX.Element => {
   const isActive = activeStep === step;
   const isCompleted = activeStep > step;
   const isEnabled = activeStep >= step;

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-const Steps: React.FC<{
+type Props = {
   nav?: React.ReactElement;
-  onComplete?(): void;
-  children?: React.ReactElement[];
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-}> = ({ nav, onComplete, children }) => {
+  children: React.ReactElement[];
+};
+
+const Steps = ({ nav, children }: Props): JSX.Element => {
   const [activeStep, setActiveStep] = useState(0);
 
   const Nav = (): any =>
@@ -41,10 +41,17 @@ const Steps: React.FC<{
   );
 };
 
-export const StepItem: React.FC<{
+type StepItemProps = {
   form?: any;
   title?: string;
-}> = ({ form, children, ...props }) => {
+  children?: React.ReactElement;
+};
+
+export const StepItem = ({
+  form,
+  children,
+  ...props
+}: StepItemProps): JSX.Element => {
   return React.cloneElement(children || form, { ...props });
 };
 
