@@ -30,9 +30,14 @@ const useInterval = (
 type CountdownProps = {
   time: number;
   onComplete: () => void;
+  progress?: boolean;
 };
 
-const Countdown = ({ time, onComplete }: CountdownProps): JSX.Element => {
+const Countdown = ({
+  time,
+  onComplete,
+  progress,
+}: CountdownProps): JSX.Element => {
   const [ms, setMs] = React.useState(time);
 
   const { timer } = useInterval(() => {
@@ -47,17 +52,30 @@ const Countdown = ({ time, onComplete }: CountdownProps): JSX.Element => {
   }, [ms]);
 
   return (
-    <div className="circular w-6 h-6 relative">
-      <div className="z-30 w-5 h-5 absolute bg-white top-1/2 left-1/2 -mt-2.5 -ml-2.5 rounded-full"></div>
-      <div className="circle">
-        <div className="bar left absolute bg-white h-full w-full rounded-full clip-rect-bar">
-          <div className="progress absolute bg-green-500 z-10 h-full w-full rounded-full clip-rect-progress animate-loading"></div>
+    <React.Fragment>
+      {progress ? (
+        <div>
+          <div className="bg-green-100 border border-green-700 h-10 rounded w-80 mb-4">
+            <div className="animate-progress bg-green-600 h-full"></div>
+          </div>
+          <span className="text-gray-400 text-base text-center block">
+            This quote will expire in 20 seconds
+          </span>
         </div>
-        <div className="bar right absolute bg-white h-full w-full transform rotate-180 rounded-full clip-rect-bar">
-          <div className="progress absolute bg-green-500 z-20 h-full w-full rounded-full clip-rect-progress animate-loading transition delay-4000"></div>
+      ) : (
+        <div className="circular w-6 h-6 relative">
+          <div className="z-30 w-5 h-5 absolute bg-white top-1/2 left-1/2 -mt-2.5 -ml-2.5 rounded-full"></div>
+          <div className="circle">
+            <div className="bar left absolute bg-white h-full w-full rounded-full clip-rect-bar">
+              <div className="progress absolute bg-green-500 z-10 h-full w-full rounded-full clip-rect-progress animate-loading"></div>
+            </div>
+            <div className="bar right absolute bg-white h-full w-full transform rotate-180 rounded-full clip-rect-bar">
+              <div className="progress absolute bg-green-500 z-20 h-full w-full rounded-full clip-rect-progress animate-loading transition delay-4000"></div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </React.Fragment>
   );
 };
 

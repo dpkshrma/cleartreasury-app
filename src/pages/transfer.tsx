@@ -110,7 +110,7 @@ const currencies = currencyPairs.map(
   }
 );
 
-function Transfer() {
+function Transfer(): JSX.Element {
   const [stepForm, setStepForm] = useState(0);
 
   const GetQuote = () => (
@@ -265,6 +265,14 @@ function Transfer() {
         <span className="text-l text-gray-800">27th Oct 2020</span>
       </div>
       <div className="grid justify-items-center mb-8">
+        <div className="mb-8">
+          {/* eslint-disable-next-line no-console */}
+          <Countdown
+            time={2}
+            onComplete={() => console.log("Finished")}
+            progress
+          />
+        </div>
         <Checkbox
           label="I have read and agree to the terms of use"
           name="checkbox"
