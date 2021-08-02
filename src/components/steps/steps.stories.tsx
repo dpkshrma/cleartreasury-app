@@ -13,14 +13,14 @@ export default {
 export const StepsStory: React.VFC<Record<string, never>> = () => (
   <Page>
     <Steps nav={<Step />}>
-      <Steps.Step key={0} title="Amount" form={<Form1 />} />
-      <Steps.Step key={1} title="Beneficiary">
+      <Steps.Step title="Amount" form={<Form1 />} />
+      <Steps.Step title="Beneficiary">
         <Steps>
-          <Steps.Step key={0} form={<Form2A />} />
-          <Steps.Step key={1} form={<Form2B />} />
+          <Steps.Step form={<Form2A />} />
+          <Steps.Step form={<Form2B />} />
         </Steps>
       </Steps.Step>
-      <Steps.Step key={2} title="Confirm & Pay" form={<Form3 />} />
+      <Steps.Step title="Confirm & Pay" form={<Form3 />} />
     </Steps>
   </Page>
 );
