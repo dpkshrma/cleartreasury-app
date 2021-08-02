@@ -11,13 +11,9 @@ type Props = {
 const Dashboard = ({ client }: Props): JSX.Element => {
   return (
     <Page>
-      <div className="flex-col">
-        <div className="m-12">
-          <h1 className="text-4xl">Welcome {client?.ctc_first_name}</h1>
-          <p className="text-lg text-gray-500">
-            Where would you like to start?
-          </p>
-        </div>
+      <div className="m-12">
+        <h1 className="text-4xl">Welcome {client?.ctc_first_name}</h1>
+        <p className="text-lg text-gray-500">Where would you like to start?</p>
       </div>
     </Page>
   );
