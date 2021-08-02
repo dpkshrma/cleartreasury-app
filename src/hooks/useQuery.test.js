@@ -1,11 +1,11 @@
 import { API } from "aws-amplify";
 import { renderHook } from "@testing-library/react-hooks";
 import { setupServer } from "msw/node";
-import { useQuery } from "../../../src/hooks/useQuery";
-import { GET_CLIENTS } from "../../../src/graphql/clients/queries";
-import { clientHandlers } from "../../../src/mocks/handlers/clientHandlers";
+import { useQuery } from "./useQuery";
+import { GET_CLIENTS } from "../graphql/clients/queries";
+import { clientHandlers } from "../mocks/handlers/clientHandlers";
 
-import "../../../configureAmplify";
+import "../../configureAmplify";
 
 // TODO: restructure mock handlers to make this more intuitive
 const server = setupServer(clientHandlers[1]);

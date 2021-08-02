@@ -1,7 +1,8 @@
-import React from "react";
+import * as React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Router from "next/router";
+import { AppProps } from "next/app";
 import { Auth } from "aws-amplify";
 import { Button } from "@clear-treasury/design-system";
 import { useQuery } from "../hooks/useQuery";
@@ -26,7 +27,7 @@ import "../../configureAmplify";
 import "../styles.css";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING) {
-  // require("../mocks");
+  require("../mocks");
 }
 
 interface User {
@@ -34,10 +35,11 @@ interface User {
   username: string;
 }
 
-interface Client {
+export interface Client {
   cli_name: string;
   cli_email: string;
   cty_value: string;
+  cli_reference: string;
   ctc_first_name: string;
   ctc_last_name: string;
 }
@@ -52,7 +54,7 @@ const navigation = [
 
 const AppContext = React.createContext({});
 
-function App({ Component, pageProps, router }) {
+const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState<User | null>(null);
@@ -139,7 +141,9 @@ function App({ Component, pageProps, router }) {
 
             <div className="flex flex-1 flex-col">
               <div className="mx-3 my-5 flex-col flex">
-                <Button>Make a transfer</Button>
+                <Link href="/transfer">
+                  <Button>Make a transfer</Button>
+                </Link>
               </div>
 
               <nav className="flex-1 space-y-1">
@@ -252,10 +256,11 @@ function App({ Component, pageProps, router }) {
       </React.Fragment>
     </div>
   );
-}
+};
 
-export function useApp() {
+// TODO: figure out the correct return type for React.useContext
+export const useApp = (): Record<string, unknown> => {
   return React.useContext(AppContext);
-}
+};
 
 export default App;

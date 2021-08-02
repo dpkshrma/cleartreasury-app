@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Countdown from "../countdown/Countdown";
 import { Button, MoneyInput } from "@clear-treasury/design-system";
 import "flag-icon-css/css/flag-icon.css"; //This is imported in the select component in the design system - should be global?

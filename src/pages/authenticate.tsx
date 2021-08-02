@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import * as React from "react";
 import Router from "next/router";
 import { Auth } from "aws-amplify";
 import { Button, Input, Alert } from "@clear-treasury/design-system";
@@ -14,7 +14,7 @@ type FormState = {
   alertStatus: Values<typeof Alert.Status>;
 };
 
-function Authenticate() {
+const Authenticate = (): JSX.Element => {
   const authContext: any = useApp();
 
   const phoneNumber =
@@ -32,7 +32,7 @@ function Authenticate() {
 
   const userAuthCode = React.useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setUser(authContext);
   }, [user]);
 
@@ -139,7 +139,7 @@ function Authenticate() {
       </div>
     </Page>
   );
-}
+};
 
 // TODO: Get redireccts working according to comments below
 // export async function getServerSideProps({ req }) {

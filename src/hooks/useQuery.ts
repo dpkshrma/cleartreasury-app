@@ -1,14 +1,24 @@
-import React from "react";
+import * as React from "react";
 import { DocumentNode } from "graphql-tag-ts";
 import isDeepEqual from "fast-deep-equal/react";
 import { API, graphqlOperation } from "aws-amplify";
 
+type QueryState = {
+  data: any;
+  loading: boolean;
+  error: any;
+};
+
+type Variables = {
+  [name: string]: any;
+};
+
 export const useQuery = (
   query: DocumentNode,
-  variables?: any,
+  variables?: Variables,
   onSuccess?: (data: any) => void,
   onError?: (error: any) => void
-) => {
+): QueryState => {
   const [data, setData] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);

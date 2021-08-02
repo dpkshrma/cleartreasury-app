@@ -2,12 +2,22 @@ import { useEffect, useState } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 
+type MutationState = {
+  data: any;
+  loading: boolean;
+  error: any;
+};
+
+type Input = {
+  [name: string]: any;
+};
+
 export const useMutation = (
   query: string,
-  inputData?: any,
+  inputData?: Input,
   onSuccess?: (data: any) => void,
   onError?: (error: any) => void
-) => {
+): MutationState => {
   const [data, setData] = useState<GraphQLResult>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

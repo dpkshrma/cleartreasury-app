@@ -1,8 +1,14 @@
-import React from "react";
-import Page from "../components/page/Page";
+import * as React from "react";
+import { GetServerSideProps } from "next";
 import { withSSRContext } from "aws-amplify";
+import { Client } from "./_app";
+import Page from "../components/page/Page";
 
-const Dashboard: React.FC<{ client: any }> = ({ client }) => {
+type Props = {
+  client: Client;
+};
+
+const Dashboard = ({ client }: Props): JSX.Element => {
   return (
     <Page>
       <div className="flex-col">
@@ -17,7 +23,7 @@ const Dashboard: React.FC<{ client: any }> = ({ client }) => {
   );
 };
 
-export const getServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const { Auth } = withSSRContext({ req });
 
   try {
