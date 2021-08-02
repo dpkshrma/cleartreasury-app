@@ -1,6 +1,7 @@
-import React from "react";
+import * as React from "react";
 import Link from "next/link";
 import Router from "next/router";
+import { GetServerSideProps } from "next";
 import { Auth, withSSRContext } from "aws-amplify";
 import { Button, Input, Alert } from "@clear-treasury/design-system";
 import Page from "../components/page/Page";
@@ -21,7 +22,11 @@ interface FormState {
   errors: Errors;
 }
 
-function Login(props) {
+type Props = {
+  setContext: () => void;
+};
+
+const Login = (props: Props): JSX.Element => {
   const [user, setUser]: any = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [formState, setFormState] = React.useState<FormState>({
@@ -212,9 +217,9 @@ function Login(props) {
       </div>
     </Page>
   );
-}
+};
 
-export async function getServerSideProps({ req }) {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { Auth } = withSSRContext({ req });
 
   try {
@@ -234,6 +239,6 @@ export async function getServerSideProps({ req }) {
       },
     };
   }
-}
+};
 
 export default Login;
