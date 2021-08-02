@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { State } from "./step";
 
 type Props = {
   nav?: React.ReactElement;
@@ -7,6 +8,7 @@ type Props = {
 
 const Steps = ({ nav, children }: Props): JSX.Element => {
   const [activeStep, setActiveStep] = useState(0);
+  const [formState, setFormState] = useState({});
 
   const Nav = (): any =>
     nav
@@ -15,7 +17,11 @@ const Steps = ({ nav, children }: Props): JSX.Element => {
             key: index,
             step: index,
             title: child.props.title,
-            activeStep: activeStep,
+            state:
+              activeStep === index
+                ? State.ACTIVE
+                : formState[index] || State.DEFAULT,
+            isEnabled: index <= activeStep,
             onClick: () => setActiveStep(index),
           })
         )
@@ -32,7 +38,13 @@ const Steps = ({ nav, children }: Props): JSX.Element => {
           return (
             index === activeStep &&
             React.cloneElement(child, {
-              onComplete: () => setActiveStep((activeStep) => activeStep + 1),
+              onComplete: () => {
+                setFormState(() => ({
+                  ...formState,
+                  [activeStep]: State.COMPLETE,
+                }));
+                setActiveStep((activeStep) => activeStep + 1);
+              },
             })
           );
         })}
