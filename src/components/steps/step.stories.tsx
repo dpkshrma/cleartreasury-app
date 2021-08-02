@@ -7,7 +7,7 @@ export default {
   component: Step,
 } as Meta;
 
-export const Primary: React.VFC<Record<string, never>> = () => (
+export const StepStory: React.VFC<Record<string, never>> = () => (
   <>
     {/* eslint-disable no-console */}
     <Step

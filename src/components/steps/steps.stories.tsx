@@ -10,7 +10,7 @@ export default {
   component: Steps,
 } as Meta;
 
-export const Primary: React.VFC<Record<string, never>> = () => (
+export const StepsStory: React.VFC<Record<string, never>> = () => (
   <Page>
     <Steps nav={<Step />}>
       <Steps.Step key={0} title="Amount" form={<Form1 />} />
