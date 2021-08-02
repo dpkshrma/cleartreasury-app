@@ -1,6 +1,7 @@
 import * as React from "react";
 import Router from "next/router";
 import { GetServerSideProps } from "next";
+import { CognitoUser } from "@aws-amplify/auth";
 import { Auth, withSSRContext } from "aws-amplify";
 import { Button, Input, Alert } from "@clear-treasury/design-system";
 import Page from "../components/page/Page";
@@ -22,7 +23,7 @@ interface FormState {
 }
 
 type Props = {
-  useContext: () => void;
+  setContext: (user: CognitoUser) => void;
 };
 
 const Verify = (props: Props): JSX.Element => {
