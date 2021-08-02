@@ -15,3 +15,17 @@
     stroke-dashoffset: 0;
   }
 }
+
+@layer utilities {
+  .clip-rect-bar {
+    clip: rect(0px, 1.5rem, 1.5rem, 0.75rem);
+  }
+
+  .clip-rect-progress {
+    clip: rect(0px, 0.75rem, 1.5rem, 0px);
+  }
+}
+
+.circle .right .progress{
+  animation-delay:4s;
+}

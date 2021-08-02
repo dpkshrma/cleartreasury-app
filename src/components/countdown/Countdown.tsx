@@ -39,25 +39,17 @@ const Countdown = ({ time, onComplete }) => {
   }, [ms]);
 
   return (
-    <svg height="28" width="28">
-      <circle
-        className="circle"
-        cx="14"
-        cy="14"
-        r="12"
-        stroke="#eaeaea"
-        strokeWidth="2"
-        fillOpacity="0"
-      />
-      <circle
-        cx="14"
-        cy="14"
-        r="12"
-        stroke="#01D0A2"
-        strokeWidth="2"
-        fillOpacity="0"
-      />
-    </svg>
+    <div className="circular w-6 h-6 relative">
+      <div className="z-30 w-5 h-5 absolute bg-white top-1/2 left-1/2 -mt-2.5 -ml-2.5 rounded-full"></div>
+      <div className="circle">
+        <div className="bar left absolute bg-white h-full w-full rounded-full clip-rect-bar">
+          <div className="progress absolute bg-green-500 z-10 h-full w-full rounded-full clip-rect-progress animate-loading"></div>
+        </div>
+        <div className="bar right absolute bg-white h-full w-full transform rotate-180 rounded-full clip-rect-bar">
+          <div className="progress absolute bg-green-500 z-20 h-full w-full rounded-full clip-rect-progress animate-loading transition delay-4000"></div>
+        </div>
+      </div>
+    </div>
   );
 };
 

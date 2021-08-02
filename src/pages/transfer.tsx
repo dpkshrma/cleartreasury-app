@@ -125,8 +125,10 @@ function Transfer() {
       <div className="flex justify-between pb-6">
         <p className="text-lg text-theme-color-on-surface">Exchange rate</p>
         <div className="flex">
-          {/* eslint-disable-next-line no-console */}
-          <Countdown time={2} onComplete={() => console.log("Finished")} />
+          <div className="mr-2 mt-2">
+            {/* eslint-disable-next-line no-console */}
+            <Countdown time={2} onComplete={() => console.log("Finished")} />
+          </div>
           <span className="ml-2 text-lg text-gray-400">1.001</span>
         </div>
       </div>
