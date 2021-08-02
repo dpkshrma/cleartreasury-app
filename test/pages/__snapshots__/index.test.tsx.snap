@@ -1,28 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Dashboard page matches snapshot 1`] = `
-<DocumentFragment>
-  <div
-    class="min-h-full flex w-full bg-theme-color-background"
-  >
-    <div
-      class="m-12"
-    >
-      <h1
-        class="text-4xl"
-      >
-        Welcome 
-      </h1>
-      <p
-        class="text-lg text-gray-500"
-      >
-        Where would you like to start?
-      </p>
-    </div>
-  </div>
-</DocumentFragment>
-`;
-
 exports[`Dashboard page matches snapshot for CORPORATE client 1`] = `
 <DocumentFragment>
   <div
