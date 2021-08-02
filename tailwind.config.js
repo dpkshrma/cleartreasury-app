@@ -17,17 +17,17 @@ module.exports = {
           },
         },
         rotate: {
-          '100%': {
-            transform: 'rotate(180deg)'
+          "100%": {
+            transform: "rotate(180deg)",
           },
         },
       },
       animation: {
         stroke: "stroke 20s linear forwards",
-        loading: "rotate 4s linear both"
+        loading: "rotate 4s linear both",
       },
       transitionDelay: {
-        '4000': '4000ms'
+        4000: "4000ms",
       },
     },
   },
