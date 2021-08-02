@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "../testUtils";
-import Dashboard from "../../src/pages";
+import Dashboard from "../../src/pages/index";
 
 describe("Dashboard page", () => {
   it("matches snapshot for PRIVATE client", () => {
