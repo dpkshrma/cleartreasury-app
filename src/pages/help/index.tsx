@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import groq from "groq";
 import Page from "../../components/page/Page";
 import Link from "next/link";

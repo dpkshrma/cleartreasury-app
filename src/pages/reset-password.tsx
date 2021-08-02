@@ -1,8 +1,8 @@
-import { Button, Input } from "@clear-treasury/design-system";
+import * as React from "react";
 import Link from "next/link";
-import React from "react";
-import Page from "../components/page/Page";
 import { Auth } from "aws-amplify";
+import { Button, Input } from "@clear-treasury/design-system";
+import Page from "../components/page/Page";
 
 const initialFormState = {
   password: "",
@@ -12,7 +12,7 @@ const initialFormState = {
   formType: "resetPassword",
 };
 
-function ResetPassword() {
+const ResetPassword = (): JSX.Element => {
   const [formState, setFormState] = React.useState(initialFormState);
   const { formType } = formState;
   const userEmail = React.useRef<HTMLInputElement | null>(null);
@@ -91,6 +91,6 @@ function ResetPassword() {
       </div>
     </Page>
   );
-}
+};
 
 export default ResetPassword;

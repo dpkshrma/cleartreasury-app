@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Page from "../components/page/Page";
 import { withSSRContext } from "aws-amplify";
 import {

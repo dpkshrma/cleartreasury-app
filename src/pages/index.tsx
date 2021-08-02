@@ -1,8 +1,14 @@
-import React from "react";
-import Page from "../components/page/Page";
+import * as React from "react";
+import { GetServerSideProps } from "next";
 import { withSSRContext } from "aws-amplify";
+import { Client } from "./_app";
+import Page from "../components/page/Page";
 
-function Dashboard({ client }) {
+type Props = {
+  client: Client;
+};
+
+const Dashboard = ({ client }: Props): JSX.Element => {
   return (
     <Page>
       <div className="m-12">
@@ -11,9 +17,9 @@ function Dashboard({ client }) {
       </div>
     </Page>
   );
-}
+};
 
-export async function getServerSideProps({ req, res }) {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const { Auth } = withSSRContext({ req });
 
   try {
@@ -30,6 +36,6 @@ export async function getServerSideProps({ req, res }) {
     res.end();
   }
   return { props: {} };
-}
+};
 
 export default Dashboard;

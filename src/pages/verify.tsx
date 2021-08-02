@@ -1,5 +1,7 @@
-import React from "react";
+import * as React from "react";
 import Router from "next/router";
+import { GetServerSideProps } from "next";
+import { CognitoUser } from "@aws-amplify/auth";
 import { Auth, withSSRContext } from "aws-amplify";
 import { Button, Input, Alert } from "@clear-treasury/design-system";
 import Page from "../components/page/Page";
@@ -20,7 +22,11 @@ interface FormState {
   errors: Errors;
 }
 
-function Verify(props) {
+type Props = {
+  setContext: (user: CognitoUser) => void;
+};
+
+const Verify = (props: Props): JSX.Element => {
   const [user, setUser] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [formState, setFormState] = React.useState<FormState>({
@@ -218,9 +224,9 @@ function Verify(props) {
       </div>
     </Page>
   );
-}
+};
 
-export async function getServerSideProps({ req }) {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { Auth } = withSSRContext({ req });
 
   try {
@@ -240,6 +246,6 @@ export async function getServerSideProps({ req }) {
       },
     };
   }
-}
+};
 
 export default Verify;

@@ -1,7 +1,10 @@
-import React from "react";
+import * as React from "react";
 
-function useInterval(callback, delay) {
-  const timer = React.useRef(null);
+const useInterval = (
+  callback: () => void,
+  delay: number
+): { timer: number | null } => {
+  const timer = React.useRef<number | null>(null);
   const savedCallback = React.useRef(null);
 
   // Remember the latest callback.
@@ -16,15 +19,20 @@ function useInterval(callback, delay) {
     }
 
     if (delay !== null) {
-      timer.current = setInterval(tick, delay);
+      timer.current = window.setInterval(tick, delay);
       return () => clearInterval(timer.current);
     }
   }, [delay]);
 
   return { timer: timer.current };
-}
+};
 
-const Countdown = ({ time, onComplete }) => {
+type CountdownProps = {
+  time: number;
+  onComplete: () => void;
+};
+
+const Countdown = ({ time, onComplete }: CountdownProps): JSX.Element => {
   const [ms, setMs] = React.useState(time);
 
   const { timer } = useInterval(() => {
