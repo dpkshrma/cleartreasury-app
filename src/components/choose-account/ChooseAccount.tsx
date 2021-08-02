@@ -1,11 +1,17 @@
+import { Client } from "../../pages/_app";
 import {
   ChevronRightIcon,
   UserCircleIcon,
   BriefcaseIcon,
 } from "@heroicons/react/outline";
 
-const ChooseAccount = ({ accounts, onAccountSelect }) => {
-  const onClickHandler = (event, account) => {
+type Props = {
+  accounts: Client[];
+  onAccountSelect: React.Dispatch<React.SetStateAction<Client>>;
+};
+
+const ChooseAccount = ({ accounts, onAccountSelect }: Props): JSX.Element => {
+  const onClickHandler = (event: React.SyntheticEvent, account: Client) => {
     event.preventDefault();
     onAccountSelect(account);
   };
