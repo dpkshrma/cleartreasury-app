@@ -23,17 +23,17 @@ module.exports = {
         },
         fill: {
           "0%": {
-            width: "0%"
+            width: "0%",
           },
           "100%": {
-            width: "100%"
-          }
-        }  
+            width: "100%",
+          },
+        },
       },
       animation: {
         stroke: "stroke 20s linear forwards",
         loading: "rotate 4s linear both",
-        progress: "fill 20s linear 1"
+        progress: "fill 20s linear 1",
       },
       transitionDelay: {
         4000: "4000ms",
