@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "../../../test/testUtils";
-import { StepStory } from "./step.stories";
+import { StepStory } from "./Step.stories";
 
 describe("Step", () => {
   /* eslint-disable no-console */

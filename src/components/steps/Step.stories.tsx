@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Meta } from "@storybook/react";
-import Step, { State } from "./step";
+import Step, { State } from "./Step";
 
 export default {
   title: "Components/Step",

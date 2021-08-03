@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { State } from "./step";
+import { State } from "./Step";
 
 type Props = {
   nav?: React.ReactElement;
