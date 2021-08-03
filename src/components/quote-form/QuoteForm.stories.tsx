@@ -28,7 +28,6 @@ export default {
 const Template: Story<QuoteFormProps> = (args) => <QuoteForm {...args} />;
 
 export const Default = Template.bind({ currencies: currencies });
-
 Default.args = {
   title: "How much would you like to transfer?",
   currencies: currencies,

@@ -1,37 +1,37 @@
 import * as React from "react";
-import { Meta } from "@storybook/react";
-import Step, { State } from "./Step";
+import { Story, Meta } from "@storybook/react";
+import Step, { State, StepProps } from "./Step";
 
 export default {
   title: "Components/Step",
   component: Step,
 } as Meta;
 
-export const StepStory: React.VFC<Record<string, never>> = () => (
-  <>
-    {/* eslint-disable no-console */}
-    <Step
-      step={0}
-      title="Default"
-      isEnabled={true}
-      onClick={() => console.log("next step")}
-      state={State.DEFAULT}
-    />
-    <br />
-    <Step
-      step={0}
-      title="Completed"
-      isEnabled={false}
-      onClick={() => console.log("next step")}
-      state={State.COMPLETE}
-    />
-    <br />
-    <Step
-      step={0}
-      title="Active"
-      isEnabled={true}
-      onClick={() => console.log("next step")}
-      state={State.ACTIVE}
-    />
-  </>
-);
+const Template: Story<StepProps> = (args) => <Step {...args} />;
+
+export const Default = Template.bind({});
+Default.args = {
+  step: 0,
+  title: "Default",
+};
+
+export const Enabled = Template.bind({});
+Enabled.args = {
+  step: 0,
+  isEnabled: true,
+  title: "Default",
+};
+
+export const Active = Template.bind({});
+Active.args = {
+  step: 0,
+  title: "Active",
+  state: State.ACTIVE,
+};
+
+export const Complete = Template.bind({});
+Complete.args = {
+  step: 0,
+  title: "Complete",
+  state: State.COMPLETE,
+};
