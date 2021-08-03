@@ -1,6 +1,6 @@
 import * as React from "react";
-import Page from "../components/page/Page";
 import { withSSRContext } from "aws-amplify";
+import { GetServerSideProps } from "next";
 import {
   Button,
   Checkbox,
@@ -8,11 +8,12 @@ import {
   MoneyInput,
   Select,
 } from "@clear-treasury/design-system";
-import "flag-icon-css/css/flag-icon.css";
+import Page from "../components/page/Page";
+import Steps from "../components/steps/Steps";
+import Step from "../components/steps/Step";
 import Countdown from "../components/countdown/Countdown";
-import Steps from "../components/steps/steps";
-import Step from "../components/steps/step";
-import { GetServerSideProps } from "next";
+
+import "flag-icon-css/css/flag-icon.css";
 
 const moneyOptions = [
   {
@@ -148,10 +149,12 @@ function Transfer(): JSX.Element {
               </p>
               <div className="flex">
                 <div className="mr-2 mt-2">
-                  {/* eslint-disable-next-line no-console */}
                   <Countdown
                     time={2}
-                    onComplete={() => console.log("Finished")}
+                    onComplete={
+                      /* eslint-disable-next-line no-console */
+                      () => console.log("Finished")
+                    }
                   />
                 </div>
                 <span className="ml-2 text-lg text-gray-400">1.001</span>
@@ -338,10 +341,12 @@ function Transfer(): JSX.Element {
             </div>
             <div className="grid justify-items-center mb-8">
               <div className="mb-8">
-                {/* eslint-disable-next-line no-console */}
                 <Countdown
                   time={2}
-                  onComplete={() => console.log("Finished")}
+                  onComplete={
+                    /* eslint-disable-next-line no-console */
+                    () => console.log("Finished")
+                  }
                   progress
                 />
               </div>
