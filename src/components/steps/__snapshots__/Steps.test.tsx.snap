@@ -6,13 +6,13 @@ exports[`Steps matches snapshot for nested children 1`] = `
     class="min-h-full flex w-full bg-theme-color-background"
   >
     <div
-      class="tabs w-full px-48 pt-20"
+      class="w-full"
     >
       <div
         class="flex justify-between"
       >
         <div
-          class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-green-500"
+          class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-green-500 bg-white"
         >
           <span
             class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"
@@ -26,7 +26,7 @@ exports[`Steps matches snapshot for nested children 1`] = `
           </span>
         </div>
         <div
-          class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-0"
+          class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-transparent"
         >
           <span
             class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"
@@ -40,7 +40,7 @@ exports[`Steps matches snapshot for nested children 1`] = `
           </span>
         </div>
         <div
-          class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-0"
+          class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-transparent"
         >
           <span
             class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"
@@ -54,12 +54,10 @@ exports[`Steps matches snapshot for nested children 1`] = `
           </span>
         </div>
       </div>
-      <div
-        class="pt-10"
-      >
+      <div>
         <form>
           <p>
-            Step 1
+            Form 1
           </p>
           <button>
             Continue

@@ -9,6 +9,28 @@ export default {
   component: Steps,
 } as Meta;
 
+const Form: React.FC<{
+  name: string;
+  onComplete?(): void;
+}> = ({ name, onComplete }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onComplete();
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <p>{name}</p>
+      <button>Continue</button>
+    </form>
+  );
+};
+
+const Form1 = (props) => <Form name="Form 1" {...props} />;
+const Form2A = (props) => <Form name="Form 2A" {...props} />;
+const Form2B = (props) => <Form name="Form 2B" {...props} />;
+const Form3 = (props) => <Form name="Form 3" {...props} />;
+
 export const StepsStory: React.VFC<Record<string, never>> = () => (
   <Page>
     <Steps nav={<Step />}>
@@ -23,71 +45,3 @@ export const StepsStory: React.VFC<Record<string, never>> = () => (
     </Steps>
   </Page>
 );
-
-const Form1: React.FC<{
-  onComplete?(): void;
-}> = ({ onComplete }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Do stuff
-    onComplete();
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <p>Step 1</p>
-      <button>Continue</button>
-    </form>
-  );
-};
-
-const Form2A: React.FC<{
-  onComplete?(): void;
-}> = ({ onComplete }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Do stuff
-    onComplete();
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <p>Step 2 A</p>
-      <button>Continue</button>
-    </form>
-  );
-};
-
-const Form2B: React.FC<{
-  onComplete?(): void;
-}> = ({ onComplete }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Do stuff
-    onComplete();
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <p>Step 2 B</p>
-      <button>Continue</button>
-    </form>
-  );
-};
-
-const Form3: React.FC<{
-  onComplete?(): void;
-}> = ({ onComplete }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Do stuff
-    onComplete();
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <p>Step 3</p>
-      <button>Continue</button>
-    </form>
-  );
-};

@@ -12,8 +12,9 @@ const Steps = ({ nav, children, onComplete }: Props): JSX.Element => {
   const [formState, setFormState] = useState({});
 
   const Nav = (): any =>
-    nav
-      ? children.map((child, index) =>
+    nav ? (
+      <div className="flex justify-between">
+        {children.map((child, index) =>
           React.cloneElement(nav, {
             key: index,
             step: index,
@@ -25,16 +26,15 @@ const Steps = ({ nav, children, onComplete }: Props): JSX.Element => {
             isEnabled: index <= activeStep,
             onClick: () => setActiveStep(index),
           })
-        )
-      : null;
+        )}
+      </div>
+    ) : null;
 
   return (
-    <div className="tabs w-full px-48 pt-20">
-      <div className="flex justify-between">
-        <Nav />
-      </div>
+    <div className="w-full">
+      <Nav />
 
-      <div className="pt-10">
+      <div>
         {children.map((child, index) => {
           return (
             index === activeStep &&
