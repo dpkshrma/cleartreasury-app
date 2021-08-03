@@ -38,6 +38,7 @@ const Steps = ({ nav, children }: Props): JSX.Element => {
           return (
             index === activeStep &&
             React.cloneElement(child, {
+              key: index,
               onComplete: () => {
                 setFormState(() => ({
                   ...formState,
