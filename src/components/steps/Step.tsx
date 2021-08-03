@@ -9,14 +9,13 @@ export const State = {
 
 type Values<T> = T[keyof T];
 
-type Props = {
+export interface StepProps {
   step?: number;
-  activeStep?: number;
   title?: string;
   state?: Values<typeof State>;
   isEnabled?: boolean;
   onClick?(): void;
-};
+}
 
 const Step = ({
   step,
@@ -24,12 +23,12 @@ const Step = ({
   isEnabled,
   onClick,
   state = State.DEFAULT,
-}: Props): JSX.Element => {
+}: StepProps): JSX.Element => {
   const handleOnClick = () => {
     if (!isEnabled) return;
-
     onClick();
   };
+
   return (
     <div
       className={`flex flex-1 pb-4 pt-3 px-2 ${state}`}
@@ -42,6 +41,7 @@ const Step = ({
           {step + 1}
         </span>
       )}
+
       <span className="ml-2">{title}</span>
     </div>
   );
