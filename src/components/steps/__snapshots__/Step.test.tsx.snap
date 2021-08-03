@@ -3,7 +3,7 @@
 exports[`Step matches snapshot for active state 1`] = `
 <DocumentFragment>
   <div
-    class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-green-500"
+    class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-green-500 bg-white"
   >
     <span
       class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"
@@ -48,7 +48,7 @@ exports[`Step matches snapshot for complete state 1`] = `
 exports[`Step matches snapshot for default state 1`] = `
 <DocumentFragment>
   <div
-    class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-0"
+    class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-transparent"
   >
     <span
       class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"
@@ -67,7 +67,7 @@ exports[`Step matches snapshot for default state 1`] = `
 exports[`Step matches snapshot for enabled state 1`] = `
 <DocumentFragment>
   <div
-    class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-0"
+    class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-transparent"
   >
     <span
       class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"

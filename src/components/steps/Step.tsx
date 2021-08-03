@@ -2,9 +2,9 @@ import React from "react";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 
 export const State = {
-  ACTIVE: "cursor-default border-t-4 border-green-500",
+  ACTIVE: "cursor-default border-t-4 border-green-500 bg-white",
   COMPLETE: "cursor-pointer text-gray-400 border-t-4 border-gray-400",
-  DEFAULT: "cursor-default border-t-0",
+  DEFAULT: "cursor-default border-t-4 border-transparent",
 } as const;
 
 type Values<T> = T[keyof T];
