@@ -70,3 +70,33 @@ exports[`Steps matches snapshot for nested children 1`] = `
   </div>
 </DocumentFragment>
 `;
+
+exports[`Steps matches snapshot fragment for Amount text 1`] = `
+<span
+  class="ml-2"
+>
+  Amount
+</span>
+`;
+
+exports[`Steps matches snapshot fragment for Step 1 form 1`] = `
+<form>
+  <p>
+    Step 1
+  </p>
+  <button>
+    Continue
+  </button>
+</form>
+`;
+
+exports[`Steps matches snapshot fragment for Step 2 form after Step 1 submit 1`] = `
+<form>
+  <p>
+    Step 2 A
+  </p>
+  <button>
+    Continue
+  </button>
+</form>
+`;
