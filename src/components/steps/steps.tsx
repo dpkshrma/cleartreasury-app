@@ -4,9 +4,10 @@ import { State } from "./step";
 type Props = {
   nav?: React.ReactElement;
   children: React.ReactElement[];
+  onComplete?(): void;
 };
 
-const Steps = ({ nav, children }: Props): JSX.Element => {
+const Steps = ({ nav, children, onComplete }: Props): JSX.Element => {
   const [activeStep, setActiveStep] = useState(0);
   const [formState, setFormState] = useState({});
 
@@ -40,11 +41,15 @@ const Steps = ({ nav, children }: Props): JSX.Element => {
             React.cloneElement(child, {
               key: index,
               onComplete: () => {
-                setFormState(() => ({
-                  ...formState,
-                  [activeStep]: State.COMPLETE,
-                }));
-                setActiveStep((activeStep) => activeStep + 1);
+                if (activeStep === children.length - 1) {
+                  onComplete();
+                } else {
+                  setFormState(() => ({
+                    ...formState,
+                    [activeStep]: State.COMPLETE,
+                  }));
+                  setActiveStep((activeStep) => activeStep + 1);
+                }
               },
             })
           );
