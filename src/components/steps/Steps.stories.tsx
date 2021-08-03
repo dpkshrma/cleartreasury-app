@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Meta } from "@storybook/react";
-import Steps from "./steps";
+import Steps from "./Steps";
 import Page from "../page/Page";
-import Step from "./step";
+import Step from "./Step";
 
 export default {
   title: "Components/Steps",
