@@ -31,14 +31,23 @@ type CountdownProps = {
   time: number;
   onComplete: () => void;
   progress?: boolean;
+  animation?: boolean;
+  text?: string;
 };
 
 const Countdown = ({
   time,
   onComplete,
   progress,
+  text,
 }: CountdownProps): JSX.Element => {
   const [ms, setMs] = React.useState(time);
+  const [animation, setAnimation] = React.useState({
+    className: "",
+    started: false,
+    finished: false,
+  });
+  const [textField, setTextField] = React.useState(text);
 
   const { timer } = useInterval(() => {
     if (ms !== 0) setMs(ms - 1);
@@ -50,6 +59,29 @@ const Countdown = ({
       onComplete();
     }
   }, [ms]);
+
+  React.useEffect(() => {
+    if (animation.started) {
+      setAnimation(() => ({
+        ...animation,
+        started: false,
+        className: "",
+      }));
+      setTimeout(() => {
+        setAnimation(() => ({
+          ...animation,
+          className: "animate-loading",
+        }));
+      }, 1);
+    } else {
+      setAnimation(() => ({
+        ...animation,
+        started: true,
+        className: "animate-loading",
+      }));
+    }
+    setTextField(text);
+  }, [text]);
 
   return (
     <React.Fragment>
@@ -63,16 +95,25 @@ const Countdown = ({
           </span>
         </div>
       ) : (
-        <div className="circular w-6 h-6 relative">
-          <div className="z-30 w-5 h-5 absolute bg-white top-1/2 left-1/2 -mt-2.5 -ml-2.5 rounded-full"></div>
-          <div className="circle">
-            <div className="bar left absolute bg-white h-full w-full rounded-full clip-rect-bar">
-              <div className="progress absolute bg-green-500 z-10 h-full w-full rounded-full clip-rect-progress animate-loading"></div>
-            </div>
-            <div className="bar right absolute bg-white h-full w-full transform rotate-180 rounded-full clip-rect-bar">
-              <div className="progress absolute bg-green-500 z-20 h-full w-full rounded-full clip-rect-progress animate-loading transition delay-4000"></div>
+        <div className="flex">
+          <div className="mr-2 mt-1">
+            <div className="circular w-6 h-6 relative">
+              <div className="z-30 w-5 h-5 absolute bg-white top-1/2 left-1/2 -mt-2.5 -ml-2.5 rounded-full"></div>
+              <div className="circle">
+                <div className="bar left absolute bg-white h-full w-full rounded-full clip-rect-bar">
+                  <div
+                    className={`progress absolute bg-green-500 z-10 h-full w-full rounded-full clip-rect-progress ${animation.className}`}
+                  ></div>
+                </div>
+                <div className="bar right absolute bg-white h-full w-full transform rotate-180 rounded-full clip-rect-bar">
+                  <div
+                    className={`progress absolute bg-green-500 z-20 h-full w-full rounded-full clip-rect-progress transition ${animation.className}`}
+                  ></div>
+                </div>
+              </div>
             </div>
           </div>
+          <span className="ml-2 text-lg text-gray-400">{textField}</span>
         </div>
       )}
     </React.Fragment>
