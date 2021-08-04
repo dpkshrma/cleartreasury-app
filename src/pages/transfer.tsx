@@ -134,6 +134,7 @@ function Transfer(): JSX.Element {
                 label="You send"
                 name="money"
                 options={moneyOptions}
+                defaultValue="GBP"
               />
             </div>
             <div className="mb-8">
@@ -141,6 +142,7 @@ function Transfer(): JSX.Element {
                 label="They recieve"
                 name="money"
                 options={moneyOptions}
+                defaultValue="EUR"
               />
             </div>
             <div className="flex justify-between pb-6">
