@@ -5,7 +5,7 @@ import {
   BriefcaseIcon,
 } from "@heroicons/react/outline";
 
-type Props = {
+export type Props = {
   accounts: Client[];
   onAccountSelect: React.Dispatch<React.SetStateAction<Client>>;
 };

@@ -1,0 +1,188 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Quote Form matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="space-y-6 max-w-2xl px-4"
+  >
+    <h1
+      class="block w-full text-theme-color-on-surface text-2xl"
+    >
+      How much would you like to transfer?
+    </h1>
+    <div
+      class="w-full relative "
+    >
+      <label
+        class="text-base text-gray-700 inline-block mb-2"
+        for="money_sent"
+        id="money_sent"
+      >
+        You send
+      </label>
+      <div
+        class="flex items-stretch"
+      >
+        <div
+          class="w-full relative "
+        >
+          <input
+            class="form-input rounded-l border border-gray-300 bg-white mb-2 p-3 w-full focus:ring-teal-100 focus:border-teal-300 disabled:cursor-not-allowed placeholder-gray-400"
+            id="money_sent_amount"
+            name="money_sent_amount"
+            type="text"
+          />
+        </div>
+        <div
+          class="w-full relative "
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            aria-labelledby="downshift-0-label downshift-0-toggle-button"
+            class="form-select border border-gray-300 focus:ring-teal-100 focus:border-teal-300 disabled:cursor-not-allowed mb-2 p-3 w-full text-left whitespace-nowrap rounded-r text-theme-color-on-primary bg-theme-color-primary"
+            data-testid="currency_money_sent"
+            id="downshift-0-toggle-button"
+            name="currency_money_sent"
+            type="button"
+            value="GBP"
+          >
+            <span
+              class="w-6 inline-block mr-2 align-middle"
+            >
+              <span
+                class="flag-icon-background flag-icon-gb pl-8 bg-left bg-contain"
+              />
+            </span>
+            GBP
+          </button>
+          <ul
+            aria-labelledby="downshift-0-label"
+            class="absolute max-h-56 w-full mt-1 overflow-auto z-10"
+            id="downshift-0-menu"
+            role="listbox"
+            tabindex="-1"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="w-full relative "
+    >
+      <label
+        class="text-base text-gray-700 inline-block mb-2"
+        for="money_recieved"
+        id="money_recieved"
+      >
+        They recieve
+      </label>
+      <div
+        class="flex items-stretch"
+      >
+        <div
+          class="w-full relative "
+        >
+          <input
+            class="form-input rounded-l border border-gray-300 bg-white mb-2 p-3 w-full focus:ring-teal-100 focus:border-teal-300 disabled:cursor-not-allowed placeholder-gray-400"
+            id="money_recieved_amount"
+            name="money_recieved_amount"
+            type="text"
+          />
+        </div>
+        <div
+          class="w-full relative "
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            aria-labelledby="downshift-1-label downshift-1-toggle-button"
+            class="form-select border border-gray-300 focus:ring-teal-100 focus:border-teal-300 disabled:cursor-not-allowed mb-2 p-3 w-full text-left whitespace-nowrap rounded-r text-theme-color-on-primary bg-theme-color-primary"
+            data-testid="currency_money_recieved"
+            id="downshift-1-toggle-button"
+            name="currency_money_recieved"
+            type="button"
+            value="GBP"
+          >
+            <span
+              class="w-6 inline-block mr-2 align-middle"
+            >
+              <span
+                class="flag-icon-background flag-icon-gb pl-8 bg-left bg-contain"
+              />
+            </span>
+            GBP
+          </button>
+          <ul
+            aria-labelledby="downshift-1-label"
+            class="absolute max-h-56 w-full mt-1 overflow-auto z-10"
+            id="downshift-1-menu"
+            role="listbox"
+            tabindex="-1"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex justify-between"
+    >
+      <p
+        class="text-lg text-theme-color-on-surface"
+      >
+        Exchange rate
+      </p>
+      <div
+        class="flex"
+      >
+        <svg
+          height="28"
+          width="28"
+        >
+          <circle
+            class="circle"
+            cx="14"
+            cy="14"
+            fill-opacity="0"
+            r="12"
+            stroke="#eaeaea"
+            stroke-width="2"
+          />
+          <circle
+            cx="14"
+            cy="14"
+            fill-opacity="0"
+            r="12"
+            stroke="#01D0A2"
+            stroke-width="2"
+          />
+        </svg>
+        <span
+          class="ml-2 text-lg text-gray-400"
+        >
+          1.001
+        </span>
+      </div>
+    </div>
+    <div
+      class="flex justify-between space-x-4 border-t border-gray-200 py-6"
+    >
+      <span
+        class="text-sm text-gray-500"
+      >
+        The rate quoted is a live rate, valid for 20 seconds. You will be asked to accept a confirmed rate as part of the transfer process.
+      </span>
+      <button
+        class="inline-flex items-center justify-center
+    border border-transparent
+    ring-theme-button-primary
+    text-center leading-snug
+    rounded-theme-radius
+    focus:outline-none focus:ring-2 focus:ring-offset-2
+    transition-all duration-300
+    hover:shadow-md hover:cursor-pointer bg-theme-button-primary text-theme-color-on-primary hover:bg-theme-button-primary-hover py-3 px-8"
+      >
+        Continue
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;
