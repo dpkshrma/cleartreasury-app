@@ -10,10 +10,11 @@ describe("Steps", () => {
   });
 
   it("navigate to next step when submitting a form", async () => {
-    render(<Default />);
+    const { asFragment } = render(<Default />);
 
     fireEvent.click(screen.getByText("Continue"));
 
     expect(screen.getByRole("heading")).toHaveTextContent("Form 2A");
+    expect(asFragment()).toMatchSnapshot();
   });
 });
