@@ -3,98 +3,66 @@
 exports[`Steps matches snapshot for nested children 1`] = `
 <DocumentFragment>
   <div
-    class="min-h-full flex w-full bg-theme-color-background"
+    class="w-full"
   >
     <div
-      class="w-full"
+      class="flex justify-between"
     >
       <div
-        class="flex justify-between"
+        class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-green-500 bg-white"
       >
-        <div
-          class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-green-500 bg-white"
+        <span
+          class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"
         >
-          <span
-            class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"
-          >
-            1
-          </span>
-          <span
-            class="ml-2"
-          >
-            Amount
-          </span>
-        </div>
-        <div
-          class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-transparent"
+          1
+        </span>
+        <span
+          class="ml-2"
         >
-          <span
-            class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"
-          >
-            2
-          </span>
-          <span
-            class="ml-2"
-          >
-            Beneficiary
-          </span>
-        </div>
-        <div
-          class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-transparent"
-        >
-          <span
-            class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"
-          >
-            3
-          </span>
-          <span
-            class="ml-2"
-          >
-            Confirm & Pay
-          </span>
-        </div>
+          Amount
+        </span>
       </div>
-      <div>
-        <form>
-          <p>
-            Form 1
-          </p>
-          <button>
-            Continue
-          </button>
-        </form>
+      <div
+        class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-transparent"
+      >
+        <span
+          class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"
+        >
+          2
+        </span>
+        <span
+          class="ml-2"
+        >
+          Beneficiary
+        </span>
       </div>
+      <div
+        class="flex flex-1 pb-4 pt-3 px-2 cursor-default border-t-4 border-transparent"
+      >
+        <span
+          class="flex justify-center p-0.5 w-6 h-6 rounded-2xl text-xs text-white bg-teal-700"
+        >
+          3
+        </span>
+        <span
+          class="ml-2"
+        >
+          Confirm & Pay
+        </span>
+      </div>
+    </div>
+    <div>
+      <form
+        data-testid="form"
+      >
+        <h1>
+          Form 1
+        </h1>
+        <button>
+          Continue
+        </button>
+      </form>
     </div>
   </div>
 </DocumentFragment>
-`;
-
-exports[`Steps matches snapshot fragment for Amount text 1`] = `
-<span
-  class="ml-2"
->
-  Amount
-</span>
-`;
-
-exports[`Steps matches snapshot fragment for Step 1 form 1`] = `
-<form>
-  <p>
-    Step 1
-  </p>
-  <button>
-    Continue
-  </button>
-</form>
-`;
-
-exports[`Steps matches snapshot fragment for Step 2 form after Step 1 submit 1`] = `
-<form>
-  <p>
-    Step 2 A
-  </p>
-  <button>
-    Continue
-  </button>
-</form>
 `;
