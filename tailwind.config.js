@@ -34,7 +34,7 @@ module.exports = {
         stroke: "stroke 20s linear forwards",
         loading: "rotate 10s linear both",
         progress: "fill 20s linear 1",
-      }
+      },
     },
   },
 };
