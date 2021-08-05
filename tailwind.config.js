@@ -32,11 +32,8 @@ module.exports = {
       },
       animation: {
         stroke: "stroke 20s linear forwards",
-        loading: "rotate 4s linear both",
+        loading: "rotate 10s linear both",
         progress: "fill 20s linear 1",
-      },
-      transitionDelay: {
-        4000: "4000ms",
       },
     },
   },
