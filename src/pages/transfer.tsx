@@ -7,7 +7,7 @@ import Step from "../components/steps/Step";
 import QuoteForm from "../components/quote-form/QuoteForm";
 
 const Transfer = (): JSX.Element => (
-  <Page title="Make a trasfer">
+  <Page title="Make a transfer">
     <Steps nav={<Step />}>
       <Steps.Step
         stepTitle="Amount"

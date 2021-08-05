@@ -22,8 +22,10 @@ const Page: React.FC<Props> & StaticProperties = ({
   backgroundColor = Color.DEFAULT,
   children,
 }) => (
-  <div className={`flex flex-col w-full ${backgroundColor}`}>
-    {title && <h1 className="text-4xl text-center m-12">{title}</h1>}
+  <div className={`flex flex-col w-full h-full ${backgroundColor}`}>
+    {title && (
+      <h1 className="text-2xl md:text-4xl text-center p-4 md:p-8">{title}</h1>
+    )}
     {children}
   </div>
 );

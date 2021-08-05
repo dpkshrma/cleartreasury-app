@@ -22,7 +22,7 @@ const Surface: React.FC<Props> & StaticProperties = ({
   align = Align.LEFT,
   children,
 }) => (
-  <div className={`flex ${align} w-full py-10 bg-white`}>
+  <div className={`flex ${align} w-full py-10 px-4 bg-theme-color-surface`}>
     <div className="max-w-xl w-full">{children}</div>
   </div>
 );

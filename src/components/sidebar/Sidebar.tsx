@@ -36,7 +36,7 @@ const Sidebar = ({
       className={`w-64 ${
         sidebarOpen
           ? "fixed inset-0 flex z-40 flex-shrink-0"
-          : "hidden md:flex md:flex-shrink-0"
+          : "hidden lg:flex lg:flex-shrink-0"
       }`}
     >
       <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-teal-700">
@@ -70,9 +70,9 @@ const Sidebar = ({
         </Link>
 
         <div className="p-4 flex flex-col">
-          {/* <Link href="/transfer"> */}
-          <Button>Make a transfer</Button>
-          {/* </Link> */}
+          <Link href="/transfer">
+            <Button>Make a transfer</Button>
+          </Link>
         </div>
 
         <nav>
