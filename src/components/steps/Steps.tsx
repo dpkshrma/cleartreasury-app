@@ -29,12 +29,12 @@ const Steps = ({ nav, children, onComplete }: Props): JSX.Element => {
       : null;
 
   return (
-    <div className="tabs w-full px-48 pt-20">
-      <div className="flex justify-between">
+    <div className="w-full">
+      <div className="sm:flex justify-between">
         <Nav />
       </div>
 
-      <div className="pt-10">
+      <div>
         {children.map((child, index) => {
           return (
             index === activeStep &&
