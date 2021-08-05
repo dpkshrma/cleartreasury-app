@@ -62,9 +62,9 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
         <p className="text-lg text-theme-color-on-surface">Exchange rate</p>
 
         <div className="flex">
-          {/* eslint-disable-next-line no-console */}
           <Countdown
             time={20}
+            /* eslint-disable-next-line no-console */
             onComplete={() => console.log("Finished")}
             text="1.001"
           />
