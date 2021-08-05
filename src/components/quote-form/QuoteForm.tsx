@@ -1,56 +1,82 @@
 import * as React from "react";
-import Countdown from "../countdown/Countdown";
 import { Button, MoneyInput } from "@clear-treasury/design-system";
-import "flag-icon-css/css/flag-icon.css"; //This is imported in the select component in the design system - should be global?
+import Countdown from "../countdown/Countdown";
+import currencies from "./data/currencies.json";
+import { MoneyInputRef } from "@clear-treasury/design-system/dist/components/money-input/MoneyInput";
 
-export interface CurrencyOptionProps {
-  label?: string;
-  value?: string;
-  icon?: React.ReactNode;
-  isHighlighted?: boolean;
+export interface QuoteFormData {
+  sell_amount?: number;
+  currency_sell: string;
+  buy_amount?: number;
+  currency_buy: string;
+  value_date: string;
 }
 
 export interface QuoteFormProps {
   title: string;
-  currencies: CurrencyOptionProps[];
+  onComplete?: (formData: QuoteFormData) => void;
 }
 
-type Ref = HTMLFormElement;
+const currencyList = currencies.map(({ CurrencyCode }) => CurrencyCode);
 
-const QuoteForm = React.forwardRef<Ref, QuoteFormProps>((props) => {
+const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
+  const sell = React.useRef<MoneyInputRef | null>(null);
+  const buy = React.useRef<MoneyInputRef | null>(null);
+
+  const submitHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    onComplete({
+      sell_amount: sell.current.amount.value,
+      currency_sell: sell.current.currency.value,
+      buy_amount: buy.current.amount.value,
+      currency_buy: buy.current.currency.value,
+      value_date: "", // TODO: calculate value date
+    });
+  };
+
   return (
-    <div className="space-y-6 max-w-2xl px-4">
-      {/* ^^ Max width and padding not 100% right. Might depend on parent container? */}
+    <form onSubmit={submitHandler} className="space-y-6">
+      {/* TODO: ^^ Max width and padding not 100% right. Might depend on parent container? */}
       <h1 className="block w-full text-theme-color-on-surface text-2xl">
-        {props.title}
+        {title}
       </h1>
+
       <MoneyInput
-        options={props.currencies}
-        name="money_sent"
+        ref={sell}
+        name="sell"
         label="You send"
+        currencies={currencyList}
       />
+
       <MoneyInput
-        options={props.currencies}
-        name="money_recieved"
+        ref={buy}
+        name="buy"
         label="They recieve"
+        defaultValue="EUR"
+        currencies={currencyList}
       />
+
       <div className="flex justify-between">
         <p className="text-lg text-theme-color-on-surface">Exchange rate</p>
+
         <div className="flex">
           {/* eslint-disable-next-line no-console */}
-          <Countdown time={2} onComplete={() => console.log("Finished")} />
+          <Countdown time={2000} onComplete={() => console.log("Finished")} />
           <span className="ml-2 text-lg text-gray-400">1.001</span>
         </div>
       </div>
+
       <div className="flex justify-between space-x-4 border-t border-gray-200 py-6">
         <span className="text-sm text-gray-500">
           The rate quoted is a live rate, valid for 20 seconds. You will be
           asked to accept a confirmed rate as part of the transfer process.
         </span>
+
         <Button size={Button.Size.LARGE}>Continue</Button>
       </div>
-    </div>
+    </form>
   );
-});
+};
 
 export default QuoteForm;
