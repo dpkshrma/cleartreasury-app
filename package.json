@@ -14,7 +14,7 @@
     "format": "prettier --write .",
     "type-check": "tsc --pretty --noEmit",
     "test-all": "npm run lint && npm run type-check && npm test",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -s ./public -p 6006",
     "build-storybook": "build-storybook"
   },
   "lint-staged": {
