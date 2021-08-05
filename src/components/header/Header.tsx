@@ -9,13 +9,13 @@ import {
   SwitchHorizontalIcon,
 } from "@heroicons/react/outline";
 
-type HeaderProps = {
+export interface HeaderProps {
   setSidebarOpen: any;
   client: any;
   sidebarOpen: boolean;
   setUser: any;
   setClient: any;
-};
+}
 
 const Header = ({
   sidebarOpen,
@@ -97,7 +97,7 @@ const Header = ({
             <a
               href="#"
               onClick={signOut}
-              className="flex px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 justify-end"
+              className="flex px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 justify-end border-t border-gray-200"
             >
               Sign out <LogoutIcon className="h-5 w-5 ml-2" />
             </a>
