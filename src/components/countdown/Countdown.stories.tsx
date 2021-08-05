@@ -25,6 +25,20 @@ export const Text: React.VFC<Record<string, never>> = () => {
   }, 5000);
 
   return (
-    <Countdown time={2} onComplete={() => delay(20000)} text={text} /> // eslint-disable-line no-console
+    <Countdown time={10} onComplete={() => delay(20000)} text={text} /> // eslint-disable-line no-console
+  );
+};
+
+export const Progress: React.VFC<Record<string, never>> = () => {
+  const [text, setText] = React.useState(
+    "This quote will expire in 10 seconds"
+  );
+
+  setTimeout(() => {
+    setText("text changed!");
+  }, 2000);
+
+  return (
+    <Countdown time={10} onComplete={() => delay(20000)} progress text={text} /> // eslint-disable-line no-console
   );
 };

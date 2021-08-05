@@ -38,14 +38,14 @@ type CountdownProps = {
 const Countdown = ({
   time,
   onComplete,
-  progress,
+  progress = false,
   text,
 }: CountdownProps): JSX.Element => {
   const [ms, setMs] = React.useState(time);
   const [animation, setAnimation] = React.useState({
-    className: "",
+    loading: "",
     started: false,
-    finished: false,
+    delay: "",
   });
   const [textField, setTextField] = React.useState(text);
 
@@ -62,23 +62,48 @@ const Countdown = ({
 
   React.useEffect(() => {
     if (animation.started) {
-      setAnimation(() => ({
-        ...animation,
-        started: false,
-        className: "",
-      }));
-      setTimeout(() => {
+      if (!progress) {
         setAnimation(() => ({
           ...animation,
-          className: "animate-loading",
+          started: false,
+          loading: "",
+          delay: "",
         }));
-      }, 1);
+        setTimeout(() => {
+          setAnimation(() => ({
+            ...animation,
+            loading: `rotate ${time}s linear both`,
+            delay: `${time}s`,
+          }));
+        }, 10);
+      } else {
+        setAnimation(() => ({
+          ...animation,
+          started: false,
+          loading: "",
+        }));
+        setTimeout(() => {
+          setAnimation(() => ({
+            ...animation,
+            loading: `fill ${time}s linear 1`,
+          }));
+        }, 10);
+      }
     } else {
-      setAnimation(() => ({
-        ...animation,
-        started: true,
-        className: "animate-loading",
-      }));
+      if (!progress) {
+        setAnimation(() => ({
+          ...animation,
+          started: true,
+          loading: `rotate ${time}s linear both`,
+          delay: `${time}s`,
+        }));
+      } else {
+        setAnimation(() => ({
+          ...animation,
+          started: true,
+          loading: `fill ${time}s linear 1`,
+        }));
+      }
     }
     setTextField(text);
   }, [text]);
@@ -86,12 +111,15 @@ const Countdown = ({
   return (
     <React.Fragment>
       {progress ? (
-        <div>
+        <div className="grid justify-items-center">
           <div className="bg-green-100 border border-green-700 h-10 rounded w-80 mb-4">
-            <div className="animate-progress bg-green-600 h-full"></div>
+            <div
+              className="bg-green-600 h-full"
+              style={{ animation: `${animation.loading}` }}
+            ></div>
           </div>
           <span className="text-gray-400 text-base text-center block">
-            This quote will expire in 20 seconds
+            {textField}
           </span>
         </div>
       ) : (
@@ -103,15 +131,15 @@ const Countdown = ({
                 <div className="bar left absolute bg-white h-full w-full rounded-full clip-rect-bar">
                   <div
                     className={`progress absolute bg-green-500 z-10 h-full w-full rounded-full clip-rect-progress`}
-                    style={{ animation: `rotate ${time}s linear both` }}
+                    style={{ animation: `${animation.loading}` }}
                   ></div>
                 </div>
                 <div className="bar right absolute bg-white h-full w-full transform rotate-180 rounded-full clip-rect-bar">
                   <div
                     className={`progress absolute bg-green-500 z-20 h-full w-full rounded-full clip-rect-progress transition`}
                     style={{
-                      animation: `rotate ${time}s linear both`,
-                      animationDelay: `${time}s`,
+                      animation: `${animation.loading}`,
+                      animationDelay: `${animation.delay}`,
                     }}
                   ></div>
                 </div>
