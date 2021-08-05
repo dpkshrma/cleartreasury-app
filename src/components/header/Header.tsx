@@ -1,5 +1,6 @@
 import React from "react";
 import Router from "next/router";
+import { Auth } from "aws-amplify";
 import {
   MenuIcon,
   ChevronDownIcon,
@@ -13,6 +14,7 @@ type HeaderProps = {
   client: any;
   sidebarOpen: boolean;
   setUser: any;
+  setClient: any;
 };
 
 const Header = ({
@@ -42,7 +44,7 @@ const Header = ({
     <header className="relative z-10 flex-shrink-0 flex h-14 bg-theme-color-surface shadow">
       <button
         type="button"
-        className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+        className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         <span className="sr-only">Open sidebar</span>
@@ -75,7 +77,7 @@ const Header = ({
           >
             <a
               href="#"
-              // onClick={signOut}
+              onClick={signOut}
               className="flex px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 justify-end"
             >
               Profile <UserIcon className="h-5 w-5 ml-2" />

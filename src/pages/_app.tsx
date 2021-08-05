@@ -105,6 +105,7 @@ const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
               setSidebarOpen={setSidebarOpen}
               client={client}
               setUser={setUser}
+              setClient={setClient}
             />
           )}
 
