@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export const Align = {
+const Align = {
   LEFT: "justify-start",
   RIGHT: "justify-end",
   CENTER: "justify-center",
@@ -19,15 +19,9 @@ type Props = {
 };
 
 const Surface: React.FC<Props> & StaticProperties = ({
+  align = Align.LEFT,
   children,
-  align = Align.CENTER,
-}) => (
-  <div className="w-full py-10 bg-white">
-    <div className={`flex ${align}`}>
-      <div className="max-w-xl w-full">{children}</div>
-    </div>
-  </div>
-);
+}) => <div className={`flex ${align} w-full py-10 bg-white`}>{children}</div>;
 
 Surface.Align = Align;
 
