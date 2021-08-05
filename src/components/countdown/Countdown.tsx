@@ -102,12 +102,17 @@ const Countdown = ({
               <div className="circle">
                 <div className="bar left absolute bg-white h-full w-full rounded-full clip-rect-bar">
                   <div
-                    className={`progress absolute bg-green-500 z-10 h-full w-full rounded-full clip-rect-progress ${animation.className}`}
+                    className={`progress absolute bg-green-500 z-10 h-full w-full rounded-full clip-rect-progress`}
+                    style={{ animation: `rotate ${time}s linear both` }}
                   ></div>
                 </div>
                 <div className="bar right absolute bg-white h-full w-full transform rotate-180 rounded-full clip-rect-bar">
                   <div
-                    className={`progress absolute bg-green-500 z-20 h-full w-full rounded-full clip-rect-progress transition ${animation.className}`}
+                    className={`progress absolute bg-green-500 z-20 h-full w-full rounded-full clip-rect-progress transition`}
+                    style={{
+                      animation: `rotate ${time}s linear both`,
+                      animationDelay: `${time}s`,
+                    }}
                   ></div>
                 </div>
               </div>
