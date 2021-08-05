@@ -47,13 +47,14 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
         name="sell"
         label="You send"
         currencies={currencyList}
+        defaultValue={{ amount: "1000", currency: "GBP" }}
       />
 
       <MoneyInput
         ref={buy}
         name="buy"
         label="They recieve"
-        defaultValue="EUR"
+        defaultValue={{ currency: "EUR" }}
         currencies={currencyList}
       />
 
@@ -62,8 +63,11 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
 
         <div className="flex">
           {/* eslint-disable-next-line no-console */}
-          <Countdown time={2000} onComplete={() => console.log("Finished")} />
-          <span className="ml-2 text-lg text-gray-400">1.001</span>
+          <Countdown
+            time={20}
+            onComplete={() => console.log("Finished")}
+            text="1.001"
+          />
         </div>
       </div>
 
