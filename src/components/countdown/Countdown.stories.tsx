@@ -14,7 +14,7 @@ const delay = (time: number) => {
 };
 
 export const Primary: React.VFC<Record<string, never>> = () => (
-  <Countdown time={10} onComplete={() => delay(20000)} /> // eslint-disable-line no-console
+  <Countdown time={10000} onComplete={() => delay(20000)} /> // eslint-disable-line no-console
 );
 
 export const Text: React.VFC<Record<string, never>> = () => {
@@ -25,7 +25,7 @@ export const Text: React.VFC<Record<string, never>> = () => {
   }, 5000);
 
   return (
-    <Countdown time={10} onComplete={() => delay(20000)} text={text} /> // eslint-disable-line no-console
+    <Countdown time={10000} onComplete={() => delay(20000)} text={text} /> // eslint-disable-line no-console
   );
 };
 
@@ -39,6 +39,11 @@ export const Progress: React.VFC<Record<string, never>> = () => {
   }, 2000);
 
   return (
-    <Countdown time={10} onComplete={() => delay(20000)} progress text={text} /> // eslint-disable-line no-console
+    <Countdown
+      time={10000}
+      onComplete={() => delay(20000)} // eslint-disable-line no-console
+      progress
+      text={text}
+    />
   );
 };
