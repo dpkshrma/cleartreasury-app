@@ -14,7 +14,7 @@ const Steps = ({ nav, children, onComplete }: Props): JSX.Element => {
 
   const Nav = (): JSX.Element | null =>
     nav ? (
-      <div className="flex justify-between mx-auto w-4/5">
+      <div className="sm:flex justify-center sm:mx-4">
         {children.map((child, index) =>
           React.cloneElement(nav, {
             key: index,
