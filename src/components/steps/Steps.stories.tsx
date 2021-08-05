@@ -34,14 +34,14 @@ const Form3 = (props) => <Form name="Form 3" {...props} />;
 export const StepsStory: React.VFC<Record<string, never>> = () => (
   <Page>
     <Steps nav={<Step />}>
-      <Steps.Step title="Amount" form={<Form1 />} />
-      <Steps.Step title="Beneficiary">
+      <Steps.Step stepTitle="Amount" form={<Form1 />} />
+      <Steps.Step stepTitle="Beneficiary">
         <Steps>
           <Steps.Step form={<Form2A />} />
           <Steps.Step form={<Form2B />} />
         </Steps>
       </Steps.Step>
-      <Steps.Step title="Confirm & Pay" form={<Form3 />} />
+      <Steps.Step stepTitle="Confirm & Pay" form={<Form3 />} />
     </Steps>
   </Page>
 );
