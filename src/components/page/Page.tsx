@@ -12,7 +12,7 @@ type StaticProperties = {
 type Values<T> = T[keyof T];
 
 type Props = {
-  title: string;
+  title?: string;
   backgroundColor?: Values<typeof Color>;
   children: React.ReactNode;
 };
