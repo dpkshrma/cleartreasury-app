@@ -22,6 +22,7 @@ const Header = ({
   setSidebarOpen,
   client,
   setUser,
+  setClient,
 }: HeaderProps): JSX.Element => {
   async function signOut(event: React.SyntheticEvent) {
     event.preventDefault();
