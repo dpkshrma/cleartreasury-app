@@ -19,11 +19,11 @@ const navigation = [
   { href: "/help", icon: SupportIcon, text: "Help and Support" },
 ];
 
-type SidebarProps = {
+export interface SidebarProps {
   router: any;
   sidebarOpen: boolean;
   setSidebarOpen: any;
-};
+}
 
 const Sidebar = ({
   setSidebarOpen,
