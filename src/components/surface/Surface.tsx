@@ -21,7 +21,11 @@ type Props = {
 const Surface: React.FC<Props> & StaticProperties = ({
   align = Align.LEFT,
   children,
-}) => <div className={`flex ${align} w-full py-10 bg-white`}>{children}</div>;
+}) => (
+  <div className={`flex ${align} w-full py-10 bg-white`}>
+    <div className="max-w-xl w-full">{children}</div>
+  </div>
+);
 
 Surface.Align = Align;
 

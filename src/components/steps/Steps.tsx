@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { State } from "./Step";
+import Surface from "../surface/Surface";
 
 type Props = {
   nav?: React.ReactElement;
@@ -11,14 +12,14 @@ const Steps = ({ nav, children, onComplete }: Props): JSX.Element => {
   const [activeStep, setActiveStep] = useState(0);
   const [formState, setFormState] = useState({});
 
-  const Nav = (): any =>
+  const Nav = (): JSX.Element | null =>
     nav ? (
-      <div className="flex justify-between">
+      <div className="flex justify-between mx-auto w-4/5">
         {children.map((child, index) =>
           React.cloneElement(nav, {
             key: index,
             step: index,
-            title: child.props.title,
+            title: child.props.stepTitle,
             state:
               activeStep === index
                 ? State.ACTIVE
@@ -31,10 +32,10 @@ const Steps = ({ nav, children, onComplete }: Props): JSX.Element => {
     ) : null;
 
   return (
-    <div className="w-full">
+    <>
       <Nav />
 
-      <div>
+      <Surface align={Surface.Align.CENTER}>
         {children.map((child, index) => {
           return (
             index === activeStep &&
@@ -54,14 +55,14 @@ const Steps = ({ nav, children, onComplete }: Props): JSX.Element => {
             })
           );
         })}
-      </div>
-    </div>
+      </Surface>
+    </>
   );
 };
 
 type StepItemProps = {
   form?: any;
-  title?: string;
+  stepTitle?: string;
   children?: React.ReactElement;
 };
 
