@@ -17,12 +17,19 @@ export interface QuoteFormProps {
   onComplete?: (formData: QuoteFormData) => void;
 }
 
+const defaultValues = {
+  sell: { amount: "1000", currency: "GBP" },
+  buy: { currency: "EUR" },
+};
+
 const currencyList = currencies.map(({ CurrencyCode }) => CurrencyCode);
+const receiveCurrencyList = currencyList.filter(
+  (CurrencyCode) => CurrencyCode !== defaultValues.sell.currency
+);
 
 const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
   const sell = React.useRef<MoneyInputRef | null>(null);
   const buy = React.useRef<MoneyInputRef | null>(null);
-  const [receiveCurrencyList, setReceiveCurrencyList] = React.useState([]);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -36,13 +43,6 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
     });
   };
 
-  React.useEffect(() => {
-    const arr = currencyList.filter(
-      (CurrencyCode) => CurrencyCode !== sell.current.currency.value
-    );
-    setReceiveCurrencyList(arr);
-  }, [sell]);
-
   return (
     <form onSubmit={submitHandler} className="space-y-6">
       {/* TODO: ^^ Max width and padding not 100% right. Might depend on parent container? */}
@@ -55,14 +55,14 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
         name="sell"
         label="You send"
         currencies={currencyList}
-        defaultValue={{ amount: "1000", currency: "GBP" }}
+        defaultValue={defaultValues.sell}
       />
 
       <MoneyInput
         ref={buy}
         name="buy"
         label="They recieve"
-        defaultValue={{ currency: "EUR" }}
+        defaultValue={defaultValues.buy}
         currencies={receiveCurrencyList}
       />
 
