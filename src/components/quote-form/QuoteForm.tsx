@@ -18,13 +18,11 @@ export interface QuoteFormProps {
 }
 
 const currencyList = currencies.map(({ CurrencyCode }) => CurrencyCode);
-const receiveCurrencyList = currencyList.filter(
-  (CurrencyCode) => CurrencyCode !== "GBP"
-);
 
 const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
   const sell = React.useRef<MoneyInputRef | null>(null);
   const buy = React.useRef<MoneyInputRef | null>(null);
+  const [receiveCurrencyList, setReceiveCurrencyList] = React.useState([]);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -37,6 +35,13 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
       value_date: "", // TODO: calculate value date
     });
   };
+
+  React.useEffect(() => {
+    const arr = currencyList.filter(
+      (CurrencyCode) => CurrencyCode !== sell.current.currency.value
+    );
+    setReceiveCurrencyList(arr);
+  }, [sell]);
 
   return (
     <form onSubmit={submitHandler} className="space-y-6">
