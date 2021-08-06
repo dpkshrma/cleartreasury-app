@@ -31,13 +31,23 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
   const sell = React.useRef<MoneyInputData | null>(null);
   const buy = React.useRef<MoneyInputData | null>(null);
 
+  const onChange = (data: MoneyInputData, direction: string) => {
+    /* eslint-disable-next-line no-console */
+    console.log("🚀 ~ file: QuoteForm.tsx ~ line 35 ~ onChange ~ data", data);
+    /* eslint-disable-next-line no-console */
+    console.log(
+      "🚀 ~ file: QuoteForm.tsx ~ line 35 ~ onChange ~ direction",
+      direction
+    );
+  };
+
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
     onComplete({
-      sell_amount: parseInt(sell.current.amount),
+      sell_amount: parseInt(sell.current.amount) || 0,
       currency_sell: sell.current.currency,
-      buy_amount: parseInt(buy.current.amount),
+      buy_amount: parseInt(buy.current.amount) || 0,
       currency_buy: buy.current.currency,
       value_date: "", // TODO: calculate value date
     });
@@ -54,6 +64,7 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
         ref={sell}
         name="sell"
         label="You send"
+        onChange={(data) => onChange(data, "sell")}
         currencies={currencyList}
         defaultValue={defaultValues.sell}
       />
@@ -62,6 +73,7 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
         ref={buy}
         name="buy"
         label="They recieve"
+        onChange={(data) => onChange(data, "buy")}
         defaultValue={defaultValues.buy}
         currencies={receiveCurrencyList}
       />
