@@ -18,6 +18,9 @@ export interface QuoteFormProps {
 }
 
 const currencyList = currencies.map(({ CurrencyCode }) => CurrencyCode);
+const receiveCurrencyList = currencyList.filter(
+  (CurrencyCode) => CurrencyCode !== "GBP"
+);
 
 const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
   const sell = React.useRef<MoneyInputRef | null>(null);
@@ -55,7 +58,7 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
         name="buy"
         label="They recieve"
         defaultValue={{ currency: "EUR" }}
-        currencies={currencyList}
+        currencies={receiveCurrencyList}
       />
 
       <div className="flex justify-between">
