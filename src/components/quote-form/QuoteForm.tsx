@@ -2,7 +2,7 @@ import * as React from "react";
 import { Button, MoneyInput } from "@clear-treasury/design-system";
 import Countdown from "../countdown/Countdown";
 import currencies from "./data/currencies.json";
-import { MoneyInputRef } from "@clear-treasury/design-system/dist/components/money-input/MoneyInput";
+import { MoneyInputData } from "@clear-treasury/design-system/dist/components/money-input/MoneyInput";
 
 export interface QuoteFormData {
   sell_amount?: number;
@@ -28,17 +28,17 @@ const receiveCurrencyList = currencyList.filter(
 );
 
 const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
-  const sell = React.useRef<MoneyInputRef | null>(null);
-  const buy = React.useRef<MoneyInputRef | null>(null);
+  const sell = React.useRef<MoneyInputData | null>(null);
+  const buy = React.useRef<MoneyInputData | null>(null);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
     onComplete({
-      sell_amount: sell.current.amount.value,
-      currency_sell: sell.current.currency.value,
-      buy_amount: buy.current.amount.value,
-      currency_buy: buy.current.currency.value,
+      sell_amount: parseInt(sell.current.amount),
+      currency_sell: sell.current.currency,
+      buy_amount: parseInt(buy.current.amount),
+      currency_buy: buy.current.currency,
       value_date: "", // TODO: calculate value date
     });
   };
