@@ -17,7 +17,15 @@ export interface QuoteFormProps {
   onComplete?: (formData: QuoteFormData) => void;
 }
 
+const defaultValues = {
+  sell: { amount: "1000", currency: "GBP" },
+  buy: { currency: "EUR" },
+};
+
 const currencyList = currencies.map(({ CurrencyCode }) => CurrencyCode);
+const receiveCurrencyList = currencyList.filter(
+  (CurrencyCode) => CurrencyCode !== defaultValues.sell.currency
+);
 
 const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
   const sell = React.useRef<MoneyInputRef | null>(null);
@@ -47,15 +55,15 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
         name="sell"
         label="You send"
         currencies={currencyList}
-        defaultValue={{ amount: "1000", currency: "GBP" }}
+        defaultValue={defaultValues.sell}
       />
 
       <MoneyInput
         ref={buy}
         name="buy"
         label="They recieve"
-        defaultValue={{ currency: "EUR" }}
-        currencies={currencyList}
+        defaultValue={defaultValues.buy}
+        currencies={receiveCurrencyList}
       />
 
       <div className="flex justify-between">
