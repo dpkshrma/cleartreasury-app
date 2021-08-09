@@ -1,8 +1,12 @@
 import * as React from "react";
 import { Button, MoneyInput } from "@clear-treasury/design-system";
+import { MoneyInputRef } from "@clear-treasury/design-system/dist/components/money-input/MoneyInput";
+import { useQuery } from "../../hooks/useQuery";
+import { GET_QUOTE } from "../../graphql/clients/queries";
 import Countdown from "../countdown/Countdown";
+
+// TODO: pull this back from the API eventually
 import currencies from "./data/currencies.json";
-import { MoneyInputData } from "@clear-treasury/design-system/dist/components/money-input/MoneyInput";
 
 export interface QuoteFormData {
   sell_amount?: number;
@@ -10,6 +14,7 @@ export interface QuoteFormData {
   buy_amount?: number;
   currency_buy: string;
   value_date: string;
+  client_ref: string;
 }
 
 export interface QuoteFormProps {
@@ -27,30 +32,42 @@ const receiveCurrencyList = currencyList.filter(
   (CurrencyCode) => CurrencyCode !== defaultValues.sell.currency
 );
 
-const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
-  const sell = React.useRef<MoneyInputData | null>(null);
-  const buy = React.useRef<MoneyInputData | null>(null);
+const today = new Date()
+  .toLocaleDateString("en-GB")
+  .split("/")
+  .reverse()
+  .join("");
 
-  const onChange = (data: MoneyInputData, direction: string) => {
-    /* eslint-disable-next-line no-console */
-    console.log("🚀 ~ file: QuoteForm.tsx ~ line 35 ~ onChange ~ data", data);
-    /* eslint-disable-next-line no-console */
-    console.log(
-      "🚀 ~ file: QuoteForm.tsx ~ line 35 ~ onChange ~ direction",
-      direction
-    );
+const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
+  const sell = React.useRef<MoneyInputRef | null>(null);
+  const buy = React.useRef<MoneyInputRef | null>(null);
+
+  const [formData, setFormData] = React.useState<QuoteFormData>({
+    currency_sell: defaultValues.sell.currency,
+    currency_buy: defaultValues.buy.currency,
+    sell_amount: parseInt(defaultValues.sell.amount, 10),
+    value_date: today, // TODO: to be fixed as part of PAY-35
+    client_ref: "C00001396", // TODO: this needs to come from user context instead
+  });
+
+  // TODO: validation, error handling, blah blah :D
+  const { data: quote } = useQuery(GET_QUOTE, formData);
+
+  const onChange = () => {
+    setFormData({
+      currency_sell: sell.current?.currency.current?.value,
+      currency_buy: buy.current?.currency.current?.value,
+      sell_amount:
+        parseInt(sell.current?.amount.current?.value, 10) || undefined,
+      buy_amount: parseInt(buy.current?.amount.current?.value, 10) || undefined,
+      value_date: today,
+      client_ref: "C00001396",
+    });
   };
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-
-    onComplete({
-      sell_amount: parseInt(sell.current.amount) || 0,
-      currency_sell: sell.current.currency,
-      buy_amount: parseInt(buy.current.amount) || 0,
-      currency_buy: buy.current.currency,
-      value_date: "", // TODO: calculate value date
-    });
+    onComplete(quote);
   };
 
   return (
@@ -64,7 +81,7 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
         ref={sell}
         name="sell"
         label="You send"
-        onChange={(data) => onChange(data, "sell")}
+        onChange={onChange}
         currencies={currencyList}
         defaultValue={defaultValues.sell}
       />
@@ -73,7 +90,7 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
         ref={buy}
         name="buy"
         label="They recieve"
-        onChange={(data) => onChange(data, "buy")}
+        onChange={onChange}
         defaultValue={defaultValues.buy}
         currencies={receiveCurrencyList}
       />
@@ -86,7 +103,7 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
             time={20}
             /* eslint-disable-next-line no-console */
             onComplete={() => console.log("Finished")}
-            text="1.001"
+            text={quote?.quote_rate || ""}
           />
         </div>
       </div>
