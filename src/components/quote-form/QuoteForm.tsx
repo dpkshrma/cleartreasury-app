@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Button, MoneyInput } from "@clear-treasury/design-system";
 import { MoneyInputRef } from "@clear-treasury/design-system/dist/components/money-input/MoneyInput";
+import { Client } from "../../pages/_app";
 import { useQuery } from "../../hooks/useQuery";
 import { GET_QUOTE } from "../../graphql/clients/queries";
 import Countdown from "../countdown/Countdown";
@@ -19,6 +20,7 @@ export interface QuoteFormData {
 
 export interface QuoteFormProps {
   title: string;
+  client?: Client;
   onComplete?: (formData: QuoteFormData) => void;
 }
 
@@ -38,7 +40,11 @@ const today = new Date()
   .reverse()
   .join("");
 
-const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
+const QuoteForm = ({
+  client,
+  title,
+  onComplete,
+}: QuoteFormProps): JSX.Element => {
   const sell = React.useRef<MoneyInputRef | null>(null);
   const buy = React.useRef<MoneyInputRef | null>(null);
 
@@ -46,22 +52,41 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
     currency_sell: defaultValues.sell.currency,
     currency_buy: defaultValues.buy.currency,
     sell_amount: parseInt(defaultValues.sell.amount, 10),
-    value_date: today, // TODO: to be fixed as part of PAY-35
-    client_ref: "C00001396", // TODO: this needs to come from user context instead
+    client_ref: client?.cli_reference,
+    value_date: today, // TODO: to be fixed by PAY-35
   });
 
   // TODO: validation, error handling, blah blah :D
   const { data: quote } = useQuery(GET_QUOTE, formData);
 
-  const onChange = () => {
+  React.useEffect(() => {
+    if (quote) {
+      if (formData.buy_amount) {
+        sell.current.amount.current.value = quote.sell_amount;
+      }
+      if (formData.sell_amount) {
+        buy.current.amount.current.value = quote?.buy_amount;
+      }
+    }
+  }, [quote, formData.buy_amount, formData.sell_amount]);
+
+  const sellChange = () => {
     setFormData({
+      ...formData,
       currency_sell: sell.current?.currency.current?.value,
       currency_buy: buy.current?.currency.current?.value,
-      sell_amount:
-        parseInt(sell.current?.amount.current?.value, 10) || undefined,
-      buy_amount: parseInt(buy.current?.amount.current?.value, 10) || undefined,
-      value_date: today,
-      client_ref: "C00001396",
+      sell_amount: parseInt(sell.current?.amount.current?.value, 10) || 0,
+      buy_amount: undefined,
+    });
+  };
+
+  const buyChange = () => {
+    setFormData({
+      ...formData,
+      currency_sell: sell.current?.currency.current?.value,
+      currency_buy: buy.current?.currency.current?.value,
+      buy_amount: parseInt(buy.current?.amount.current?.value, 10) || 0,
+      sell_amount: undefined,
     });
   };
 
@@ -81,7 +106,7 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
         ref={sell}
         name="sell"
         label="You send"
-        onChange={onChange}
+        onChange={sellChange}
         currencies={currencyList}
         defaultValue={defaultValues.sell}
       />
@@ -90,7 +115,7 @@ const QuoteForm = ({ title, onComplete }: QuoteFormProps): JSX.Element => {
         ref={buy}
         name="buy"
         label="They recieve"
-        onChange={onChange}
+        onChange={buyChange}
         defaultValue={defaultValues.buy}
         currencies={receiveCurrencyList}
       />
