@@ -41,7 +41,7 @@ const Countdown = ({
   progress = false,
   text,
 }: CountdownProps): JSX.Element => {
-  const seconds = time / 1000;
+  const seconds = time / 1000 / 2;
   const [ms, setMs] = React.useState(time);
   const [textField, setTextField] = React.useState(text);
   const [animation, setAnimation] = React.useState({
