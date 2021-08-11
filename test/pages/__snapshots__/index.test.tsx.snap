@@ -3,7 +3,7 @@
 exports[`Dashboard page matches snapshot for CORPORATE client 1`] = `
 <DocumentFragment>
   <div
-    class="min-h-full flex w-full bg-theme-color-background"
+    class="flex flex-col w-full h-full bg-theme-color-background"
   >
     <div
       class="m-12"
@@ -26,7 +26,7 @@ exports[`Dashboard page matches snapshot for CORPORATE client 1`] = `
 exports[`Dashboard page matches snapshot for PRIVATE client 1`] = `
 <DocumentFragment>
   <div
-    class="min-h-full flex w-full bg-theme-color-background"
+    class="flex flex-col w-full h-full bg-theme-color-background"
   >
     <div
       class="m-12"

@@ -30,15 +30,15 @@ const Form2A = (props) => <Form name="Form 2A" {...props} />;
 const Form2B = (props) => <Form name="Form 2B" {...props} />;
 const Form3 = (props) => <Form name="Form 3" {...props} />;
 
-export const Default: Story<Record<string, unknown>> = () => (
+export const Default: Story = () => (
   <Steps nav={<Step />}>
-    <Steps.Step title="Amount" form={<Form1 />} />
-    <Steps.Step title="Beneficiary">
+    <Steps.Step stepTitle="Step 1" form={<Form1 />} />
+    <Steps.Step stepTitle="Step 2">
       <Steps>
         <Steps.Step form={<Form2A />} />
         <Steps.Step form={<Form2B />} />
       </Steps>
     </Steps.Step>
-    <Steps.Step title="Confirm & Pay" form={<Form3 />} />
+    <Steps.Step stepTitle="Step 3" form={<Form3 />} />
   </Steps>
 );

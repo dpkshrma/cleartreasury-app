@@ -1,8 +1,10 @@
-@import url("https://use.typekit.net/xen1fxp.css");
+@import "https://use.typekit.net/xen1fxp.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "@clear-treasury/design-system/dist/styles.min.css";
 
 .circle {
   stroke-dasharray: 1000;
@@ -14,4 +16,18 @@
   to {
     stroke-dashoffset: 0;
   }
+}
+
+@layer utilities {
+  .clip-rect-bar {
+    clip: rect(0px, 1.5rem, 1.5rem, 0.75rem);
+  }
+
+  .clip-rect-progress {
+    clip: rect(0px, 0.75rem, 1.5rem, 0px);
+  }
+}
+
+.circle .right .progress {
+  animation-delay: 10s;
 }

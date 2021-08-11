@@ -2,27 +2,43 @@
 
 exports[`Countdown matches snapshot for icon 1`] = `
 <DocumentFragment>
-  <svg
-    height="28"
-    width="28"
+  <div
+    class="flex"
   >
-    <circle
-      class="circle"
-      cx="14"
-      cy="14"
-      fill-opacity="0"
-      r="12"
-      stroke="#eaeaea"
-      stroke-width="2"
+    <div
+      class="mr-2 mt-1"
+    >
+      <div
+        class="circular w-6 h-6 relative"
+      >
+        <div
+          class="circle"
+        >
+          <div
+            class="bar right absolute bg-white h-full w-full transform rotate-180 rounded-full clip-rect-bar"
+          >
+            <div
+              class="progress absolute bg-green-500 h-full w-full rounded-full clip-rect-progress transition"
+              style="animation: rotate 5s linear both; animation-delay: 5s;"
+            />
+          </div>
+          <div
+            class="bar left absolute bg-white h-full w-full rounded-full clip-rect-bar"
+          >
+            <div
+              class="progress absolute bg-green-500 h-full w-full rounded-full clip-rect-progress"
+              style="animation: rotate 5s linear both;"
+            />
+          </div>
+        </div>
+        <div
+          class="w-5 h-5 absolute bg-white top-1/2 left-1/2 -mt-2.5 -ml-2.5 rounded-full"
+        />
+      </div>
+    </div>
+    <span
+      class="ml-2 text-lg text-gray-400"
     />
-    <circle
-      cx="14"
-      cy="14"
-      fill-opacity="0"
-      r="12"
-      stroke="#01D0A2"
-      stroke-width="2"
-    />
-  </svg>
+  </div>
 </DocumentFragment>
 `;
