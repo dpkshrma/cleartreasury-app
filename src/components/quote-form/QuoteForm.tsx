@@ -30,7 +30,7 @@ const defaultValues = {
 };
 
 const currencyList = currencies.map(({ CurrencyCode }) => CurrencyCode);
-const receiveCurrencyList = currencyList.filter(
+let receiveCurrencyList = currencyList.filter(
   (CurrencyCode) => CurrencyCode !== defaultValues.sell.currency
 );
 
@@ -40,7 +40,7 @@ const receiveCurrencyList = currencyList.filter(
 //   .reverse()
 //   .join("");
 
-const today = "20210811";
+const today = "20210812";
 
 const QuoteForm = ({
   client,
@@ -49,6 +49,11 @@ const QuoteForm = ({
 }: QuoteFormProps): JSX.Element => {
   const sell = React.useRef<MoneyInputRef | null>(null);
   const buy = React.useRef<MoneyInputRef | null>(null);
+  const [selectedSellCurrency, setSelectedSellCurrency] =
+    React.useState<string>();
+  const [selectedBuyCurrency, setSelectedBuyCurrency] =
+    React.useState<string>();
+  const [buyChanged, setBuyChanged] = React.useState<boolean>(false);
 
   const [formData, setFormData] = React.useState<QuoteFormData>({
     currency_sell: defaultValues.sell.currency,
@@ -73,6 +78,18 @@ const QuoteForm = ({
   }, [quote, formData.buy_amount, formData.sell_amount]);
 
   const sellChange = () => {
+    if (
+      sell.current.currency.current.value === buy.current.currency.current.value
+    ) {
+      if (buyChanged) {
+        setSelectedBuyCurrency("EUR");
+      } else {
+        setSelectedBuyCurrency(formData.currency_sell);
+        receiveCurrencyList = currencyList.filter(
+          (CurrencyCode) => CurrencyCode !== buy.current.currency.current.value
+        );
+      }
+    }
     setFormData({
       ...formData,
       currency_sell: sell.current?.currency.current?.value,
@@ -83,6 +100,12 @@ const QuoteForm = ({
   };
 
   const buyChange = () => {
+    setBuyChanged(true);
+    if (
+      buy.current.currency.current.value === sell.current.currency.current.value
+    ) {
+      setSelectedSellCurrency(buy.current?.currency.current?.value);
+    }
     setFormData({
       ...formData,
       currency_sell: sell.current?.currency.current?.value,
@@ -111,6 +134,7 @@ const QuoteForm = ({
         onChange={sellChange}
         currencies={currencyList}
         defaultValue={defaultValues.sell}
+        selectedCurrency={selectedSellCurrency}
       />
 
       <MoneyInput
@@ -120,6 +144,7 @@ const QuoteForm = ({
         onChange={buyChange}
         defaultValue={defaultValues.buy}
         currencies={receiveCurrencyList}
+        selectedCurrency={selectedBuyCurrency}
       />
 
       <div className="flex justify-between">
