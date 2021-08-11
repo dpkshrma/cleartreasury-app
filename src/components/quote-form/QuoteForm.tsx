@@ -34,11 +34,13 @@ const receiveCurrencyList = currencyList.filter(
   (CurrencyCode) => CurrencyCode !== defaultValues.sell.currency
 );
 
-const today = new Date()
-  .toLocaleDateString("en-GB")
-  .split("/")
-  .reverse()
-  .join("");
+// const today = new Date()
+//   .toLocaleDateString("en-GB")
+//   .split("/")
+//   .reverse()
+//   .join("");
+
+const today = "20210811";
 
 const QuoteForm = ({
   client,
@@ -125,7 +127,7 @@ const QuoteForm = ({
 
         <div className="flex">
           <Countdown
-            time={20}
+            time={20000}
             /* eslint-disable-next-line no-console */
             onComplete={() => console.log("Finished")}
             text={quote?.quote_rate || ""}

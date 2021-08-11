@@ -103,7 +103,7 @@ const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
             <Header
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}
-              client={client}
+              client={client || (clients && clients[0])}
               setUser={setUser}
               setClient={setClient}
             />
@@ -111,7 +111,11 @@ const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
 
           <main className="flex-1 relative overflow-y-auto focus:outline-none">
             <AppContext.Provider value={user}>
-              <Component {...pageProps} setContext={setUser} client={client} />
+              <Component
+                {...pageProps}
+                setContext={setUser}
+                client={client || (clients && clients[0])}
+              />
             </AppContext.Provider>
           </main>
         </div>
