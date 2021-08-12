@@ -16,9 +16,24 @@ module.exports = {
             strokeDashoffset: 0,
           },
         },
+        rotate: {
+          "100%": {
+            transform: "rotate(180deg)",
+          },
+        },
+        fill: {
+          "0%": {
+            width: "0%",
+          },
+          "100%": {
+            width: "100%",
+          },
+        },
       },
-      animations: {
+      animation: {
         stroke: "stroke 20s linear forwards",
+        loading: "rotate 10s linear both",
+        progress: "fill 20s linear 1",
       },
     },
   },

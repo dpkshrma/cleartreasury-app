@@ -1,23 +1,35 @@
 import React, { useState } from "react";
 import { State } from "./Step";
+import Surface from "../surface/Surface";
 
-type Props = {
+type StepItemProps = {
+  stepTitle?: string;
+  form?: React.ReactElement;
+  children?: React.ReactElement;
+};
+
+type StepsProps = {
   nav?: React.ReactElement;
   children: React.ReactElement[];
   onComplete?(): void;
 };
 
-const Steps = ({ nav, children, onComplete }: Props): JSX.Element => {
+const Step = ({ form, children, ...props }: StepItemProps): JSX.Element => {
+  return React.cloneElement(children || form, { ...props });
+};
+
+const Steps = ({ nav, children, onComplete }: StepsProps): JSX.Element => {
   const [activeStep, setActiveStep] = useState(0);
   const [formState, setFormState] = useState({});
 
-  const Nav = (): any =>
-    nav
-      ? children.map((child, index) =>
+  const Nav = (): JSX.Element | null =>
+    nav ? (
+      <div className="sm:flex justify-center sm:mx-4">
+        {children.map((child, index) =>
           React.cloneElement(nav, {
             key: index,
             step: index,
-            title: child.props.title,
+            title: child.props.stepTitle,
             state:
               activeStep === index
                 ? State.ACTIVE
@@ -25,22 +37,24 @@ const Steps = ({ nav, children, onComplete }: Props): JSX.Element => {
             isEnabled: index <= activeStep,
             onClick: () => setActiveStep(index),
           })
-        )
-      : null;
+        )}
+      </div>
+    ) : null;
 
   return (
-    <div className="tabs w-full px-48 pt-20">
-      <div className="flex justify-between">
-        <Nav />
-      </div>
+    <>
+      <Nav />
 
-      <div className="pt-10">
+      <Surface align={Surface.Align.CENTER}>
         {children.map((child, index) => {
           return (
             index === activeStep &&
             React.cloneElement(child, {
               key: index,
-              onComplete: () => {
+              onComplete: (data) => {
+                child.props.form?.props.onComplete &&
+                  child.props.form.props.onComplete(data);
+
                 if (activeStep === children.length - 1) {
                   onComplete();
                 } else {
@@ -54,19 +68,11 @@ const Steps = ({ nav, children, onComplete }: Props): JSX.Element => {
             })
           );
         })}
-      </div>
-    </div>
+      </Surface>
+    </>
   );
 };
 
-type StepItemProps = {
-  form?: any;
-  title?: string;
-  children?: React.ReactElement;
-};
-
-Steps.Step = ({ form, children, ...props }: StepItemProps): JSX.Element => {
-  return React.cloneElement(children || form, { ...props });
-};
+Steps.Step = Step;
 
 export default Steps;

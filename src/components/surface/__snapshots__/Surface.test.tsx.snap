@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Surface matches snapshot for Center 1`] = `
+<DocumentFragment>
+  <div
+    class="flex justify-center w-full py-10 px-4 bg-theme-color-surface"
+  >
+    <div
+      class="max-w-xl w-full"
+    >
+      Children here
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Surface matches snapshot for Default 1`] = `
+<DocumentFragment>
+  <div
+    class="flex justify-start w-full py-10 px-4 bg-theme-color-surface"
+  >
+    <div
+      class="max-w-xl w-full"
+    >
+      Children here
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Surface matches snapshot for Right 1`] = `
+<DocumentFragment>
+  <div
+    class="flex justify-end w-full py-10 px-4 bg-theme-color-surface"
+  >
+    <div
+      class="max-w-xl w-full"
+    >
+      Children here
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -1,34 +1,22 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react";
-import currencyPairs from "./data/currency-pairs.json";
-import QuoteForm, { QuoteFormProps } from "./QuoteForm";
-
-const currencies = currencyPairs.map(
-  ({ currencyCode }: { currencyCode: any }) => {
-    const countryCode = currencyCode.slice(0, -1).toLowerCase();
-
-    return {
-      value: currencyCode,
-      label: `${currencyCode}`,
-      selectedLabel: currencyCode,
-      icon: (
-        <span
-          className={`flag-icon-background flag-icon-${countryCode} pl-8 bg-left bg-contain`}
-        />
-      ),
-    };
-  }
-);
+import QuoteForm, { QuoteFormData, QuoteFormProps } from "./QuoteForm";
 
 export default {
   title: "Components/QuoteForm",
   component: QuoteForm,
+  parameters: {
+    actions: {
+      handles: ["submit [data-event]"],
+    },
+  },
 } as Meta;
 
 const Template: Story<QuoteFormProps> = (args) => <QuoteForm {...args} />;
 
-export const Default = Template.bind({ currencies: currencies });
+export const Default = Template.bind({});
 Default.args = {
   title: "How much would you like to transfer?",
-  currencies: currencies,
+  /* eslint-disable-next-line no-console */
+  onComplete: (data: QuoteFormData) => console.log(data),
 };
