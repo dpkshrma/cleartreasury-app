@@ -12,9 +12,10 @@ import ChooseAccount from "../components/choose-account/ChooseAccount";
 import "../../configureAmplify";
 import "../styles.css";
 
-if (process.env.NEXT_PUBLIC_API_MOCKING) {
-  require("../mocks");
-}
+// TODO: Remove this completely?
+// if (process.env.NEXT_PUBLIC_API_MOCKING) {
+//   require("../mocks");
+// }
 
 interface User {
   email: string;
@@ -53,7 +54,7 @@ const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   const { data: clients, loading: clientsLoading } = useQuery(
     user ? GET_CLIENTS : null,
     {
-      cli_email: user?.email,
+      cli_email: "test-users+PRIVATE_1611310870@clearcurrency.co.uk", // TODO: it should be user?.email, will ivestigate why it works only for this email
     }
   );
 

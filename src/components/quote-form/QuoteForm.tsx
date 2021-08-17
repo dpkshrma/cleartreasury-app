@@ -34,15 +34,18 @@ let receiveCurrencyList = currencyList.filter(
   (CurrencyCode) => CurrencyCode !== defaultValues.sell.currency
 );
 
-// const today = new Date()
-//   .toLocaleDateString("en-GB")
-//   .split("/")
-//   .reverse()
-//   .join("");
+const today = new Date();
+today.setDate(today.getDate() + 1);
 
-const today = "20210812";
+const quotesDate = today
+  .toLocaleDateString("en-GB")
+  .split("/")
+  .reverse()
+  .join("");
 
 const QuoteForm = ({
+  // TODO: remove this when getQuote will be dynamic
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   client,
   title,
   onComplete,
@@ -59,8 +62,8 @@ const QuoteForm = ({
     currency_sell: defaultValues.sell.currency,
     currency_buy: defaultValues.buy.currency,
     sell_amount: parseInt(defaultValues.sell.amount, 10),
-    client_ref: client?.cli_reference,
-    value_date: today, // TODO: to be fixed by PAY-35
+    client_ref: "RPTTUS5538", // TODO: will be fixed after getClients? should be
+    value_date: quotesDate,
   });
 
   // TODO: validation, error handling, blah blah :D
