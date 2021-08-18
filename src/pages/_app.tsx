@@ -12,9 +12,10 @@ import ChooseAccount from "../components/choose-account/ChooseAccount";
 import "../../configureAmplify";
 import "../styles.css";
 
-if (process.env.NEXT_PUBLIC_API_MOCKING) {
-  require("../mocks");
-}
+// TODO: Remove this completely?
+// if (process.env.NEXT_PUBLIC_API_MOCKING) {
+//   require("../mocks");
+// }
 
 interface User {
   email: string;
