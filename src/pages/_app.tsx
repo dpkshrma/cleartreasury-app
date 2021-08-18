@@ -54,7 +54,7 @@ const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   const { data: clients, loading: clientsLoading } = useQuery(
     user ? GET_CLIENTS : null,
     {
-      cli_email: "test-users+PRIVATE_1611310870@clearcurrency.co.uk", // TODO: it should be user?.email, will ivestigate why it works only for this email
+      cli_email: user?.email,
     }
   );
 
