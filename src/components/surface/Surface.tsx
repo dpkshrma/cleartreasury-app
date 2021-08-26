@@ -23,7 +23,10 @@ const Surface: React.FC<Props> & StaticProperties = ({
   children,
 }) => (
   <div className={`flex ${align} w-full py-10 px-4 bg-theme-color-surface`}>
-    <div className="max-w-xl w-full">{children}</div>
+    <div className="max-w-xl w-full">
+      {/* TODO: ^^ Max width and padding not 100% right. Might depend on parent container? */}
+      {children}
+    </div>
   </div>
 );
 

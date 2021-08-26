@@ -4,7 +4,7 @@ import { MoneyInputRef } from "@clear-treasury/design-system/dist/components/mon
 import { Client } from "../../pages/_app";
 import { useQuery } from "../../hooks/useQuery";
 import { GET_QUOTE } from "../../graphql/clients/queries";
-import Countdown from "../countdown/Countdown";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 // TODO: pull this back from the API eventually
 import currencies from "./data/currencies.json";
@@ -16,6 +16,7 @@ export interface QuoteFormData {
   currency_buy: string;
   value_date: string;
   client_ref: string;
+  timestamp?: number; // TODO: hack to get around not having timestamps (see useEffect below)
 }
 
 export interface QuoteFormProps {
@@ -25,7 +26,7 @@ export interface QuoteFormProps {
 }
 
 const defaultValues = {
-  sell: { amount: "1000", currency: "GBP" },
+  sell: { amount: "1000.00", currency: "GBP" },
   buy: { currency: "EUR" },
 };
 
@@ -34,86 +35,79 @@ let receiveCurrencyList = currencyList.filter(
   (CurrencyCode) => CurrencyCode !== defaultValues.sell.currency
 );
 
-const today = new Date();
-today.setDate(today.getDate() + 1);
+const calculateValueDate = () => {
+  const today = new Date();
+  today.setDate(today.getDate() + 1);
 
-const quotesDate = today
-  .toLocaleDateString("en-GB")
-  .split("/")
-  .reverse()
-  .join("");
+  return today.toLocaleDateString("en-GB").split("/").reverse().join("");
+};
 
 const QuoteForm = ({
-  // TODO: remove this when getQuote will be dynamic
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   client,
   title,
   onComplete,
 }: QuoteFormProps): JSX.Element => {
+  const [quoting, setQuoting] = React.useState(false);
+
   const sell = React.useRef<MoneyInputRef | null>(null);
   const buy = React.useRef<MoneyInputRef | null>(null);
-  const [selectedSellCurrency, setSelectedSellCurrency] =
-    React.useState<string>();
-  const [selectedBuyCurrency, setSelectedBuyCurrency] =
-    React.useState<string>();
-  const [buyChanged, setBuyChanged] = React.useState<boolean>(false);
+
+  const sellCurrency = sell.current?.currency.current?.value;
+  const buyCurrency = buy.current?.currency.current?.value;
 
   const [formData, setFormData] = React.useState<QuoteFormData>({
     currency_sell: defaultValues.sell.currency,
     currency_buy: defaultValues.buy.currency,
-    sell_amount: parseInt(defaultValues.sell.amount, 10),
-    client_ref: "RPTTUS5538", // TODO: will be fixed after getClients? should be
-    value_date: quotesDate,
+    sell_amount: parseFloat(defaultValues.sell.amount),
+    client_ref: client?.cli_reference,
+    value_date: calculateValueDate(),
   });
 
   // TODO: validation, error handling, blah blah :D
-  const { data: quote } = useQuery(GET_QUOTE, formData);
+  const { data: quote, loading } = useQuery(GET_QUOTE, formData);
 
   React.useEffect(() => {
     if (quote) {
       if (formData.buy_amount) {
-        sell.current.amount.current.value = quote.sell_amount;
+        sell.current.amount.current.value = quote.sell_amount.toFixed(2);
       }
       if (formData.sell_amount) {
-        buy.current.amount.current.value = quote?.buy_amount;
+        buy.current.amount.current.value = quote?.buy_amount.toFixed(2);
       }
     }
   }, [quote, formData.buy_amount, formData.sell_amount]);
 
-  const sellChange = () => {
-    if (
-      sell.current.currency.current.value === buy.current.currency.current.value
-    ) {
-      if (buyChanged) {
-        setSelectedBuyCurrency("EUR");
-      } else {
-        setSelectedBuyCurrency(formData.currency_sell);
-        receiveCurrencyList = currencyList.filter(
-          (CurrencyCode) => CurrencyCode !== buy.current.currency.current.value
-        );
-      }
+  React.useEffect(() => {
+    // TODO: We need a more reliable way of requoting. The API returns the same ID so we need to tie this to something else (quote timestamps?)
+    if (!loading && quoting) {
+      setQuoting(false);
     }
+  }, [loading, quoting]);
+
+  const sellChange = ({ currency }) => {
+    receiveCurrencyList = currencyList.filter(
+      (currency) => currency !== sell.current.currency.current.value
+    );
+
+    if (currency === buyCurrency) {
+      buy.current.currency.current.value = receiveCurrencyList[0];
+    }
+
     setFormData({
       ...formData,
       currency_sell: sell.current?.currency.current?.value,
+      sell_amount: parseFloat(sell.current?.amount.current?.value) || 0,
       currency_buy: buy.current?.currency.current?.value,
-      sell_amount: parseInt(sell.current?.amount.current?.value, 10) || 0,
       buy_amount: undefined,
     });
   };
 
-  const buyChange = () => {
-    setBuyChanged(true);
-    if (
-      buy.current.currency.current.value === sell.current.currency.current.value
-    ) {
-      setSelectedSellCurrency(buy.current?.currency.current?.value);
-    }
+  const buyChange = ({ amount, currency }) => {
     setFormData({
       ...formData,
+      currency_buy: currency,
+      buy_amount: parseFloat(amount) || 0,
       currency_sell: sell.current?.currency.current?.value,
-      currency_buy: buy.current?.currency.current?.value,
-      buy_amount: parseInt(buy.current?.amount.current?.value, 10) || 0,
       sell_amount: undefined,
     });
   };
@@ -125,7 +119,6 @@ const QuoteForm = ({
 
   return (
     <form onSubmit={submitHandler} className="space-y-6">
-      {/* TODO: ^^ Max width and padding not 100% right. Might depend on parent container? */}
       <h1 className="block w-full text-theme-color-on-surface text-2xl">
         {title}
       </h1>
@@ -137,7 +130,7 @@ const QuoteForm = ({
         onChange={sellChange}
         currencies={currencyList}
         defaultValue={defaultValues.sell}
-        selectedCurrency={selectedSellCurrency}
+        selectedCurrency={sellCurrency}
       />
 
       <MoneyInput
@@ -147,19 +140,31 @@ const QuoteForm = ({
         onChange={buyChange}
         defaultValue={defaultValues.buy}
         currencies={receiveCurrencyList}
-        selectedCurrency={selectedBuyCurrency}
+        selectedCurrency={buyCurrency}
       />
 
       <div className="flex justify-between">
         <p className="text-lg text-theme-color-on-surface">Exchange rate</p>
 
-        <div className="flex">
-          <Countdown
-            time={20000}
-            /* eslint-disable-next-line no-console */
-            onComplete={() => console.log("Finished")}
-            text={quote?.quote_rate || ""}
+        <div className="flex space-x-4">
+          {/* TODO: Teporarily using this library until our own Countdown's unmounting issues are fixed */}
+          <CountdownCircleTimer
+            size={36}
+            strokeWidth={2}
+            duration={20}
+            key={!quoting && `${quote?.ID}_${quoting}`}
+            isPlaying={quote?.quote_rate}
+            colors={[
+              ["#01A783", 0.5],
+              ["#E6AE05", 0.25],
+              ["#FF713D", 0.25],
+            ]}
+            onComplete={() => {
+              setQuoting(true);
+              setFormData({ ...formData, timestamp: Date.now() });
+            }}
           />
+          <span>{quote?.quote_rate}</span>
         </div>
       </div>
 

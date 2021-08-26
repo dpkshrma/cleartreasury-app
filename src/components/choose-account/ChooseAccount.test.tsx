@@ -14,7 +14,8 @@ describe("ChooseAccount", () => {
       />
     );
 
-    fireEvent.click(getByText(Stories.accounts[0].cli_name).closest("a"));
+    fireEvent.click(getByText("cli_name_1").closest("a"));
+
     expect(onAccountSelect).toBeCalled();
     expect(asFragment()).toMatchSnapshot();
   });

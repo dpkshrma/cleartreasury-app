@@ -3,7 +3,7 @@ import { Story, Meta } from "@storybook/react";
 import ChooseAccount, { Props } from "./ChooseAccount";
 import { Client } from "../../pages/_app";
 
-export const accounts: Client[] = [
+const accounts: Client[] = [
   {
     cli_name: "cli_name_1",
     cli_email: "cli_email_1",

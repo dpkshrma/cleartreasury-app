@@ -93,7 +93,7 @@ const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
           <div
             className="fixed inset-0 z-30 bg-gray-600 opacity-75"
             aria-hidden="true"
-          ></div>
+          />
         )}
 
         <div
