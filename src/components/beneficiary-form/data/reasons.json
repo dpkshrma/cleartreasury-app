@@ -1,0 +1,102 @@
+{
+  "OPTIONS_REASON_PERSONAL": [
+    {
+      "value": "Property Purchase",
+      "label": "Property Purchase"
+    },
+    {
+      "value": "Property Maintenance / Build",
+      "label": "Property Maintenance / Build"
+    },
+    {
+      "value": "Travel expenses",
+      "label": "Travel expenses"
+    },
+    {
+      "value": "Sending salary / savings home",
+      "label": "Sending salary / savings home"
+    },
+    {
+      "value": "Paying a bill",
+      "label": "Paying a bill"
+    },
+    {
+      "value": "Paying a relative / friend",
+      "label": "Paying a relative / friend"
+    },
+    {
+      "value": "Making an investment (e.g. shares, stock market, investment fund)",
+      "label": "Making an investment (e.g. shares, stock market, investment fund)"
+    },
+    {
+      "value": "Buying a vehicle or other major purchase",
+      "label": "Buying a vehicle or other major purchase"
+    },
+    {
+      "value": "Buying products or services",
+      "label": "Buying products or services"
+    },
+    {
+      "value": "Charitable donation",
+      "label": "Charitable donation"
+    },
+    {
+      "value": "Receiving salary / earnings",
+      "label": "Receiving salary / earnings"
+    },
+    {
+      "value": "Other",
+      "label": "Other"
+    }
+  ],
+  "OPTIONS_REASON_BUSINESS": [
+    {
+      "value": "Paying suppliers",
+      "label": "Paying suppliers"
+    },
+    {
+      "value": "Paying staff",
+      "label": "Paying staff"
+    },
+    {
+      "value": "Paying affiliates",
+      "label": "Paying affiliates"
+    },
+    {
+      "value": "Funding offices/operations",
+      "label": "Funding offices/operations"
+    },
+    {
+      "value": "Converting foreign revenues to home currency",
+      "label": "Converting foreign revenues to home currency"
+    },
+    {
+      "value": "Making an investment",
+      "label": "Making an investment"
+    },
+    {
+      "value": "Moving funds between group companies",
+      "label": "Moving funds between group companies"
+    },
+    {
+      "value": "Purchasing property/equipment",
+      "label": "Purchasing property/equipment"
+    },
+    {
+      "value": "Receiving payments from customers",
+      "label": "Receiving payments from customers"
+    },
+    {
+      "value": "Receiving funds from investors",
+      "label": "Receiving funds from investors"
+    },
+    {
+      "value": "Supporting charitable activities",
+      "label": "Supporting charitable activities"
+    },
+    {
+      "value": "Other",
+      "label": "Other"
+    }
+  ]
+}

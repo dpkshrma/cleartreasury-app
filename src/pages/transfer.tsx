@@ -6,17 +6,20 @@ import Steps from "../components/steps/Steps";
 import Step from "../components/steps/Step";
 import QuoteForm, { QuoteFormData } from "../components/quote-form/QuoteForm";
 import { Client } from "./_app";
+import BeneficiaryForm from "../components/beneficiary-form/BeneficiaryForm";
 
 type FormData = {
   quote?: QuoteFormData;
 };
 
 const Transfer = ({ client }: { client: Client }): JSX.Element => {
+  // eslint-disable-next-line
   const [formData, setFormData] = React.useState<FormData>({});
+  const [stepNumber, setStepNumber] = React.useState<number>();
 
   return (
     <Page title="Make a transfer">
-      <Steps nav={<Step />}>
+      <Steps nav={<Step />} goBack={stepNumber}>
         <Steps.Step
           stepTitle="Amount"
           form={
@@ -28,16 +31,19 @@ const Transfer = ({ client }: { client: Client }): JSX.Element => {
             />
           }
         />
-        <Steps.Step
-          stepTitle="Beneficiary"
-          form={
-            <>
-              <pre>
-                <code>{JSON.stringify(formData, null, 2)}</code>
-              </pre>
-            </>
-          }
-        />
+        <Steps.Step stepTitle="Beneficiary">
+          <Steps>
+            <Steps.Step
+              form={
+                <BeneficiaryForm
+                  client={client}
+                  stepBack={(step: number) => setStepNumber(step)}
+                />
+              }
+            />
+            <Steps.Step form={<></>} />
+          </Steps>
+        </Steps.Step>
         <Steps.Step stepTitle="Confirm and pay" form={<></>} />
       </Steps>
     </Page>

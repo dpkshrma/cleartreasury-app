@@ -67,7 +67,7 @@ const QuoteForm = ({
   const { data: quote, loading } = useQuery(GET_QUOTE, formData);
 
   React.useEffect(() => {
-    if (quote) {
+    if (quote && quote.sell_amount !== null && quote.buy_amount !== null) {
       if (formData.buy_amount) {
         sell.current.amount.current.value = quote.sell_amount.toFixed(2);
       }
@@ -148,22 +148,24 @@ const QuoteForm = ({
 
         <div className="flex space-x-4">
           {/* TODO: Teporarily using this library until our own Countdown's unmounting issues are fixed */}
-          <CountdownCircleTimer
-            size={36}
-            strokeWidth={2}
-            duration={20}
-            key={!quoting && `${quote?.ID}_${quoting}`}
-            isPlaying={quote?.quote_rate}
-            colors={[
-              ["#01A783", 0.5],
-              ["#E6AE05", 0.25],
-              ["#FF713D", 0.25],
-            ]}
-            onComplete={() => {
-              setQuoting(true);
-              setFormData({ ...formData, timestamp: Date.now() });
-            }}
-          />
+          {quote?.quote_rate !== null && quote?.quote_rate !== undefined && (
+            <CountdownCircleTimer
+              size={36}
+              strokeWidth={2}
+              duration={20}
+              key={!quoting && `${quote?.ID}_${quoting}`}
+              isPlaying={quote?.quote_rate}
+              colors={[
+                ["#01A783", 0.5],
+                ["#E6AE05", 0.25],
+                ["#FF713D", 0.25],
+              ]}
+              onComplete={() => {
+                setQuoting(true);
+                setFormData({ ...formData, timestamp: Date.now() });
+              }}
+            />
+          )}
           <span>{quote?.quote_rate}</span>
         </div>
       </div>
