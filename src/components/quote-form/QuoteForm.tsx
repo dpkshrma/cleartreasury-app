@@ -7,7 +7,7 @@ import { GET_QUOTE } from "../../graphql/clients/queries";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 // TODO: pull this back from the API eventually
-import currencies from "./data/currencies.json";
+import currencies from "../../data/currencies.json";
 
 export interface QuoteFormData {
   sell_amount?: number;

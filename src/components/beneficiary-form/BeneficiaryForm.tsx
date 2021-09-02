@@ -3,10 +3,9 @@ import { ArrowLeftIcon } from "@heroicons/react/solid";
 import * as React from "react";
 
 // TODO: pull this back from the API eventually
-import currencies from "./data/currencies.json";
-import countries from "./data/countries.json";
-// eslint-disable-next-line
-import reasons from "./data/reasons.json";
+import currencies from "../../data/currencies.json";
+import countries from "../../data/countries.json";
+// import reasons from "../../data/reasons.json";
 import { Client } from "../../pages/_app";
 
 type Error = {
@@ -70,8 +69,7 @@ export interface BeneficiaryFormProps {
 }
 
 const BeneficiaryForm = ({
-  // eslint-disable-next-line
-  client,
+  // client,
   onComplete,
   stepBack,
 }: BeneficiaryFormProps): JSX.Element => {
