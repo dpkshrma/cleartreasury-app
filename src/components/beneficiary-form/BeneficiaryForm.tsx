@@ -350,14 +350,14 @@ const BeneficiaryForm = ({
             Please provide a reason for your payments to this beneficiary
           </p>
           <div className="border-b border-gray-200 pb-8">
-            <Select
+            {/* <Select
               name="select"
               options={
                 client.cty_value == "PRIVATE"
                   ? reasons.OPTIONS_REASON_PERSONAL
                   : reasons.OPTIONS_REASON_BUSINESS
               }
-            />
+            /> */}
           </div>
           <div className="py-8 flex justify-between">
             <Button
