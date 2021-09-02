@@ -20,7 +20,7 @@ export const useQuery = (
   onError?: (error: any) => void
 ): QueryState => {
   const [data, setData] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(!!query);
   const [error, setError] = React.useState(null);
 
   const variablesRef = React.useRef(variables);
