@@ -5,27 +5,49 @@ export const clientHandlers = [
   graphql.query("getClient", (req, res, ctx) => {
     return res(
       ctx.data({
-        getClient: clients.find((item) => item.id === req.variables.id),
+        getClient: clients.find((item) => item.cli_id === req.variables.id),
       })
     );
   }),
 
   graphql.query("getClients", (req, res, ctx) => {
+    let returnedClients = [];
+
+    // In test we can filter for email
+    const testClients = clients.filter(
+      (client) => client.cli_email === req.body.variables.cli_email
+    );
+
+    if (testClients.length) {
+      returnedClients = testClients;
+    } else {
+      // Return 2 clients
+      const fakeClients = clients
+        .filter((client) => client.ctc_last_name === "User_1")
+        .map((client) => ({
+          ...client,
+          cli_email: req.body.variables.cli_email,
+        }));
+
+      returnedClients = fakeClients;
+    }
+
     return res(
       ctx.data({
-        getClients: clients.filter(
-          (client) => client.email === req.body.variables.cli_email
-        ),
+        getClients: returnedClients,
       })
     );
   }),
 
   graphql.mutation("CreateClient", (req, res, ctx) => {
     const data = req.variables as {
-      id: number;
-      reference: string;
-      email: string;
-      name: string;
+      cli_id: number;
+      cli_reference: string;
+      cli_email: string;
+      cli_name: string;
+      ctc_first_name: string;
+      ctc_last_name: string;
+      cty_value: "PRIVATE" | "CORPORATE";
     };
 
     clients.push(data);
