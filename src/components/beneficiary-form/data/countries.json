@@ -1,0 +1,1430 @@
+[
+  {
+    "CountryName": "Afghanistan",
+    "ISO2": "AF",
+    "ISO3": "AFG",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Albania",
+    "ISO2": "AL",
+    "ISO3": "ALB",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Algeria",
+    "ISO2": "DZ",
+    "ISO3": "DZA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "American Samoa",
+    "ISO2": "AS",
+    "ISO3": "ASM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Andorra",
+    "ISO2": "AD",
+    "ISO3": "AND",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Angola",
+    "ISO2": "AO",
+    "ISO3": "AGO",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Anguilla",
+    "ISO2": "AI",
+    "ISO3": "AIA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Antarctica",
+    "ISO2": "AQ",
+    "ISO3": "ATA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Antigua and Barbuda",
+    "ISO2": "AG",
+    "ISO3": "ATG",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Argentina",
+    "ISO2": "AR",
+    "ISO3": "ARG",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Armenia",
+    "ISO2": "AM",
+    "ISO3": "ARM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Aruba",
+    "ISO2": "AW",
+    "ISO3": "ABW",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Australia",
+    "ISO2": "AU",
+    "ISO3": "AUS",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Austria",
+    "ISO2": "AT",
+    "ISO3": "AUT",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Azerbaijan",
+    "ISO2": "AZ",
+    "ISO3": "AZE",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Bahamas",
+    "ISO2": "BS",
+    "ISO3": "BHS",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Bahrain",
+    "ISO2": "BH",
+    "ISO3": "BHR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Bangladesh",
+    "ISO2": "BD",
+    "ISO3": "BGD",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Barbados",
+    "ISO2": "BB",
+    "ISO3": "BRB",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Belarus",
+    "ISO2": "BY",
+    "ISO3": "BLR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Belgium",
+    "ISO2": "BE",
+    "ISO3": "BEL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Belize",
+    "ISO2": "BZ",
+    "ISO3": "BLZ",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Benin",
+    "ISO2": "BJ",
+    "ISO3": "BEN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Bermuda",
+    "ISO2": "BM",
+    "ISO3": "BMU",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Bhutan",
+    "ISO2": "BT",
+    "ISO3": "BTN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Bolivia",
+    "ISO2": "BO",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Bosnia and Herzegovina",
+    "ISO2": "BA",
+    "ISO3": "BIH",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Botswana",
+    "ISO2": "BW",
+    "ISO3": "BWA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Brazil",
+    "ISO2": "BR",
+    "ISO3": "BRA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "British Indian Ocean Territory",
+    "ISO2": "IO",
+    "ISO3": "IOT",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "British Virgin Islands",
+    "ISO2": "VG",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Brunei",
+    "ISO2": "BN",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Bulgaria",
+    "ISO2": "BG",
+    "ISO3": "BGR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Burkina Faso",
+    "ISO2": "BF",
+    "ISO3": "BFA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Burma (Myanmar)",
+    "ISO2": "MM",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Burundi",
+    "ISO2": "BI",
+    "ISO3": "BDI",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Cambodia",
+    "ISO2": "KH",
+    "ISO3": "KHM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Cameroon",
+    "ISO2": "CM",
+    "ISO3": "CMR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Canada",
+    "ISO2": "CA",
+    "ISO3": "CAN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Cape Verde",
+    "ISO2": "CV",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Cayman Islands",
+    "ISO2": "KY",
+    "ISO3": "CYM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Central African Republic",
+    "ISO2": "CF",
+    "ISO3": "CAF",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Chad",
+    "ISO2": "TD",
+    "ISO3": "TCD",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Chile",
+    "ISO2": "CL",
+    "ISO3": "CHL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "China",
+    "ISO2": "CN",
+    "ISO3": "CHN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Christmas Island",
+    "ISO2": "CX",
+    "ISO3": "CXR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Cocos (Keeling) Islands",
+    "ISO2": "CC",
+    "ISO3": "CCK",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Colombia",
+    "ISO2": "CO",
+    "ISO3": "COL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Comoros",
+    "ISO2": "KM",
+    "ISO3": "COM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Republic of the Congo",
+    "ISO2": "CG",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Democratic Republic of the Congo",
+    "ISO2": "CD",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Cook Islands",
+    "ISO2": "CK",
+    "ISO3": "COK",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Costa Rica",
+    "ISO2": "CR",
+    "ISO3": "",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Croatia",
+    "ISO2": "HR",
+    "ISO3": "HRV",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Cuba",
+    "ISO2": "CU",
+    "ISO3": "CUB",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Cyprus",
+    "ISO2": "CY",
+    "ISO3": "CYP",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Czech Republic",
+    "ISO2": "CZ",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Denmark",
+    "ISO2": "DK",
+    "ISO3": "DNK",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Djibouti",
+    "ISO2": "DJ",
+    "ISO3": "DJI",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Dominica",
+    "ISO2": "DM",
+    "ISO3": "DMA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Dominican Republic",
+    "ISO2": "DO",
+    "ISO3": "DOM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Timor-Leste",
+    "ISO2": "TL",
+    "ISO3": "TLS",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Ecuador",
+    "ISO2": "EC",
+    "ISO3": "ECU",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Egypt",
+    "ISO2": "EG",
+    "ISO3": "EGY",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "El Salvador",
+    "ISO2": "SV",
+    "ISO3": "SLV",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Equatorial Guinea",
+    "ISO2": "GQ",
+    "ISO3": "GNQ",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Eritrea",
+    "ISO2": "ER",
+    "ISO3": "ERI",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Estonia",
+    "ISO2": "EE",
+    "ISO3": "EST",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Ethiopia",
+    "ISO2": "ET",
+    "ISO3": "ETH",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Falkland Islands",
+    "ISO2": "FK",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Faroe Islands",
+    "ISO2": "FO",
+    "ISO3": "FRO",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Fiji",
+    "ISO2": "FJ",
+    "ISO3": "FJI",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Finland",
+    "ISO2": "FI",
+    "ISO3": "FIN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "France",
+    "ISO2": "FR",
+    "ISO3": "FRA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "French Polynesia",
+    "ISO2": "PF",
+    "ISO3": "PYF",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Gabon",
+    "ISO2": "GA",
+    "ISO3": "GAB",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Gambia",
+    "ISO2": "GM",
+    "ISO3": "GMB",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Gaza Strip",
+    "ISO2": "XX",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Georgia",
+    "ISO2": "GE",
+    "ISO3": "GEO",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Germany",
+    "ISO2": "DE",
+    "ISO3": "DEU",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Ghana",
+    "ISO2": "GH",
+    "ISO3": "GHA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Gibraltar",
+    "ISO2": "GI",
+    "ISO3": "GIB",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Greece",
+    "ISO2": "GR",
+    "ISO3": "GRC",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Greenland",
+    "ISO2": "GL",
+    "ISO3": "GRL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Grenada",
+    "ISO2": "GD",
+    "ISO3": "GRD",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Guam",
+    "ISO2": "GU",
+    "ISO3": "GUM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Guatemala",
+    "ISO2": "GT",
+    "ISO3": "GTM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Guinea",
+    "ISO2": "GN",
+    "ISO3": "GIN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Guinea-Bissau",
+    "ISO2": "GW",
+    "ISO3": "GNB",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Guyana",
+    "ISO2": "GY",
+    "ISO3": "GUY",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Haiti",
+    "ISO2": "HT",
+    "ISO3": "HTI",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Honduras",
+    "ISO2": "HN",
+    "ISO3": "HND",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Hong Kong",
+    "ISO2": "HK",
+    "ISO3": "",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Hungary",
+    "ISO2": "HU",
+    "ISO3": "HUN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Iceland",
+    "ISO2": "IS",
+    "ISO3": "ISL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "India",
+    "ISO2": "IN",
+    "ISO3": "IND",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Indonesia",
+    "ISO2": "ID",
+    "ISO3": "IDN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Iran",
+    "ISO2": "IR",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Iraq",
+    "ISO2": "IQ",
+    "ISO3": "IRQ",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Ireland",
+    "ISO2": "IE",
+    "ISO3": "IRL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Isle of Man",
+    "ISO2": "IM",
+    "ISO3": "IMN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Israel",
+    "ISO2": "IL",
+    "ISO3": "ISR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Italy",
+    "ISO2": "IT",
+    "ISO3": "ITA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Ivory Coast",
+    "ISO2": "CI",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Jamaica",
+    "ISO2": "JM",
+    "ISO3": "JAM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Japan",
+    "ISO2": "JP",
+    "ISO3": "JPN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Jersey",
+    "ISO2": "JE",
+    "ISO3": "JEY",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Jordan",
+    "ISO2": "JO",
+    "ISO3": "JOR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Kazakhstan",
+    "ISO2": "KZ",
+    "ISO3": "KAZ",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Kenya",
+    "ISO2": "KE",
+    "ISO3": "KEN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Kiribati",
+    "ISO2": "KI",
+    "ISO3": "KIR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Kosovo",
+    "ISO2": "/",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Kuwait",
+    "ISO2": "KW",
+    "ISO3": "KWT",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Kyrgyzstan",
+    "ISO2": "KG",
+    "ISO3": "KGZ",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Laos",
+    "ISO2": "LA",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Latvia",
+    "ISO2": "LV",
+    "ISO3": "LVA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Lebanon",
+    "ISO2": "LB",
+    "ISO3": "LBN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Lesotho",
+    "ISO2": "LS",
+    "ISO3": "LSO",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Liberia",
+    "ISO2": "LR",
+    "ISO3": "LBR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Libya",
+    "ISO2": "LY",
+    "ISO3": "LBY",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Liechtenstein",
+    "ISO2": "LI",
+    "ISO3": "LIE",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Lithuania",
+    "ISO2": "LT",
+    "ISO3": "LTU",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Luxembourg",
+    "ISO2": "LU",
+    "ISO3": "LUX",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Macau",
+    "ISO2": "MO",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Macedonia",
+    "ISO2": "MK",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Madagascar",
+    "ISO2": "MG",
+    "ISO3": "MDG",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Malawi",
+    "ISO2": "MW",
+    "ISO3": "MWI",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Malaysia",
+    "ISO2": "MY",
+    "ISO3": "MYS",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Maldives",
+    "ISO2": "MV",
+    "ISO3": "MDV",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Mali",
+    "ISO2": "ML",
+    "ISO3": "MLI",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Malta",
+    "ISO2": "MT",
+    "ISO3": "MLT",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Marshall Islands",
+    "ISO2": "MH",
+    "ISO3": "MHL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Mauritania",
+    "ISO2": "MR",
+    "ISO3": "MRT",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Mauritius",
+    "ISO2": "MU",
+    "ISO3": "MUS",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Mayotte",
+    "ISO2": "YT",
+    "ISO3": "MYT",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Mexico",
+    "ISO2": "MX",
+    "ISO3": "MEX",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Micronesia",
+    "ISO2": "FM",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Moldova",
+    "ISO2": "MD",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Monaco",
+    "ISO2": "MC",
+    "ISO3": "MCO",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Mongolia",
+    "ISO2": "MN",
+    "ISO3": "MNG",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Montenegro",
+    "ISO2": "ME",
+    "ISO3": "MNE",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Montserrat",
+    "ISO2": "MS",
+    "ISO3": "MSR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Morocco",
+    "ISO2": "MA",
+    "ISO3": "MAR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Mozambique",
+    "ISO2": "MZ",
+    "ISO3": "MOZ",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Namibia",
+    "ISO2": "NA",
+    "ISO3": "NAM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Nauru",
+    "ISO2": "NR",
+    "ISO3": "NRU",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Nepal",
+    "ISO2": "NP",
+    "ISO3": "NPL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Netherlands",
+    "ISO2": "NL",
+    "ISO3": "NLD",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Netherlands Antilles",
+    "ISO2": "AN",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "New Caledonia",
+    "ISO2": "NC",
+    "ISO3": "NCL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "New Zealand",
+    "ISO2": "NZ",
+    "ISO3": "NZL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Nicaragua",
+    "ISO2": "NI",
+    "ISO3": "NIC",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Niger",
+    "ISO2": "NE",
+    "ISO3": "NER",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Nigeria",
+    "ISO2": "NG",
+    "ISO3": "NGA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Niue",
+    "ISO2": "NU",
+    "ISO3": "NIU",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Norfolk Island",
+    "ISO2": "/ ",
+    "ISO3": "NFK",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Northern Mariana Islands",
+    "ISO2": "MP",
+    "ISO3": "MNP",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "North Korea",
+    "ISO2": "KP",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Norway",
+    "ISO2": "NO",
+    "ISO3": "NOR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Oman",
+    "ISO2": "OM",
+    "ISO3": "OMN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Pakistan",
+    "ISO2": "PK",
+    "ISO3": "PAK",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Palau",
+    "ISO2": "PW",
+    "ISO3": "PLW",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Panama",
+    "ISO2": "PA",
+    "ISO3": "PAN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Papua New Guinea",
+    "ISO2": "PG",
+    "ISO3": "PNG",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Paraguay",
+    "ISO2": "PY",
+    "ISO3": "PRY",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Peru",
+    "ISO2": "PE",
+    "ISO3": "PER",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Philippines",
+    "ISO2": "PH",
+    "ISO3": "PHL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Pitcairn Islands",
+    "ISO2": "PN",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Poland",
+    "ISO2": "PL",
+    "ISO3": "POL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Portugal",
+    "ISO2": "PT",
+    "ISO3": "PRT",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Puerto Rico",
+    "ISO2": "PR",
+    "ISO3": "PRI",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Qatar",
+    "ISO2": "QA",
+    "ISO3": "QAT",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Romania",
+    "ISO2": "RO",
+    "ISO3": "ROU",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Russia",
+    "ISO2": "RU",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Rwanda",
+    "ISO2": "RW",
+    "ISO3": "RWA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Saint Barthelemy",
+    "ISO2": "BL",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Samoa",
+    "ISO2": "WS",
+    "ISO3": "WSM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "San Marino",
+    "ISO2": "SM",
+    "ISO3": "SMR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Sao Tome and Principe",
+    "ISO2": "ST",
+    "ISO3": "STP",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Saudi Arabia",
+    "ISO2": "SA",
+    "ISO3": "SAU",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Senegal",
+    "ISO2": "SN",
+    "ISO3": "SEN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Serbia",
+    "ISO2": "RS",
+    "ISO3": "SRB",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Seychelles",
+    "ISO2": "SC",
+    "ISO3": "SYC",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Sierra Leone",
+    "ISO2": "SL",
+    "ISO3": "SLE",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Singapore",
+    "ISO2": "SG",
+    "ISO3": "SGP",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Slovakia",
+    "ISO2": "SK",
+    "ISO3": "SVK",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Slovenia",
+    "ISO2": "SI",
+    "ISO3": "SVN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Solomon Islands",
+    "ISO2": "SB",
+    "ISO3": "SLB",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Somalia",
+    "ISO2": "SO",
+    "ISO3": "SOM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "South Africa",
+    "ISO2": "ZA",
+    "ISO3": "ZAF",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "South Korea",
+    "ISO2": "KR",
+    "ISO3": "KOR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Spain",
+    "ISO2": "ES",
+    "ISO3": "ESP",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Sri Lanka",
+    "ISO2": "LK",
+    "ISO3": "LKA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Saint Helena",
+    "ISO2": "SH",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Saint Kitts and Nevis",
+    "ISO2": "KN",
+    "ISO3": "KNA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Saint Lucia",
+    "ISO2": "LC",
+    "ISO3": "LCA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Saint Martin",
+    "ISO2": "MF",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Saint Pierre and Miquelon",
+    "ISO2": "PM",
+    "ISO3": "SPM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Saint Vincent and the Grenadines",
+    "ISO2": "VC",
+    "ISO3": "VCT",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Sudan",
+    "ISO2": "SD",
+    "ISO3": "SDN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Suriname",
+    "ISO2": "SR",
+    "ISO3": "SUR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Svalbard",
+    "ISO2": "SJ",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Swaziland",
+    "ISO2": "SZ",
+    "ISO3": "SWZ",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Sweden",
+    "ISO2": "SE",
+    "ISO3": "SWE",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Switzerland",
+    "ISO2": "CH",
+    "ISO3": "CHE",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Syria",
+    "ISO2": "SY",
+    "ISO3": "SYR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Taiwan",
+    "ISO2": "TW",
+    "ISO3": "TAI",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Tajikistan",
+    "ISO2": "TJ",
+    "ISO3": "TJK",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Tanzania",
+    "ISO2": "TZ",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Thailand",
+    "ISO2": "TH",
+    "ISO3": "THA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Togo",
+    "ISO2": "TG",
+    "ISO3": "TGO",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Tokelau",
+    "ISO2": "TK",
+    "ISO3": "TKL",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Tonga",
+    "ISO2": "TO",
+    "ISO3": "TON",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Trinidad and Tobago",
+    "ISO2": "TT",
+    "ISO3": "TTO",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Tunisia",
+    "ISO2": "TN",
+    "ISO3": "TUN",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Turkey",
+    "ISO2": "TR",
+    "ISO3": "TUR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Turkmenistan",
+    "ISO2": "TM",
+    "ISO3": "TKM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Turks and Caicos Islands",
+    "ISO2": "TC",
+    "ISO3": "TCA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Tuvalu",
+    "ISO2": "TV",
+    "ISO3": "TUV",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "United Arab Emirates",
+    "ISO2": "AE",
+    "ISO3": "ARE",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Uganda",
+    "ISO2": "UG",
+    "ISO3": "UGA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "United Kingdom",
+    "ISO2": "GB",
+    "ISO3": "GBR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Ukraine",
+    "ISO2": "UA",
+    "ISO3": "UKR",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Uruguay",
+    "ISO2": "UY",
+    "ISO3": "URY",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "United States",
+    "ISO2": "US",
+    "ISO3": "USA",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Uzbekistan",
+    "ISO2": "UZ",
+    "ISO3": "UZB",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Vanuatu",
+    "ISO2": "VU",
+    "ISO3": "VUT",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Holy See (Vatican City)",
+    "ISO2": "VA",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Venezuela",
+    "ISO2": "VE",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Vietnam",
+    "ISO2": "VN",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "US Virgin Islands",
+    "ISO2": "VI",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Wallis and Futuna",
+    "ISO2": "WF",
+    "ISO3": "WLF",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "West Bank",
+    "ISO2": "#",
+    "ISO3": null,
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Western Sahara",
+    "ISO2": "EH",
+    "ISO3": "ESH",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Yemen",
+    "ISO2": "YE",
+    "ISO3": "YEM",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Zambia",
+    "ISO2": "ZM",
+    "ISO3": "ZMB",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "Zimbabwe",
+    "ISO2": "ZW",
+    "ISO3": "ZWE",
+    "RiskScore": 0.0
+  },
+  {
+    "CountryName": "",
+    "ISO2": "",
+    "ISO3": null,
+    "RiskScore": 0.0
+  }
+]

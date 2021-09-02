@@ -44,16 +44,22 @@ test("should call a query with variables", async () => {
   expect(result.current.data).toHaveLength(2);
   expect(result.current.data).toMatchObject([
     {
-      id: 1,
-      reference: "ref_1",
-      name: "Client 1",
-      email: "test1@test.com",
+      cli_id: 1,
+      cli_reference: "ref_1",
+      cli_name: "Client 1",
+      ctc_first_name: "Test",
+      ctc_last_name: "User_1",
+      cli_email: "test1@test.com",
+      cty_value: "PRIVATE",
     },
     {
-      id: 4,
-      reference: "ref_4",
-      name: "Client 4",
-      email: "test1@test.com",
+      cli_id: 4,
+      cli_reference: "ref_4",
+      cli_name: "Client 4",
+      ctc_first_name: "Test",
+      ctc_last_name: "User_1",
+      cli_email: "test1@test.com",
+      cty_value: "CORPORATE",
     },
   ]);
 });
@@ -78,10 +84,13 @@ test("should fetch new data when variables change", async () => {
   expect(result.current.data).toHaveLength(1);
   expect(result.current.data).toMatchObject([
     {
-      id: 3,
-      reference: "ref_3",
-      name: "Client 3",
-      email: "test3@test.com",
+      cli_id: 3,
+      cli_reference: "ref_3",
+      cli_name: "Client 3",
+      ctc_first_name: "Test",
+      ctc_last_name: "User_3",
+      cli_email: "test3@test.com",
+      cty_value: "PRIVATE",
     },
   ]);
 });

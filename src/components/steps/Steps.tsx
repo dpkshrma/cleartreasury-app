@@ -12,15 +12,27 @@ type StepsProps = {
   nav?: React.ReactElement;
   children: React.ReactElement[];
   onComplete?(): void;
+  goBack?: number;
 };
 
 const Step = ({ form, children, ...props }: StepItemProps): JSX.Element => {
   return React.cloneElement(children || form, { ...props });
 };
 
-const Steps = ({ nav, children, onComplete }: StepsProps): JSX.Element => {
+const Steps = ({
+  nav,
+  children,
+  onComplete,
+  goBack,
+}: StepsProps): JSX.Element => {
   const [activeStep, setActiveStep] = useState(0);
   const [formState, setFormState] = useState({});
+
+  React.useEffect(() => {
+    if (goBack !== undefined) {
+      setActiveStep(goBack);
+    }
+  }, [goBack]);
 
   const Nav = (): JSX.Element | null =>
     nav ? (
