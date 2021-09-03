@@ -16,7 +16,6 @@ const Template: Story<QuoteFormProps> = (args) => <QuoteForm {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  title: "How much would you like to transfer?",
   /* eslint-disable-next-line no-console */
   onComplete: (data: QuoteFormData) => console.log(data),
 };

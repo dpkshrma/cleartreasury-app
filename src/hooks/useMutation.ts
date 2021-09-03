@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import * as React from "react";
+import { DocumentNode } from "graphql-tag-ts";
+import isDeepEqual from "fast-deep-equal/react";
 import { API, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 
@@ -13,34 +15,44 @@ type Input = {
 };
 
 export const useMutation = (
-  query: string,
+  query: DocumentNode,
   inputData?: Input,
   onSuccess?: (data: any) => void,
   onError?: (error: any) => void
 ): MutationState => {
-  const [data, setData] = useState<GraphQLResult>();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [data, setData] = React.useState<GraphQLResult>();
+  const [loading, setLoading] = React.useState<boolean>(!!query);
+  const [error, setError] = React.useState(null);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
+  const inputDataRef = React.useRef(inputData);
 
-        const response: any = await API.graphql(
-          graphqlOperation(query, inputData)
-        );
-        const data = response.data;
-        setData(data);
-        onSuccess && onSuccess(data);
-      } catch (err) {
-        setError(err);
-        onError && onError(err);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+  if (!isDeepEqual(inputDataRef.current, inputData)) {
+    inputDataRef.current = inputData;
+  }
+
+  React.useEffect(() => {
+    if (query) {
+      (async () => {
+        try {
+          setLoading(true);
+
+          const { data }: any = await API.graphql(
+            graphqlOperation(query, inputData)
+          );
+
+          const queryName = query.definitions[0].name.value;
+
+          setData(data[queryName]);
+          onSuccess && onSuccess(data);
+        } catch (err) {
+          setError(err);
+          onError && onError(err);
+        } finally {
+          setLoading(false);
+        }
+      })();
+    }
+  }, [query, inputDataRef.current]);
 
   return {
     data,

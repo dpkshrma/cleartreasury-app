@@ -1,13 +1,13 @@
 import * as React from "react";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { Button, MoneyInput } from "@clear-treasury/design-system";
 import { MoneyInputRef } from "@clear-treasury/design-system/dist/components/money-input/MoneyInput";
 import { Client } from "../../pages/_app";
 import { useQuery } from "../../hooks/useQuery";
-import { GET_QUOTE } from "../../graphql/clients/queries";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { GET_QUOTE } from "../../graphql/quotes/queries";
 
-// TODO: pull this back from the API eventually
-import currencies from "./data/currencies.json";
+// TODO: pull this from the API eventually
+import currencies from "../../data/currencies.json";
 
 export interface QuoteFormData {
   ID?: string;
@@ -18,11 +18,10 @@ export interface QuoteFormData {
   value_date: string;
   client_ref: string;
   quote_rate?: any;
-  timestamp?: number; // TODO: hack to get around not having timestamps (see useEffect below)
+  timestamp?: number; // TODO: hack to get around not having timestamps in quotes (see useEffect below)
 }
 
 export interface QuoteFormProps {
-  title: string;
   client?: Client;
   onComplete?: (formData: QuoteFormData) => void;
 }
@@ -37,18 +36,14 @@ let receiveCurrencyList = currencyList.filter(
   (CurrencyCode) => CurrencyCode !== defaultValues.sell.currency
 );
 
-// const calculateValueDate = () => {
-//   const today = new Date();
-//   today.setDate(today.getDate() + 1);
+const calculateValueDate = () => {
+  const today = new Date();
+  today.setDate(today.getDate());
 
-//   return today.toLocaleDateString("en-GB").split("/").reverse().join("");
-// };
+  return today.toLocaleDateString("en-GB").split("/").reverse().join("");
+};
 
-const QuoteForm = ({
-  client,
-  title,
-  onComplete,
-}: QuoteFormProps): JSX.Element => {
+const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
   const [quoting, setQuoting] = React.useState(false);
 
   const sell = React.useRef<MoneyInputRef | null>(null);
@@ -62,7 +57,7 @@ const QuoteForm = ({
     currency_buy: defaultValues.buy.currency,
     sell_amount: parseFloat(defaultValues.sell.amount),
     client_ref: client?.cli_reference,
-    value_date: "20210906",
+    value_date: calculateValueDate(),
   });
 
   // TODO: validation, error handling, blah blah :D
@@ -80,7 +75,7 @@ const QuoteForm = ({
   }, [quote, formData.buy_amount, formData.sell_amount]);
 
   React.useEffect(() => {
-    // TODO: We need a more reliable way of requoting. The API returns the same ID so we need to tie this to something else (quote timestamps?)
+    // TODO: We need a more reliable way of requoting. The API returns the same ID for requotes so we need to tie this to something else (quote timestamps?)
     if (!loading && quoting) {
       setQuoting(false);
     }
@@ -122,7 +117,7 @@ const QuoteForm = ({
   return (
     <form onSubmit={submitHandler} className="space-y-6">
       <h1 className="block w-full text-theme-color-on-surface text-2xl">
-        {title}
+        How much would you like to transfer?
       </h1>
 
       <MoneyInput
