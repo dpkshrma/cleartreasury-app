@@ -11,7 +11,7 @@ import BeneficiaryForm, {
 } from "../components/beneficiary-form/BeneficiaryForm";
 import ConfirmPayForm from "../components/confirm-pay-form/ConfirmPayForm";
 
-type FormData = {
+export type FormData = {
   quote?: QuoteFormData;
   beneficiary?: AddBeneficiaryData;
 };
@@ -33,17 +33,22 @@ const Transfer = ({ client }: { client: Client }): JSX.Element => {
             />
           }
         />
-        <Steps.Step stepTitle="Beneficiary">
-          <BeneficiaryForm
-            // TODO: Move this into a client context
-            client={client}
-            stepBack={(step: number) => setStepNumber(step)}
-            onComplete={(beneficiary) =>
-              setFormData({ ...formData, beneficiary })
-            }
-          />
-        </Steps.Step>
-        <Steps.Step stepTitle="Confirm and pay" form={<ConfirmPayForm />} />
+        <Steps.Step
+          stepTitle="Beneficiary"
+          form={
+            <BeneficiaryForm
+              client={client}
+              stepBack={(step: number) => setStepNumber(step)}
+              onComplete={(beneficiary) =>
+                setFormData({ ...formData, beneficiary })
+              }
+            />
+          }
+        />
+        <Steps.Step
+          stepTitle="Confirm and pay"
+          form={<ConfirmPayForm client={client} data={formData} />}
+        />
       </Steps>
     </Page>
   );
