@@ -15,7 +15,7 @@ type Input = {
 };
 
 export const useMutation = (
-  query: DocumentNode,
+  query?: DocumentNode,
   inputData?: Input,
   onSuccess?: (data: any) => void,
   onError?: (error: any) => void

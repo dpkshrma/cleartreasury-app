@@ -15,7 +15,7 @@ type Variables = {
 };
 
 export const useQuery = (
-  query: DocumentNode,
+  query?: DocumentNode,
   variables?: Variables,
   onSuccess?: (data: any) => void,
   onError?: (error: any) => void
