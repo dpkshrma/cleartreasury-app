@@ -8,6 +8,7 @@ import countries from "./data/countries.json";
 // eslint-disable-next-line
 import reasons from "./data/reasons.json";
 import { Client } from "../../pages/_app";
+import { InputRef } from "@clear-treasury/design-system/dist/components/input/Input";
 
 type Error = {
   message: string;
@@ -75,24 +76,32 @@ const BeneficiaryForm = ({
   onComplete,
   stepBack,
 }: BeneficiaryFormProps): JSX.Element => {
-  const beneficiaryName = React.useRef<HTMLInputElement | null>(null);
-  const email = React.useRef<HTMLInputElement | null>(null);
+  const beneficiaryName = React.useRef<InputRef | null>(null);
+  const email = React.useRef<InputRef | null>(null);
   const currency = React.useRef<HTMLInputElement | null>(null);
   const country = React.useRef<HTMLInputElement | null>(null);
-  const bankAccountName = React.useRef<HTMLInputElement | null>(null);
-  const bankName = React.useRef<HTMLInputElement | null>(null);
-  const bankAddress = React.useRef<HTMLInputElement | null>(null);
-  const accountNumber = React.useRef<HTMLInputElement | null>(null);
-  const swiftNumber = React.useRef<HTMLInputElement | null>(null);
-  const sortCode = React.useRef<HTMLInputElement | null>(null);
-  const iban = React.useRef<HTMLInputElement | null>(null);
-  const routingNumber = React.useRef<HTMLInputElement | null>(null);
+  const bankAccountName = React.useRef<InputRef | null>(null);
+  const bankName = React.useRef<InputRef | null>(null);
+  const bankAddress = React.useRef<InputRef | null>(null);
+  const accountNumber = React.useRef<InputRef | null>(null);
+  const swiftNumber = React.useRef<InputRef | null>(null);
+  const sortCode = React.useRef<InputRef | null>(null);
+  const iban = React.useRef<InputRef | null>(null);
+  const routingNumber = React.useRef<InputRef | null>(null);
 
   const [formData, setFormData] = React.useState<BeneficiaryFormData>({
-    beneficiaryName: "",
-    email: "",
+    beneficiaryName: beneficiaryName.current?.value,
+    email: email.current?.value,
     country: defaultValues.country,
     currency: defaultValues.currency,
+    bankAccountName: bankAccountName.current?.value,
+    bankName: bankName.current?.value,
+    bankAddress: bankAddress.current?.value,
+    accountNumber: accountNumber.current?.value,
+    swiftNumber: swiftNumber.current?.value,
+    sortCode: sortCode.current?.value,
+    iban: iban.current?.value,
+    routingNumber: routingNumber.current?.value,
     errors: {},
   });
 
@@ -100,9 +109,26 @@ const BeneficiaryForm = ({
     event.preventDefault();
 
     const isValid = validateForm();
-    if (!isValid) return false;
-
-    onComplete(formData);
+    if (isValid) {
+      const obj = {
+        beneficiaryName: beneficiaryName.current?.value,
+        email: email.current?.value,
+        country: defaultValues.country,
+        currency: defaultValues.currency,
+        bankAccountName: bankAccountName.current?.value,
+        bankName: bankName.current?.value,
+        bankAddress: bankAddress.current?.value,
+        accountNumber: accountNumber.current?.value,
+        swiftNumber: swiftNumber.current?.value,
+        sortCode: sortCode.current?.value,
+        iban: iban.current?.value,
+        routingNumber: routingNumber.current?.value,
+        errors: null,
+      };
+      onComplete(obj);
+    } else {
+      return false;
+    }
   };
 
   const currencyChange = () => {
@@ -350,14 +376,14 @@ const BeneficiaryForm = ({
             Please provide a reason for your payments to this beneficiary
           </p>
           <div className="border-b border-gray-200 pb-8">
-            {/* <Select
+            <Select
               name="select"
               options={
                 client.cty_value == "PRIVATE"
                   ? reasons.OPTIONS_REASON_PERSONAL
                   : reasons.OPTIONS_REASON_BUSINESS
               }
-            /> */}
+            />
           </div>
           <div className="py-8 flex justify-between">
             <Button

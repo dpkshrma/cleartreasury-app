@@ -10,12 +10,14 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import currencies from "./data/currencies.json";
 
 export interface QuoteFormData {
+  ID?: string;
   sell_amount?: number;
   currency_sell: string;
   buy_amount?: number;
   currency_buy: string;
   value_date: string;
   client_ref: string;
+  quote_rate?: any;
   timestamp?: number; // TODO: hack to get around not having timestamps (see useEffect below)
 }
 
@@ -35,12 +37,12 @@ let receiveCurrencyList = currencyList.filter(
   (CurrencyCode) => CurrencyCode !== defaultValues.sell.currency
 );
 
-const calculateValueDate = () => {
-  const today = new Date();
-  today.setDate(today.getDate() + 1);
+// const calculateValueDate = () => {
+//   const today = new Date();
+//   today.setDate(today.getDate() + 1);
 
-  return today.toLocaleDateString("en-GB").split("/").reverse().join("");
-};
+//   return today.toLocaleDateString("en-GB").split("/").reverse().join("");
+// };
 
 const QuoteForm = ({
   client,
@@ -60,7 +62,7 @@ const QuoteForm = ({
     currency_buy: defaultValues.buy.currency,
     sell_amount: parseFloat(defaultValues.sell.amount),
     client_ref: client?.cli_reference,
-    value_date: calculateValueDate(),
+    value_date: "20210906",
   });
 
   // TODO: validation, error handling, blah blah :D
