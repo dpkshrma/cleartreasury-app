@@ -2,7 +2,7 @@ import { Button } from "@clear-treasury/design-system";
 import * as React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
-const ConfirmPayForm = () => {
+const ConfirmPayForm = (): JSX.Element => {
   return (
     <div className="bg-white py-10">
       <div className="max-w-xl w-full m-auto">
