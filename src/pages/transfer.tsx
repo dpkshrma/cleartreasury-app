@@ -10,6 +10,7 @@ import BeneficiaryForm, {
   BeneficiaryFormData,
 } from "../components/beneficiary-form/BeneficiaryForm";
 import ConfirmPayForm from "../components/confirm-pay-form/ConfirmPayForm";
+import PaymentDetails from "../components/payment-details/PaymentDetails";
 
 export type FormData = {
   quote?: QuoteFormData;
@@ -47,10 +48,30 @@ const Transfer = ({ client }: { client: Client }): JSX.Element => {
             />
           }
         />
-        <Steps.Step
-          stepTitle="Confirm and pay"
-          form={<ConfirmPayForm client={client} data={formData} />}
-        />
+        <Steps.Step stepTitle="Confirm and pay">
+          <Steps>
+            <Steps.Step
+              form={
+                <ConfirmPayForm
+                  client={client}
+                  data={formData}
+                  // eslint-disable-next-line
+                  onComplete={(data) => console.log(data, "ConfirmPayForm")}
+                />
+              }
+            />
+            <Steps.Step
+              form={
+                <PaymentDetails
+                  client={client}
+                  data={formData}
+                  // eslint-disable-next-line
+                  onComplete={(data) => console.log(data, "PaymentDetails")}
+                />
+              }
+            />
+          </Steps>
+        </Steps.Step>
       </Steps>
     </Page>
   );

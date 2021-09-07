@@ -1,6 +1,8 @@
 import { Button } from "@clear-treasury/design-system";
 import * as React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { POST_TRADES } from "../../graphql/clients/queries";
+import { useQuery } from "../../hooks/useQuery";
 import { FormData } from "../../pages/transfer";
 import { Client } from "../../pages/_app";
 import { QuoteFormData } from "../quote-form/QuoteForm";
@@ -8,9 +10,14 @@ import { QuoteFormData } from "../quote-form/QuoteForm";
 interface ConfirmPayFormProps {
   data?: FormData;
   client?: Client;
+  onComplete?: (tradeData: any) => void;
 }
 
-const ConfirmPayForm = ({ data, client }: ConfirmPayFormProps): JSX.Element => {
+const ConfirmPayForm = ({
+  data,
+  client,
+  onComplete,
+}: ConfirmPayFormProps): JSX.Element => {
   // eslint-disable-next-line
   const [quoting, setQuoting] = React.useState(false);
   const [formData, setFormData] = React.useState<QuoteFormData>({
@@ -21,10 +28,26 @@ const ConfirmPayForm = ({ data, client }: ConfirmPayFormProps): JSX.Element => {
     value_date: "20210906",
   });
 
+  // eslint-disable-next-line
+  const [tradeData, setTradeData] = React.useState({
+    quote_id: data.quote.ID,
+    client_ref: "1233456",
+    client_rate: data.quote.quote_rate,
+    qutore_rate: data.quote.quote_rate,
+  });
+
+  // eslint-disable-next-line
+  const { data: trade, loading } = useQuery(POST_TRADES, tradeData);
+
+  const submitHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+    onComplete(trade);
+  };
+
   return (
     <div className="bg-white py-10">
       <div className="max-w-xl w-full m-auto">
-        <form>
+        <form onSubmit={submitHandler}>
           <h2 className="text-2xl mb-2">Confirm and book</h2>
           <p className="text-l text-gray-500 mb-14">
             By confirming your quote below you are entering into a legal

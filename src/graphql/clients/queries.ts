@@ -51,3 +51,36 @@ export const GET_QUOTE = gql`
     }
   }
 `;
+
+export const POST_TRADES = gql`
+  mutation postTrades(
+    $quote_id: Float
+    $client_ref: String
+    $client_rate: Float
+    $quote_rate: Float
+  ) {
+    postTrades(
+      quote_id: $quote_id
+      client_ref: $client_ref
+      client_rate: $client_rate
+      quote_rate: $quote_rate
+    ) {
+      ID
+      trade_ref
+      trade_date
+      value_date
+      currency_bought
+      currency_sold
+      rate
+      bought_amount
+      sold_amount
+      payment_fee
+      trade_type
+      our_account_name
+      our_bank_name
+      our_iban
+      our_sort_code
+      our_swift_code
+    }
+  }
+`;
