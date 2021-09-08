@@ -1,10 +1,10 @@
-import { Button } from "@clear-treasury/design-system";
 import * as React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { GET_QUOTE, POST_TRADES } from "../../graphql/clients/queries";
 import { useQuery } from "../../hooks/useQuery";
-import { FormData } from "../../pages/transfer";
+import { Button } from "@clear-treasury/design-system";
 import { Client } from "../../pages/_app";
+import { FormData } from "../../pages/transfer";
 import { QuoteFormData } from "../quote-form/QuoteForm";
 
 interface ConfirmPayFormProps {

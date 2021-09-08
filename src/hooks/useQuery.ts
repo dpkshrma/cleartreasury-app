@@ -2,6 +2,7 @@ import * as React from "react";
 import { DocumentNode } from "graphql-tag-ts";
 import isDeepEqual from "fast-deep-equal/react";
 import { API, graphqlOperation } from "aws-amplify";
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 
 type QueryState = {
   data: any;
@@ -14,13 +15,13 @@ type Variables = {
 };
 
 export const useQuery = (
-  query: DocumentNode,
+  query?: DocumentNode,
   variables?: Variables,
   onSuccess?: (data: any) => void,
   onError?: (error: any) => void
 ): QueryState => {
-  const [data, setData] = React.useState(null);
-  const [loading, setLoading] = React.useState(!!query);
+  const [data, setData] = React.useState<GraphQLResult>(null);
+  const [loading, setLoading] = React.useState<boolean>(!!query);
   const [error, setError] = React.useState(null);
 
   const variablesRef = React.useRef(variables);

@@ -7,18 +7,17 @@ import Step from "../components/steps/Step";
 import QuoteForm, { QuoteFormData } from "../components/quote-form/QuoteForm";
 import { Client } from "./_app";
 import BeneficiaryForm, {
-  BeneficiaryFormData,
+  AddBeneficiaryData,
 } from "../components/beneficiary-form/BeneficiaryForm";
 import ConfirmPayForm from "../components/confirm-pay-form/ConfirmPayForm";
 import PaymentDetails from "../components/payment-details/PaymentDetails";
 
 export type FormData = {
   quote?: QuoteFormData;
-  beneficiary?: BeneficiaryFormData;
+  beneficiary?: AddBeneficiaryData;
 };
 
 const Transfer = ({ client }: { client: Client }): JSX.Element => {
-  // eslint-disable-next-line
   const [formData, setFormData] = React.useState<FormData>({});
   const [stepNumber, setStepNumber] = React.useState<number>();
 
@@ -29,10 +28,9 @@ const Transfer = ({ client }: { client: Client }): JSX.Element => {
           stepTitle="Amount"
           form={
             <QuoteForm
-              title="How much would you like to transfer?"
               // TODO: Move this into a client context
               client={client}
-              onComplete={(quote) => setFormData({ ...formData, quote: quote })}
+              onComplete={(quote) => setFormData({ ...formData, quote })}
             />
           }
         />
@@ -43,7 +41,7 @@ const Transfer = ({ client }: { client: Client }): JSX.Element => {
               client={client}
               stepBack={(step: number) => setStepNumber(step)}
               onComplete={(beneficiary) =>
-                setFormData({ ...formData, beneficiary: beneficiary })
+                setFormData({ ...formData, beneficiary })
               }
             />
           }
