@@ -1,7 +1,7 @@
 import { Button } from "@clear-treasury/design-system";
 import * as React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { POST_TRADES } from "../../graphql/clients/queries";
+import { GET_QUOTE, POST_TRADES } from "../../graphql/clients/queries";
 import { useQuery } from "../../hooks/useQuery";
 import { FormData } from "../../pages/transfer";
 import { Client } from "../../pages/_app";
@@ -18,7 +18,6 @@ const ConfirmPayForm = ({
   client,
   onComplete,
 }: ConfirmPayFormProps): JSX.Element => {
-  // eslint-disable-next-line
   const [quoting, setQuoting] = React.useState(false);
   const [formData, setFormData] = React.useState<QuoteFormData>({
     currency_sell: data.quote.currency_sell,
@@ -38,11 +37,19 @@ const ConfirmPayForm = ({
 
   // eslint-disable-next-line
   const { data: trade, loading } = useQuery(POST_TRADES, tradeData);
+  const { data: quote } = useQuery(GET_QUOTE, formData);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
     onComplete(trade);
   };
+
+  React.useEffect(() => {
+    // TODO: We need a more reliable way of requoting. The API returns the same ID so we need to tie this to something else (quote timestamps?)
+    if (!loading && quoting) {
+      setQuoting(false);
+    }
+  }, [loading, quoting]);
 
   return (
     <div className="bg-white py-10">
@@ -82,7 +89,7 @@ const ConfirmPayForm = ({
                 size={36}
                 strokeWidth={2}
                 duration={20}
-                key="200"
+                key={!quoting && `${quote?.ID}_${quoting}`}
                 isPlaying={data.quote?.quote_rate}
                 colors={[
                   ["#01A783", 0.5],
