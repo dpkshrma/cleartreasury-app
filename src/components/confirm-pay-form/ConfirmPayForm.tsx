@@ -1,6 +1,7 @@
 import * as React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { GET_QUOTE, POST_TRADES } from "../../graphql/clients/queries";
+import { BOOK_TRADE } from "../../graphql/trades/mutations";
+import { GET_QUOTE } from "../../graphql/quotes/queries";
 import { useQuery } from "../../hooks/useQuery";
 import { Button } from "@clear-treasury/design-system";
 import { Client } from "../../pages/_app";
@@ -36,7 +37,7 @@ const ConfirmPayForm = ({
   });
 
   // eslint-disable-next-line
-  const { data: trade, loading } = useQuery(POST_TRADES, tradeData);
+  const { data: trade, loading } = useQuery(BOOK_TRADE, { input: tradeData });
   const { data: quote } = useQuery(GET_QUOTE, formData);
 
   const submitHandler = (event: React.FormEvent) => {

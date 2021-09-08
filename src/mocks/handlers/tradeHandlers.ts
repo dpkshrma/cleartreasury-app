@@ -1,10 +1,10 @@
 import { graphql } from "msw";
 
 export const tradeHandlers = [
-  graphql.mutation("postTrades", (req, res, ctx) => {
+  graphql.mutation("bookTrade", (req, res, ctx) => {
     return res(
       ctx.data({
-        trade: {
+        bookTrade: {
           ID: 2,
           trade_ref: "0000001",
           trade_date: "20200101",
