@@ -31,7 +31,7 @@ const PaymentDetails = ({
           <div className="flex justify-between mb-4">
             <span className="text-lg theme-color-primary">Bank name</span>
             <span className="text-lg theme-color-on-surface">
-              {data.beneficiary?.bankName}
+              {data.beneficiary?.bank_name}
             </span>
           </div>
           <div className="flex justify-between mb-4">
@@ -39,19 +39,19 @@ const PaymentDetails = ({
               Bank account holders name
             </span>
             <span className="text-lg theme-color-on-surface">
-              {data.beneficiary?.beneficiaryName}
+              {data.beneficiary?.account_name}
             </span>
           </div>
           <div className="flex justify-between mb-4">
             <span className="text-lg theme-color-primary">Account number</span>
             <span className="text-lg theme-color-on-surface">
-              {data.beneficiary?.accountNumber}
+              {data.beneficiary?.account_number}
             </span>
           </div>
           <div className="flex justify-between mb-4">
             <span className="text-lg theme-color-primary">Sort code</span>
             <span className="text-lg theme-color-on-surface">
-              {data.beneficiary?.sortCode}
+              {data.beneficiary?.sort_code}
             </span>
           </div>
           {data.beneficiary.swiftNumber !== undefined && (
