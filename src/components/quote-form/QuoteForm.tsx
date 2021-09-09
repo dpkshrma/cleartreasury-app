@@ -163,7 +163,7 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
               }}
             />
           )}
-          <span>{quote?.quote_rate}</span>
+          <span>{quote?.quote_rate.toFixed(4)}</span>
         </div>
       </div>
 

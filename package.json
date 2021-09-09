@@ -35,6 +35,7 @@
     "flag-icon-css": "^3.5.0",
     "graphql-tag": "^2.12.5",
     "groq": "^2.2.6",
+    "moment": "^2.29.1",
     "next": "latest",
     "react": "17.0.2",
     "react-countdown-circle-timer": "^2.5.3",

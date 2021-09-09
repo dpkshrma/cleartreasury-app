@@ -100,7 +100,7 @@ const AddBeneficiaryForm = ({
 
     onComplete({
       // TODO: add more details to this payload
-      // beneficiaryName: beneficiaryName.current.value,
+      beneficiaryName: beneficiaryName.current.value,
       email: email.current.value,
       currency: currency.current.value,
       country_code: country_code.current.value,

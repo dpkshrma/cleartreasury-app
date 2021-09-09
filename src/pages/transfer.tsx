@@ -15,6 +15,7 @@ import PaymentDetails from "../components/payment-details/PaymentDetails";
 export type FormData = {
   quote?: QuoteFormData;
   beneficiary?: AddBeneficiaryData;
+  trade?: any;
 };
 
 const Transfer = ({ client }: { client: Client }): JSX.Element => {
@@ -53,21 +54,11 @@ const Transfer = ({ client }: { client: Client }): JSX.Element => {
                 <ConfirmPayForm
                   client={client}
                   data={formData}
-                  // eslint-disable-next-line
-                  onComplete={(data) => console.log(data, "ConfirmPayForm")}
+                  onComplete={(trade) => setFormData({ ...formData, trade })}
                 />
               }
             />
-            <Steps.Step
-              form={
-                <PaymentDetails
-                  client={client}
-                  data={formData}
-                  // eslint-disable-next-line
-                  onComplete={(data) => console.log(data, "PaymentDetails")}
-                />
-              }
-            />
+            <Steps.Step form={<PaymentDetails data={formData} />} />
           </Steps>
         </Steps.Step>
       </Steps>
