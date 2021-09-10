@@ -2,12 +2,27 @@ import { Alert, Button } from "@clear-treasury/design-system";
 import Link from "next/link";
 import * as React from "react";
 import { FormData } from "../../pages/transfer";
+import { BOOK_TRADE } from "../../graphql/trades/mutations";
+import { useMutation } from "../../hooks/useMutation";
 
 interface PaymentDetailsProps {
   data?: FormData;
 }
 
 const PaymentDetails = ({ data }: PaymentDetailsProps): JSX.Element => {
+  const { data: trade } = useMutation(data.trade ? BOOK_TRADE : null, {
+    input: {
+      data,
+    },
+  });
+  const [reference, setReference] = React.useState(null);
+
+  React.useEffect(() => {
+    if (trade !== undefined) {
+      setReference(trade.trade_ref);
+    }
+  }, [trade]);
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl mb-2">Payment details</h2>
@@ -57,9 +72,7 @@ const PaymentDetails = ({ data }: PaymentDetailsProps): JSX.Element => {
       )}
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">Payment reference</span>
-        <span className="text-lg theme-color-on-surface">
-          {data.trade.trade_ref}
-        </span>
+        <span className="text-lg theme-color-on-surface">{reference}</span>
       </div>
       <div className="pb-8 border-b border-gray-200 mb-14">
         <Alert

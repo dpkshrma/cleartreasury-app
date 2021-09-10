@@ -10,7 +10,7 @@ import BeneficiaryForm, {
   AddBeneficiaryData,
 } from "../components/beneficiary-form/BeneficiaryForm";
 import ConfirmPayForm from "../components/confirm-pay-form/ConfirmPayForm";
-import PaymentDetails from "../components/payment-details/PaymentDetails";
+import PaymentDetails from "../components/confirm-pay-form/PaymentDetails";
 
 export type FormData = {
   quote?: QuoteFormData;

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { BOOK_TRADE } from "../../graphql/trades/mutations";
 import { GET_QUOTE } from "../../graphql/quotes/queries";
 import { useQuery } from "../../hooks/useQuery";
 import { Button } from "@clear-treasury/design-system";
@@ -8,7 +7,6 @@ import { Client } from "../../pages/_app";
 import { FormData } from "../../pages/transfer";
 import { QuoteFormData } from "../quote-form/QuoteForm";
 import Link from "next/link";
-import moment from "moment";
 
 interface ConfirmPayFormProps {
   data?: FormData;
@@ -27,7 +25,7 @@ const ConfirmPayForm = ({
     currency_buy: data.quote.currency_buy,
     sell_amount: data.quote.sell_amount,
     client_ref: client?.cli_reference,
-    value_date: "20210906",
+    value_date: data.quote.value_date,
   });
 
   // eslint-disable-next-line
@@ -39,12 +37,11 @@ const ConfirmPayForm = ({
   });
 
   // eslint-disable-next-line
-  const { data: trade, loading } = useQuery(BOOK_TRADE, { input: tradeData });
-  const { data: quote } = useQuery(GET_QUOTE, formData);
+  const { data: quote, loading } = useQuery(GET_QUOTE, formData);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    onComplete(trade);
+    onComplete(tradeData);
   };
 
   React.useEffect(() => {
@@ -53,6 +50,24 @@ const ConfirmPayForm = ({
       setQuoting(false);
     }
   }, [loading, quoting]);
+
+  const formatValueDate = () => {
+    const output = [
+      data.quote.value_date.slice(0, 4),
+      "/",
+      data.quote.value_date.slice(4, 6),
+      "/",
+      data.quote.value_date.slice(6, 8),
+    ].join("");
+
+    const today = new Date(output);
+
+    return today.toLocaleDateString("en-GB", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   return (
     <form onSubmit={submitHandler} className="space-y-6">
@@ -106,7 +121,7 @@ const ConfirmPayForm = ({
       <div className="flex justify-between mb-14">
         <span className="text-lg theme-color-primary">Value Date</span>
         <span className="text-lg theme-color-on-surface">
-          {moment(data.quote.value_date).format("Do MMMM YYYY")}
+          {formatValueDate()}
         </span>
       </div>
       <h3 className="text-lg mb-4 border-b border-gray-200 pb-4">
@@ -115,7 +130,7 @@ const ConfirmPayForm = ({
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">Name</span>
         <span className="text-lg theme-color-on-surface">
-          {data.beneficiary.beneficiaryName}
+          {data.beneficiary.account_name}
         </span>
       </div>
       <div className="flex justify-between mb-14">
