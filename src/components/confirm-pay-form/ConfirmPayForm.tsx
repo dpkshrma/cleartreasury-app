@@ -1,12 +1,33 @@
 import * as React from "react";
+import Link from "next/link";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { GET_QUOTE } from "../../graphql/quotes/queries";
-import { useQuery } from "../../hooks/useQuery";
 import { Button } from "@clear-treasury/design-system";
 import { Client } from "../../pages/_app";
 import { FormData } from "../../pages/transfer";
+import { GET_QUOTE } from "../../graphql/quotes/queries";
+import { BOOK_TRADE } from "../../graphql/trades/mutations";
+import { useQuery } from "../../hooks/useQuery";
+import { useMutation } from "../../hooks/useMutation";
 import { QuoteFormData } from "../quote-form/QuoteForm";
-import Link from "next/link";
+
+export type TradeData = {
+  ID: number;
+  trade_ref: string;
+  trade_date: string;
+  value_date: string;
+  currency_bought: string;
+  currency_sold: string;
+  rate: number;
+  bought_amount: number;
+  sold_amount: number;
+  payment_fee: number;
+  trade_type: "Spot" | "Forward";
+  our_account_name: string;
+  our_bank_name: string;
+  our_iban: string;
+  our_sort_code: string;
+  our_swift_code: string;
+};
 
 interface ConfirmPayFormProps {
   data?: FormData;
@@ -20,6 +41,8 @@ const ConfirmPayForm = ({
   onComplete,
 }: ConfirmPayFormProps): JSX.Element => {
   const [quoting, setQuoting] = React.useState(false);
+  const [bookTrade, setBookTrade] = React.useState(false);
+
   const [formData, setFormData] = React.useState<QuoteFormData>({
     currency_sell: data.quote.currency_sell,
     currency_buy: data.quote.currency_buy,
@@ -28,20 +51,16 @@ const ConfirmPayForm = ({
     value_date: data.quote.value_date,
   });
 
-  // eslint-disable-next-line
-  const [tradeData, setTradeData] = React.useState({
-    quote_id: data.quote.ID,
-    client_ref: "1233456",
-    client_rate: data.quote.quote_rate,
-    qutore_rate: data.quote.quote_rate,
-  });
-
-  // eslint-disable-next-line
   const { data: quote, loading } = useQuery(GET_QUOTE, formData);
+  const { data: trade } = useMutation(bookTrade ? BOOK_TRADE : null, {
+    input: {
+      formData,
+    },
+  });
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    onComplete(tradeData);
+    setBookTrade(true);
   };
 
   React.useEffect(() => {
@@ -50,6 +69,13 @@ const ConfirmPayForm = ({
       setQuoting(false);
     }
   }, [loading, quoting]);
+
+  React.useEffect(() => {
+    // TODO: error handling
+    if (trade) {
+      onComplete(trade);
+    }
+  }, [trade]);
 
   const formatValueDate = () => {
     const output = [

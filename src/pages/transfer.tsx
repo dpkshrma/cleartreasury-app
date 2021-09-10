@@ -9,13 +9,15 @@ import { Client } from "./_app";
 import BeneficiaryForm, {
   AddBeneficiaryData,
 } from "../components/beneficiary-form/BeneficiaryForm";
-import ConfirmPayForm from "../components/confirm-pay-form/ConfirmPayForm";
+import ConfirmPayForm, {
+  TradeData,
+} from "../components/confirm-pay-form/ConfirmPayForm";
 import PaymentDetails from "../components/confirm-pay-form/PaymentDetails";
 
 export type FormData = {
   quote?: QuoteFormData;
   beneficiary?: AddBeneficiaryData;
-  trade?: any;
+  trade?: TradeData;
 };
 
 const Transfer = ({ client }: { client: Client }): JSX.Element => {
@@ -58,7 +60,7 @@ const Transfer = ({ client }: { client: Client }): JSX.Element => {
                 />
               }
             />
-            <Steps.Step form={<PaymentDetails data={formData} />} />
+            <Steps.Step form={<PaymentDetails details={formData} />} />
           </Steps>
         </Steps.Step>
       </Steps>

@@ -1,28 +1,13 @@
-import { Alert, Button } from "@clear-treasury/design-system";
-import Link from "next/link";
 import * as React from "react";
+import Link from "next/link";
+import { Alert, Button } from "@clear-treasury/design-system";
 import { FormData } from "../../pages/transfer";
-import { BOOK_TRADE } from "../../graphql/trades/mutations";
-import { useMutation } from "../../hooks/useMutation";
 
 interface PaymentDetailsProps {
-  data?: FormData;
+  details: FormData;
 }
 
-const PaymentDetails = ({ data }: PaymentDetailsProps): JSX.Element => {
-  const { data: trade } = useMutation(data.trade ? BOOK_TRADE : null, {
-    input: {
-      data,
-    },
-  });
-  const [reference, setReference] = React.useState(null);
-
-  React.useEffect(() => {
-    if (trade !== undefined) {
-      setReference(trade.trade_ref);
-    }
-  }, [trade]);
-
+const PaymentDetails = ({ details }: PaymentDetailsProps): JSX.Element => {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl mb-2">Payment details</h2>
@@ -33,7 +18,7 @@ const PaymentDetails = ({ data }: PaymentDetailsProps): JSX.Element => {
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">Bank name</span>
         <span className="text-lg theme-color-on-surface">
-          {data.beneficiary?.bank_name}
+          {details.beneficiary?.bank_name}
         </span>
       </div>
       <div className="flex justify-between mb-4">
@@ -41,28 +26,28 @@ const PaymentDetails = ({ data }: PaymentDetailsProps): JSX.Element => {
           Bank account holders name
         </span>
         <span className="text-lg theme-color-on-surface">
-          {data.beneficiary?.account_name}
+          {details.beneficiary?.account_name}
         </span>
       </div>
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">Account number</span>
         <span className="text-lg theme-color-on-surface">
-          {data.beneficiary?.account_number}
+          {details.beneficiary?.account_number}
         </span>
       </div>
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">Sort code</span>
         <span className="text-lg theme-color-on-surface">
-          {data.beneficiary?.sort_code}
+          {details.beneficiary?.sort_code}
         </span>
       </div>
-      {data.beneficiary.swiftNumber !== undefined && (
+      {details.beneficiary.swiftNumber !== undefined && (
         <div className="flex justify-between mb-4">
           <span className="text-lg theme-color-primary">Bic/SWIFT code</span>
           <span className="text-lg theme-color-on-surface">BarcgB00</span>
         </div>
       )}
-      {data.beneficiary.iban !== undefined && (
+      {details.beneficiary.iban !== undefined && (
         <div className="flex justify-between mb-4">
           <span className="text-lg theme-color-primary">IBAN number</span>
           <span className="text-lg theme-color-on-surface">
@@ -72,12 +57,14 @@ const PaymentDetails = ({ data }: PaymentDetailsProps): JSX.Element => {
       )}
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">Payment reference</span>
-        <span className="text-lg theme-color-on-surface">{reference}</span>
+        <span className="text-lg theme-color-on-surface">
+          {details.trade.trade_ref}
+        </span>
       </div>
       <div className="pb-8 border-b border-gray-200 mb-14">
         <Alert
           status={Alert.Status.PRIMARY}
-          text={`An email confirming the above details and outlining next steps has been sent to ${data.beneficiary.email}`}
+          text={`An email confirming the above details and outlining next steps has been sent to ${details.beneficiary.email}`}
         />
       </div>
       <div className="flex justify-end">
