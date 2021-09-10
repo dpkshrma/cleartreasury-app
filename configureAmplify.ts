@@ -1,5 +1,7 @@
 import Amplify from "aws-amplify";
 
+// TODO: Generate the config from CDK stack output
+// See https://appsync-immersionday.workshop.aws/lab2/1_cup-auth.html#deploy
 export const config = {
   Auth: {
     // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
@@ -19,17 +21,10 @@ export const config = {
   },
   API: {
     aws_appsync_graphqlEndpoint:
-      "https://ewpykcxk5farroveasiet4jnbm.appsync-api.eu-west-2.amazonaws.com/graphql",
+      "https://zivdrpnurbhablzsvmjgcomzj4.appsync-api.eu-west-2.amazonaws.com/graphql",
     aws_appsync_region: "eu-west-2",
-    aws_appsync_authenticationType: "API_KEY",
-    aws_appsync_apiKey: "da2-gqzao4xxlraefjc6nc4brun47e",
+    aws_appsync_authenticationType: "AMAZON_COGNITO_USER_POOLS",
   },
 };
-
-// TODO: Generate the config from CDK stack output
-// const CDKConfig = {
-//   aws_appsync_authenticationType: CdkBackendStack.awsappsyncauthenticationType,
-//   aws_appsync_apiKey: CdkBackendStack.awsappsyncapiKey,
-// };
 
 Amplify.configure({ ...config, ssr: true });
