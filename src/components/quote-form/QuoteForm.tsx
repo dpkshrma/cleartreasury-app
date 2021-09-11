@@ -9,8 +9,11 @@ import { GET_QUOTE } from "../../graphql/quotes/queries";
 // TODO: pull this from the API eventually
 import currencies from "../../data/currencies.json";
 
+export type Quote = QuoteFormData & {
+  ID: string;
+};
+
 export interface QuoteFormData {
-  ID?: string;
   sell_amount?: number;
   currency_sell: string;
   buy_amount?: number;
@@ -18,12 +21,12 @@ export interface QuoteFormData {
   value_date: string;
   client_ref: string;
   quote_rate?: any;
-  timestamp?: number; // TODO: hack to get around not having timestamps in quotes (see useEffect below)
+  timestamp?: number; // Hack to get around not having timestamps in quotes (see useEffect below)
 }
 
 export interface QuoteFormProps {
   client?: Client;
-  onComplete?: (formData: QuoteFormData) => void;
+  onComplete?: (quote: Quote) => void;
 }
 
 const defaultValues = {

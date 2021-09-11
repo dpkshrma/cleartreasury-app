@@ -4,20 +4,20 @@ import { GetServerSideProps } from "next";
 import Page from "../components/page/Page";
 import Steps from "../components/steps/Steps";
 import Step from "../components/steps/Step";
-import QuoteForm, { QuoteFormData } from "../components/quote-form/QuoteForm";
+import QuoteForm, { Quote } from "../components/quote-form/QuoteForm";
 import { Client } from "./_app";
 import BeneficiaryForm, {
   Beneficiary,
 } from "../components/beneficiary-form/BeneficiaryForm";
 import ConfirmPayForm, {
-  TradeData,
+  Trade,
 } from "../components/confirm-pay-form/ConfirmPayForm";
 import PaymentDetails from "../components/confirm-pay-form/PaymentDetails";
 
 export type FormData = {
-  quote?: QuoteFormData;
+  quote?: Quote;
   beneficiary?: Beneficiary;
-  trade?: TradeData;
+  trade?: Trade;
 };
 
 const Transfer = ({ client }: { client: Client }): JSX.Element => {

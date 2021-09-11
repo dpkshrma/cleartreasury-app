@@ -10,7 +10,7 @@ import { useQuery } from "../../hooks/useQuery";
 import { useMutation } from "../../hooks/useMutation";
 import { QuoteFormData } from "../quote-form/QuoteForm";
 
-export type TradeData = {
+export type Trade = {
   ID: number;
   trade_ref: string;
   trade_date: string;
