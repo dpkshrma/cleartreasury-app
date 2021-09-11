@@ -7,7 +7,7 @@ import Step from "../components/steps/Step";
 import QuoteForm, { QuoteFormData } from "../components/quote-form/QuoteForm";
 import { Client } from "./_app";
 import BeneficiaryForm, {
-  AddBeneficiaryData,
+  Beneficiary,
 } from "../components/beneficiary-form/BeneficiaryForm";
 import ConfirmPayForm, {
   TradeData,
@@ -16,7 +16,7 @@ import PaymentDetails from "../components/confirm-pay-form/PaymentDetails";
 
 export type FormData = {
   quote?: QuoteFormData;
-  beneficiary?: AddBeneficiaryData;
+  beneficiary?: Beneficiary;
   trade?: TradeData;
 };
 
