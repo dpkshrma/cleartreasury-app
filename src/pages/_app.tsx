@@ -13,9 +13,9 @@ import "../../configureAmplify";
 import "../styles.css";
 
 // TODO: Remove this completely?
-// if (process.env.NEXT_PUBLIC_API_MOCKING) {
-//   require("../mocks");
-// }
+if (process.env.NEXT_PUBLIC_API_MOCKING) {
+  require("../mocks");
+}
 
 interface User {
   email: string;

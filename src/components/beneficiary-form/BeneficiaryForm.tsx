@@ -7,13 +7,17 @@ import VerificationForm from "./VerificationForm";
 
 export type { AddBeneficiaryData } from "./AddBeneficiaryForm";
 
+export type Beneficiary = AddBeneficiaryData & {
+  id: number;
+};
+
 interface BeneficiaryFormData {
   beneficiary: AddBeneficiaryData;
   verified: boolean;
 }
 export interface BeneficiaryFormProps {
   client?: Client;
-  onComplete?: (formData: AddBeneficiaryData) => void;
+  onComplete?: (formData: Beneficiary) => void;
   stepBack?: (stepNumber: number) => void;
 }
 
@@ -39,7 +43,7 @@ const BeneficiaryForm = ({
 
   React.useEffect(() => {
     if (formData.verified && beneficiary) {
-      onComplete(formData.beneficiary);
+      onComplete({ ...beneficiary, ...formData.beneficiary });
     }
   }, [formData.verified, beneficiary]);
 

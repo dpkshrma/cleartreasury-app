@@ -1,12 +1,12 @@
 import * as React from "react";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { Button, Flag, Input, Select } from "@clear-treasury/design-system";
+import { SelectChangeHandler } from "@clear-treasury/design-system/dist/components/select/Select";
 import { Client } from "../../pages/_app";
 
 // TODO: pull this from the API eventually
 import currencies from "../../data/currencies.json";
 import countries from "../../data/countries.json";
-import { SelectChangeHandler } from "@clear-treasury/design-system/dist/components/select/Select";
 // import reasons from "../../data/reasons.json";
 
 type Error = {
@@ -100,7 +100,7 @@ const AddBeneficiaryForm = ({
 
     onComplete({
       // TODO: add more details to this payload
-      // beneficiaryName: beneficiaryName.current.value,
+      beneficiaryName: beneficiaryName.current.value,
       email: email.current.value,
       currency: currency.current.value,
       country_code: country_code.current.value,
@@ -335,7 +335,7 @@ const AddBeneficiaryForm = ({
         />
       )}
 
-      {/* 
+      {/*
         // TODO: Beneficiary reason for transfer still TBD...
         <h2 className="text-2xl mb-2">Reason for transfer</h2>
 
@@ -351,11 +351,10 @@ const AddBeneficiaryForm = ({
                 ? reasons.OPTIONS_REASON_PERSONAL
                 : reasons.OPTIONS_REASON_BUSINESS
             }
-          /> 
+          />
         </div>
       */}
 
-      {/* TODO: Not sure <hr /> is the best/right way to do this */}
       <hr className="pb-2" />
 
       <div className="flex justify-between">

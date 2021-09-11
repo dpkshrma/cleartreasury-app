@@ -4,16 +4,20 @@ import { GetServerSideProps } from "next";
 import Page from "../components/page/Page";
 import Steps from "../components/steps/Steps";
 import Step from "../components/steps/Step";
-import QuoteForm, { QuoteFormData } from "../components/quote-form/QuoteForm";
+import QuoteForm, { Quote } from "../components/quote-form/QuoteForm";
 import { Client } from "./_app";
 import BeneficiaryForm, {
-  AddBeneficiaryData,
+  Beneficiary,
 } from "../components/beneficiary-form/BeneficiaryForm";
-import ConfirmPayForm from "../components/confirm-pay-form/ConfirmPayForm";
+import ConfirmPayForm, {
+  Trade,
+} from "../components/confirm-pay-form/ConfirmPayForm";
+import PaymentDetails from "../components/confirm-pay-form/PaymentDetails";
 
 export type FormData = {
-  quote?: QuoteFormData;
-  beneficiary?: AddBeneficiaryData;
+  quote?: Quote;
+  beneficiary?: Beneficiary;
+  trade?: Trade;
 };
 
 const Transfer = ({ client }: { client: Client }): JSX.Element => {
@@ -45,10 +49,20 @@ const Transfer = ({ client }: { client: Client }): JSX.Element => {
             />
           }
         />
-        <Steps.Step
-          stepTitle="Confirm and pay"
-          form={<ConfirmPayForm client={client} data={formData} />}
-        />
+        <Steps.Step stepTitle="Confirm and pay">
+          <Steps>
+            <Steps.Step
+              form={
+                <ConfirmPayForm
+                  client={client}
+                  data={formData}
+                  onComplete={(trade) => setFormData({ ...formData, trade })}
+                />
+              }
+            />
+            <Steps.Step form={<PaymentDetails details={formData} />} />
+          </Steps>
+        </Steps.Step>
       </Steps>
     </Page>
   );
