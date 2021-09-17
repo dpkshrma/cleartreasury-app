@@ -2,8 +2,10 @@ import * as React from "react";
 import { Client } from "../../pages/_app";
 import { useMutation } from "../../hooks/useMutation";
 import { CREATE_BENEFICIARY } from "../../graphql/beneficiaries/mutations";
+// eslint-disable-next-line
 import AddBeneficiaryForm, { AddBeneficiaryData } from "./AddBeneficiaryForm";
 import VerificationForm from "./VerificationForm";
+import SelectBeneficiary from "./SelectBeneficiary";
 
 export type { AddBeneficiaryData } from "./AddBeneficiaryForm";
 
@@ -48,12 +50,13 @@ const BeneficiaryForm = ({
   }, [formData.verified, beneficiary]);
 
   return !formData.beneficiary ? (
-    <AddBeneficiaryForm
-      client={client}
-      stepBack={stepBack}
-      onComplete={(beneficiary) => setFormData({ ...formData, beneficiary })}
-    />
+    <SelectBeneficiary client={client} stepBack={stepBack} />
   ) : (
+    // <AddBeneficiaryForm
+    //   client={client}
+    //   stepBack={stepBack}
+    //   onComplete={(beneficiary) => setFormData({ ...formData, beneficiary })}
+    // />
     <VerificationForm
       onComplete={(verified) => setFormData({ ...formData, verified })}
     />
