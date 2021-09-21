@@ -14,6 +14,7 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
     const appName = "PaymentsPlatformWebApp";
     const branch = this.node.tryGetContext("branch");
     const clearTreasuryCoUkDomainName = getDomainNameFromBranch(branch);
+    const appDomainName = `new-payments.${clearTreasuryCoUkDomainName}`;
 
     const certificate = certificatemanager.Certificate.fromCertificateArn(
       this,
@@ -28,7 +29,7 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
       this,
       "dummyServerlessNextJsZone",
       {
-        zoneName: clearTreasuryCoUkDomainName,
+        zoneName: appDomainName,
         comment:
           "this is a dummy zone for https://github.com/clear-treasury/payments-platform-web-app",
       }
@@ -39,7 +40,7 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
       withLogging: true,
       domain: {
         certificate: certificate,
-        domainNames: [clearTreasuryCoUkDomainName],
+        domainNames: [appDomainName],
         hostedZone: dummyZone,
       },
     });
