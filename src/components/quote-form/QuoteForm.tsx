@@ -53,7 +53,9 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
   const buy = React.useRef<MoneyInputRef | null>(null);
 
   const sellCurrency = sell.current?.currency.current?.value;
+  const sellAmount = sell.current?.amount.current?.value;
   const buyCurrency = buy.current?.currency.current?.value;
+  const buyAmount = buy.current?.amount.current?.value;
 
   const [formData, setFormData] = React.useState<QuoteFormData>({
     currency_sell: defaultValues.sell.currency,
@@ -67,47 +69,38 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
   const { data: quote, loading } = useQuery(GET_QUOTE, formData);
 
   React.useEffect(() => {
-    if (quote && quote.sell_amount !== null && quote.buy_amount !== null) {
-      if (formData.buy_amount) {
-        sell.current.amount.current.value = quote.sell_amount.toFixed(2);
-      }
-      if (formData.sell_amount) {
-        buy.current.amount.current.value = quote?.buy_amount.toFixed(2);
-      }
-    }
-  }, [quote, formData.buy_amount, formData.sell_amount]);
-
-  React.useEffect(() => {
     // TODO: We need a more reliable way of requoting. The API returns the same ID for requotes so we need to tie this to something else (quote timestamps?)
     if (!loading && quoting) {
       setQuoting(false);
     }
   }, [loading, quoting]);
 
-  const sellChange = ({ currency }) => {
-    receiveCurrencyList = currencyList.filter(
-      (currency) => currency !== sell.current.currency.current.value
-    );
+  const sellChange = (event) => {
+    const sell_amount = event.target?.value ?? sellAmount;
 
-    if (currency === buyCurrency) {
+    if (event.selectedItem && event.selectedItem.value === buyCurrency) {
+      receiveCurrencyList = currencyList.filter(
+        (currency) => currency !== event.selectedItem.value
+      );
+
       buy.current.currency.current.value = receiveCurrencyList[0];
     }
 
     setFormData({
       ...formData,
-      currency_sell: sell.current?.currency.current?.value,
-      sell_amount: parseFloat(sell.current?.amount.current?.value) || 0,
-      currency_buy: buy.current?.currency.current?.value,
+      currency_sell: event.selectedItem?.value ?? sellCurrency,
+      sell_amount: parseFloat(sell_amount) || 0,
       buy_amount: undefined,
     });
   };
 
-  const buyChange = ({ amount, currency }) => {
+  const buyChange = (event) => {
+    const buy_amount = event.target?.value ?? buyAmount;
+
     setFormData({
       ...formData,
-      currency_buy: currency,
-      buy_amount: parseFloat(amount) || 0,
-      currency_sell: sell.current?.currency.current?.value,
+      currency_buy: event.selectedItem?.value ?? buyCurrency,
+      buy_amount: parseFloat(buy_amount) || 0,
       sell_amount: undefined,
     });
   };
@@ -130,7 +123,8 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
         onChange={sellChange}
         currencies={currencyList}
         defaultValue={defaultValues.sell}
-        selectedCurrency={sellCurrency}
+        setAmount={formData?.buy_amount && quote?.sell_amount}
+        setCurrency={sellCurrency}
       />
 
       <MoneyInput
@@ -140,7 +134,8 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
         onChange={buyChange}
         defaultValue={defaultValues.buy}
         currencies={receiveCurrencyList}
-        selectedCurrency={buyCurrency}
+        setAmount={formData?.sell_amount && quote?.buy_amount}
+        setCurrency={buyCurrency}
       />
 
       <div className="flex justify-between">

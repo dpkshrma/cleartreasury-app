@@ -360,7 +360,7 @@ const AddBeneficiaryForm = ({
       <div className="flex justify-between">
         <Button
           size={Button.Size.SMALL}
-          emphasis={Button.Emphasis.GHOST}
+          emphasis={Button.Emphasis.TRANSPARENT}
           onClick={() => stepBack(0)}
         >
           <ArrowLeftIcon width="16" />

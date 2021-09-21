@@ -1,6 +1,6 @@
 import Amplify from "aws-amplify";
 
-// TODO: Generate the config from CDK stack output
+// TODO: Generate this config from CDK stack output
 // See https://appsync-immersionday.workshop.aws/lab2/1_cup-auth.html#deploy
 export const config = {
   Auth: {
