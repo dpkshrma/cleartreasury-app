@@ -19,7 +19,7 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
     const certificate = certificatemanager.Certificate.fromCertificateArn(
       this,
       "Certificate",
-      cdk.Fn.importValue(`${branch}:certificate:ClearTreasuryCoUk:Arn`)
+      cdk.Fn.importValue(`${branch}:certificate:ClearTreasuryCoUk:WildCard:Arn`)
     );
 
     // serverless nextjs won't set up a domain name on cloudfront without *also* setting
