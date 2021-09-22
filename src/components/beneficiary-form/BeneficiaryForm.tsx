@@ -6,15 +6,17 @@ import { CREATE_BENEFICIARY } from "../../graphql/beneficiaries/mutations";
 import AddBeneficiaryForm, { AddBeneficiaryData } from "./AddBeneficiaryForm";
 import VerificationForm from "./VerificationForm";
 import SelectBeneficiary from "./SelectBeneficiary";
+import { GET_BENEFICIARIES } from "../../graphql/beneficiaries/queries";
+import { useQuery } from "../../hooks/useQuery";
 
 export type { AddBeneficiaryData } from "./AddBeneficiaryForm";
 
 export type Beneficiary = AddBeneficiaryData & {
   id: number;
 };
-
 interface BeneficiaryFormData {
   beneficiary: AddBeneficiaryData;
+  selectedBeneficiary: boolean;
   verified: boolean;
 }
 export interface BeneficiaryFormProps {
@@ -30,6 +32,7 @@ const BeneficiaryForm = ({
 }: BeneficiaryFormProps): JSX.Element => {
   const [formData, setFormData] = React.useState<BeneficiaryFormData>({
     beneficiary: null,
+    selectedBeneficiary: false,
     verified: false,
   });
 
@@ -43,24 +46,61 @@ const BeneficiaryForm = ({
     }
   );
 
+  const { data: beneficiariesList } = useQuery(GET_BENEFICIARIES, {
+    client_ref: client.cli_reference,
+  });
+
   React.useEffect(() => {
     if (formData.verified && beneficiary) {
       onComplete({ ...beneficiary, ...formData.beneficiary });
     }
   }, [formData.verified, beneficiary]);
 
-  return !formData.beneficiary ? (
-    <SelectBeneficiary client={client} stepBack={stepBack} />
-  ) : (
-    // <AddBeneficiaryForm
-    //   client={client}
-    //   stepBack={stepBack}
-    //   onComplete={(beneficiary) => setFormData({ ...formData, beneficiary })}
-    // />
-    <VerificationForm
-      onComplete={(verified) => setFormData({ ...formData, verified })}
-    />
-  );
+  React.useEffect(() => {
+    if (beneficiariesList) {
+      setFormData({ ...formData, selectedBeneficiary: true });
+    }
+  }, [beneficiariesList]);
+
+  const RenderBeneficiary = () => {
+    if (formData.selectedBeneficiary && formData.beneficiary == null) {
+      return (
+        <SelectBeneficiary
+          beneficiariesList={beneficiariesList}
+          client={client}
+          stepBack={stepBack}
+          onComplete={(beneficiary) =>
+            setFormData({
+              ...formData,
+              beneficiary,
+              selectedBeneficiary: false,
+            })
+          }
+          beneficiaryForm={() => {
+            setFormData({ ...formData, selectedBeneficiary: false });
+          }}
+        />
+      );
+    } else if (!formData.beneficiary) {
+      return (
+        <AddBeneficiaryForm
+          client={client}
+          stepBack={stepBack}
+          onComplete={(beneficiary) =>
+            setFormData({ ...formData, beneficiary })
+          }
+        />
+      );
+    } else {
+      return (
+        <VerificationForm
+          onComplete={(verified) => setFormData({ ...formData, verified })}
+        />
+      );
+    }
+  };
+
+  return <RenderBeneficiary />;
 };
 
 export default BeneficiaryForm;

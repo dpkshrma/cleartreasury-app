@@ -6,12 +6,7 @@ import reasons from "../../data/reasons.json";
 import { SelectChangeHandler } from "@clear-treasury/design-system/dist/components/select/Select";
 import { ArrowLeftIcon, PlusCircleIcon } from "@heroicons/react/solid";
 import { MailIcon } from "@heroicons/react/outline";
-import { GET_BENEFICIARIES } from "../../graphql/beneficiaries/queries";
-import { useQuery } from "../../hooks/useQuery";
-export interface SelectBeneficiaryProps {
-  client?: Client;
-  stepBack?: (stepNumber: number) => void;
-}
+import { AddBeneficiaryData } from "./BeneficiaryForm";
 interface Beneficiary {
   intermediary: string;
   account_name: string;
@@ -27,11 +22,23 @@ interface Beneficiary {
   ben_address: string;
   id: string;
   client_ref: string;
+  iban?: string;
+  routingNumber?: string;
+}
+export interface SelectBeneficiaryProps {
+  client?: Client;
+  stepBack?: (stepNumber: number) => void;
+  onComplete?: (formData: AddBeneficiaryData) => void;
+  beneficiariesList: Beneficiary[];
+  beneficiaryForm: () => void;
 }
 
 const SelectBeneficiary = ({
   client,
   stepBack,
+  onComplete,
+  beneficiariesList,
+  beneficiaryForm,
 }: SelectBeneficiaryProps): JSX.Element => {
   const search = React.useRef<HTMLInputElement | null>(null);
   const currency = React.useRef<HTMLInputElement | null>(null);
@@ -64,10 +71,6 @@ const SelectBeneficiary = ({
       beneficiaries.filter((item) => item.currency == selectedItem.value)
     );
   };
-
-  const { data: beneficiariesList } = useQuery(GET_BENEFICIARIES, {
-    client_ref: "123456",
-  });
 
   React.useEffect(() => {
     if (beneficiariesList !== null) {
@@ -102,9 +105,30 @@ const SelectBeneficiary = ({
     }
   };
 
+  const handleSubmit = () => {
+    if (bindIndex !== null) {
+      const selectedBeneficiary = beneficiaries[bindIndex];
+      onComplete({
+        // TODO: add more details to this payload
+        beneficiaryName: selectedBeneficiary.account_name,
+        email: selectedBeneficiary.email,
+        currency: selectedBeneficiary.currency,
+        country_code: selectedBeneficiary.country_code,
+        account_name: selectedBeneficiary.account_name,
+        bank_name: selectedBeneficiary.bankname,
+        address: selectedBeneficiary.ben_address,
+        account_number: selectedBeneficiary.account_number,
+        swiftNumber: selectedBeneficiary.swift,
+        sort_code: selectedBeneficiary.sort_code,
+        iban: selectedBeneficiary.iban,
+        routingNumber: selectedBeneficiary.routingNumber,
+      });
+    }
+  };
+
   const BeneficiaryList = ({ data }) => {
     return (
-      <React.Fragment>
+      <div className="space-y-4">
         {data.map((item: any, index: any) => (
           <div className="bg-gray-100" key={index}>
             <div className="grid grid-cols-4 gap-1 border-b border-gray-200 p-4">
@@ -161,7 +185,7 @@ const SelectBeneficiary = ({
             )}
           </div>
         ))}
-      </React.Fragment>
+      </div>
     );
   };
 
@@ -193,13 +217,16 @@ const SelectBeneficiary = ({
           />
         </div>
       </div>
-      <BeneficiaryList
-        data={filtered ? filteredBeneficiaries : beneficiaries}
-      />
+      <div>
+        <BeneficiaryList
+          data={filtered ? filteredBeneficiaries : beneficiaries}
+        />
+      </div>
       <div className="flex border-b border-gray-200 flex justify-end pb-6">
         <Button
           size={Button.Size.MEDIUM}
           emphasis={Button.Emphasis.TRANSPARENT}
+          onClick={() => beneficiaryForm()}
         >
           <PlusCircleIcon width="28" className="text-green-600" />
           Add a new beneficiary
@@ -215,7 +242,9 @@ const SelectBeneficiary = ({
           Back
         </Button>
 
-        <Button size={Button.Size.LARGE}>Continue</Button>
+        <Button size={Button.Size.LARGE} onClick={handleSubmit}>
+          Continue
+        </Button>
       </div>
     </div>
   );
