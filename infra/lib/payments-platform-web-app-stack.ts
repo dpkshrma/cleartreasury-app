@@ -2,6 +2,7 @@ import * as cdk from "@aws-cdk/core";
 import * as iam from "@aws-cdk/aws-iam";
 import * as ssm from "@aws-cdk/aws-ssm";
 import * as certificatemanager from "@aws-cdk/aws-certificatemanager";
+import * as route53 from "@aws-cdk/aws-route53";
 import { NextJSLambdaEdge } from "@sls-next/cdk-construct";
 
 export class PaymentsPlatformWebAppStack extends cdk.Stack {
@@ -20,12 +21,26 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
       cdk.Fn.importValue(`${branch}:certificate:ClearTreasuryCoUk:Arn`)
     );
 
+    // serverless nextjs won't set up a domain name on cloudfront without *also* setting
+    // up a dns record, but we want to decouple this dns record from this app, hence this
+    // dummy zone.
+    const dummyZone = new route53.HostedZone(
+      this,
+      "dummyServerlessNextJsZone",
+      {
+        zoneName: clearTreasuryCoUkDomainName,
+        comment:
+          "this is a dummy zone for https://github.com/clear-treasury/payments-platform-web-app",
+      }
+    );
+
     const serverlessNext = new NextJSLambdaEdge(this, appName, {
       serverlessBuildOutDir: "../.serverless_nextjs",
       withLogging: true,
       domain: {
         certificate: certificate,
         domainNames: [clearTreasuryCoUkDomainName],
+        hostedZone: dummyZone,
       },
     });
 
@@ -58,6 +73,11 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, "DomainName", {
       value: `https://${serverlessNext.distribution.domainName}`,
+    });
+
+    new cdk.CfnOutput(this, "CloudfrontHostname", {
+      value: `https://${serverlessNext.distribution.distributionDomainName}`,
+      exportName: `${branch}:paymentsPlatformWebApp:CloudfrontHostname`,
     });
   }
 }
