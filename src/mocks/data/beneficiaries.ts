@@ -41,7 +41,7 @@ const beneficiaries = [
     notes: "",
     sort_code: "001122",
     swift: "AAAAUK12345XXX",
-    country_code: "FR",
+    country_code: "EU",
     email: "chris@gmail.com",
     ben_address: "1 test road, UK, BB2 2BB",
     id: "3",
