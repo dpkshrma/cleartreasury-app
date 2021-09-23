@@ -84,8 +84,7 @@ export class PaymentsPlatformWebAppStack extends cdk.Stack {
 }
 
 function getDomainNameFromBranch(branch: string): string {
-  const env = branch === "main" ? "" : "nonprod";
-  const domain = "cleartreasury.co.uk";
-
-  return [branch, env, domain].filter(Boolean).join(".");
+  return branch === "main"
+    ? "cleartreasury.co.uk"
+    : `${branch}.nonprod.cleartreasury.co.uk`;
 }
