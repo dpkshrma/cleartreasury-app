@@ -358,14 +358,13 @@ const AddBeneficiaryForm = ({
       <hr className="pb-2" />
 
       <div className="flex justify-between">
-        <Button
-          size={Button.Size.SMALL}
-          emphasis={Button.Emphasis.TRANSPARENT}
+        <span
           onClick={() => stepBack(0)}
+          className="inline-flex items-center justify-center gap-2 border border-transparent ring-theme-button-primary text-center leading-snug rounded-theme-radius focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-transparent transition-all duration-300 hover:shadow-md hover:cursor-pointer bg-theme-button-transparent text-theme-color-on-transparent hover:bg-theme-button-transparent-hover py-1 px-4"
         >
           <ArrowLeftIcon width="16" />
           Back
-        </Button>
+        </span>
 
         <Button size={Button.Size.LARGE}>Continue</Button>
       </div>
