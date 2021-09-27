@@ -14,6 +14,7 @@
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "format": "prettier --write .",
     "type-check": "tsc --pretty --noEmit",
+    "type-check:tests": "tsc --pretty --noEmit --project test/tsconfig.json",
     "test-all": "npm run lint && npm run type-check && npm test",
     "storybook": "start-storybook -s ./public -p 6006",
     "build-storybook": "build-storybook"
