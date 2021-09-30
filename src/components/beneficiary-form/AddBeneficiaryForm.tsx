@@ -7,7 +7,7 @@ import { Client } from "../../pages/_app";
 // TODO: pull this from the API eventually
 import currencies from "../../data/currencies.json";
 import countries from "../../data/countries.json";
-// import reasons from "../../data/reasons.json";
+import reasons from "../../data/reasons.json";
 
 type Error = {
   message: string;
@@ -48,6 +48,7 @@ export interface AddBeneficiaryData {
   sort_code?: string;
   iban?: string;
   routingNumber?: string;
+  reason?: string;
 }
 
 const currencyList: any[] = currencies.map(({ CurrencyCode }) => ({
@@ -67,10 +68,11 @@ const countriesList: any[] = countries.map(({ CountryName, ISO2 }) => ({
 const defaultValues = {
   currency: "GBP",
   country_code: "United Kingdom",
+  reason: "Property Purchase",
 };
 
 const AddBeneficiaryForm = ({
-  // client,
+  client,
   onComplete,
   stepBack,
   data,
@@ -87,6 +89,7 @@ const AddBeneficiaryForm = ({
   const sort_code = React.useRef<HTMLInputElement | null>(null);
   const iban = React.useRef<HTMLInputElement | null>(null);
   const routingNumber = React.useRef<HTMLInputElement | null>(null);
+  const reason = React.useRef<HTMLInputElement | null>(null);
 
   const [errors, setErrors] = React.useState<Errors>({});
 
@@ -114,6 +117,7 @@ const AddBeneficiaryForm = ({
       sort_code: sort_code.current?.value,
       iban: iban.current?.value,
       routingNumber: routingNumber.current?.value,
+      reason: reason.current.value,
     });
   };
 
@@ -361,27 +365,29 @@ const AddBeneficiaryForm = ({
         />
       )}
 
-      {/*
-        // TODO: Beneficiary reason for transfer still TBD...
-        <h2 className="text-2xl mb-2">Reason for transfer</h2>
+      {/* // TODO: Beneficiary reason for transfer still TBD... */}
+      <h2 className="text-2xl mb-2">Reason for transfer</h2>
 
-        <p className="text-l text-gray-500 mb-8">
-          Please provide a reason for your payments to this beneficiary
-        </p>
+      <p className="text-l text-gray-500 mb-8">
+        Please provide a reason for your payments to this beneficiary
+      </p>
 
-        <div className="border-b border-gray-200 pb-8">
-          <Select
-            name="select"
-            options={
-              client.cty_value === "PRIVATE"
-                ? reasons.OPTIONS_REASON_PERSONAL
-                : reasons.OPTIONS_REASON_BUSINESS
-            }
-          />
-        </div>
-      */}
-
-      <hr className="pb-2" />
+      <div className="border-b border-gray-200 pb-8">
+        <Select
+          ref={reason}
+          name="select"
+          options={
+            client.cty_value === "PRIVATE"
+              ? reasons.OPTIONS_REASON_PERSONAL
+              : reasons.OPTIONS_REASON_BUSINESS
+          }
+          defaultValue={
+            data.beneficiary == undefined
+              ? defaultValues.reason
+              : data.beneficiary.reason
+          }
+        />
+      </div>
 
       <div className="flex justify-between">
         <Button
