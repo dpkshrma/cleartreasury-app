@@ -97,12 +97,6 @@ const ConfirmPayForm = ({
     });
   };
 
-  const changeStep = (stepName: string) => {
-    if (stepName == "Beneficiary") {
-      stepBack(1);
-    }
-  };
-
   return (
     <form onSubmit={submitHandler}>
       <h2 className="text-2xl mb-2">Confirm and book</h2>
@@ -165,7 +159,7 @@ const ConfirmPayForm = ({
         <h3 className="text-lg">Beneficiary</h3>
         <span
           className="text-green-400 cursor-pointer"
-          onClick={() => changeStep("Beneficiary")}
+          onClick={() => stepBack(1)}
         >
           Change
         </span>

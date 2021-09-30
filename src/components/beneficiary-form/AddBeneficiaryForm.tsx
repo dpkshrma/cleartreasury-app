@@ -197,6 +197,12 @@ const AddBeneficiaryForm = ({
     }
   };
 
+  React.useEffect(() => {
+    if (data.beneficiary) {
+      setBankDetails(data.beneficiary.currency);
+    }
+  }, [data.beneficiary]);
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="block w-full">
@@ -236,15 +242,23 @@ const AddBeneficiaryForm = ({
           name="currencies"
           label="Currency"
           options={currencyList}
-          defaultValue={defaultValues.currency}
+          defaultValue={
+            data.beneficiary == undefined
+              ? defaultValues.currency
+              : data.beneficiary.currency
+          }
           onChange={currencyChange}
         />
         <Select
           ref={country_code}
           name="countries"
-          label="Destination country_code"
+          label="Destination Country"
           options={countriesList}
-          defaultValue={defaultValues.country_code}
+          defaultValue={
+            data.beneficiary == undefined
+              ? defaultValues.country_code
+              : data.beneficiary.country_code
+          }
         />
       </div>
 
