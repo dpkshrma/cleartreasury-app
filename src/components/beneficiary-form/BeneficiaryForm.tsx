@@ -19,12 +19,14 @@ export interface BeneficiaryFormProps {
   client?: Client;
   onComplete?: (formData: Beneficiary) => void;
   stepBack?: (stepNumber: number) => void;
+  data: any;
 }
 
 const BeneficiaryForm = ({
   client,
   onComplete,
   stepBack,
+  data,
 }: BeneficiaryFormProps): JSX.Element => {
   const [formData, setFormData] = React.useState<BeneficiaryFormData>({
     beneficiary: null,
@@ -51,6 +53,7 @@ const BeneficiaryForm = ({
     <AddBeneficiaryForm
       client={client}
       stepBack={stepBack}
+      data={data}
       onComplete={(beneficiary) => setFormData({ ...formData, beneficiary })}
     />
   ) : (

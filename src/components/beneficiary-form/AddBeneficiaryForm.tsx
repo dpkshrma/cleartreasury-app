@@ -32,6 +32,7 @@ export interface AddBeneficiaryProps {
   client?: Client;
   onComplete?: (formData: AddBeneficiaryData) => void;
   stepBack?: (stepNumber: number) => void;
+  data: any;
 }
 
 export interface AddBeneficiaryData {
@@ -72,6 +73,7 @@ const AddBeneficiaryForm = ({
   // client,
   onComplete,
   stepBack,
+  data,
 }: AddBeneficiaryProps): JSX.Element => {
   const beneficiaryName = React.useRef<HTMLInputElement | null>(null);
   const email = React.useRef<HTMLInputElement | null>(null);
@@ -215,6 +217,7 @@ const AddBeneficiaryForm = ({
         placeholder="Enter the beneficiary name"
         hint="This is your reference for the account"
         errors={errors}
+        value={data.beneficiary?.beneficiaryName}
       />
 
       <Input
@@ -224,6 +227,7 @@ const AddBeneficiaryForm = ({
         label="Email address"
         placeholder="Enter their email address"
         errors={errors}
+        value={data.beneficiary?.email}
       />
 
       <div className="grid grid-cols-2 gap-6 mb-8">
@@ -258,6 +262,7 @@ const AddBeneficiaryForm = ({
         placeholder="Bank account name"
         hint="This is the name as it appears on their bank account"
         errors={errors}
+        value={data.beneficiary?.account_name}
       />
 
       <Input
@@ -267,6 +272,7 @@ const AddBeneficiaryForm = ({
         label="Bank name"
         placeholder="Bank name"
         errors={errors}
+        value={data.beneficiary?.bank_name}
       />
 
       {bankDetails === "USD" && (
@@ -277,6 +283,7 @@ const AddBeneficiaryForm = ({
           label="Bank address"
           placeholder="Bank address"
           errors={errors}
+          value={data.beneficiary?.address}
         />
       )}
       <Input
@@ -286,6 +293,7 @@ const AddBeneficiaryForm = ({
         label="Account number"
         placeholder="Account number"
         errors={errors}
+        value={data.beneficiary?.account_number}
       />
 
       {bankDetails !== "GBP" && bankDetails !== "USD" && (
@@ -296,6 +304,7 @@ const AddBeneficiaryForm = ({
           label="Swift number"
           placeholder="Swift number"
           errors={errors}
+          value={data.beneficiary?.swiftNumber}
         />
       )}
       {bankDetails === "GBP" && (
@@ -306,6 +315,7 @@ const AddBeneficiaryForm = ({
           label="Sort code"
           placeholder="Sort code"
           errors={errors}
+          value={data.beneficiary?.sort_code}
         />
       )}
 
@@ -322,6 +332,7 @@ const AddBeneficiaryForm = ({
             label="IBAN"
             placeholder="IBAN"
             errors={errors}
+            value={data.beneficiary?.iban}
           />
         )}
       {bankDetails === "USD" && (
@@ -332,6 +343,7 @@ const AddBeneficiaryForm = ({
           label="Routing number"
           placeholder="Routing number"
           errors={errors}
+          value={data.beneficiary?.routingNumber}
         />
       )}
 
