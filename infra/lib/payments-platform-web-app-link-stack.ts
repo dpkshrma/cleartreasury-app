@@ -21,40 +21,27 @@ export class PaymentsPlatformWebAppLinkStack extends cdk.Stack {
     const branch = this.node.tryGetContext("branch");
 
     const domainName = getParameterValue(
-      new SSMParameterReader(this, "DomainNameSsmReader", {
+      new SSMParameterReader(this, "NewDomainNameSsmReader", {
         parameterName: props.ssmDomainName.parameterName,
         region: "us-east-1",
       })
     );
 
     const distributionId = getParameterValue(
-      new SSMParameterReader(this, "DistributionIdSsmReader", {
+      new SSMParameterReader(this, "NewDistributionIdSsmReader", {
         parameterName: props.ssmDistributionId.parameterName,
         region: "us-east-1",
       })
     );
 
-    const dns = `${branch}:dns:ClearTreasuryCoUk`;
-    const zone = route53.HostedZone.fromHostedZoneAttributes(this, "Zone", {
-      hostedZoneId: cdk.Fn.importValue(`${dns}:hostedZoneId`),
-      zoneName: cdk.Fn.importValue(`${dns}:zoneName`),
-    });
-
-    const cloudFront = cloudfront.Distribution.fromDistributionAttributes(
-      this,
-      "cloudFront",
-      { distributionId, domainName }
-    );
-
-    const aliasRecord = new route53.ARecord(this, "AliasRecord", {
-      zone,
-      target: route53.RecordTarget.fromAlias(
-        new alias.CloudFrontTarget(cloudFront)
-      ),
-    });
-
     new cdk.CfnOutput(this, "DomainName", {
-      value: aliasRecord.domainName,
+      value: domainName,
+      exportName: `${branch}:PaymentsPlatformWebApp:CF:DomainName`,
+    });
+
+    new cdk.CfnOutput(this, "DistributionId", {
+      value: distributionId,
+      exportName: `${branch}:PaymentsPlatformWebApp:CF:DistributionId`,
     });
   }
 }
