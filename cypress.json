@@ -2,8 +2,8 @@
   "baseUrl": "http://localhost:3000",
   "integrationFolder": "test/integration",
   "fixturesFolder": "test/fixtures",
-  "pluginsFile": "test/plugins/index.js",
-  "supportFile": "test/support/index.js",
+  "pluginsFile": "test/plugins/index.ts",
+  "supportFile": "test/support/index.ts",
   "screenshotsFolder": "test/screenshots",
   "downloadsFolder": "test/downloads",
   "videos": false
