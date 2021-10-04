@@ -123,7 +123,9 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
         onChange={sellChange}
         currencies={currencyList}
         defaultValue={defaultValues.sell}
-        setAmount={formData?.buy_amount && quote?.sell_amount}
+        setAmount={
+          formData?.buy_amount ? quote?.sell_amount?.toFixed(2) : sellAmount
+        }
         setCurrency={sellCurrency}
       />
 
@@ -134,7 +136,9 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
         onChange={buyChange}
         defaultValue={defaultValues.buy}
         currencies={receiveCurrencyList}
-        setAmount={formData?.sell_amount && quote?.buy_amount}
+        setAmount={
+          formData?.sell_amount ? quote?.buy_amount?.toFixed(2) : buyAmount
+        }
         setCurrency={buyCurrency}
       />
 
