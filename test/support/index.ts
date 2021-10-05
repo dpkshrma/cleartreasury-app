@@ -1,3 +1,6 @@
+// load type definitions that come with Cypress module
+/// <reference types="cypress" />
+
 // ***********************************************************
 // This example support/index.js is processed and
 // loaded automatically before your test files.
@@ -13,10 +16,19 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
+// Must be declared global to be detected by typescript (allows import/export)
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Custom command to automate logging in to AWS Cognito using the API.
+       * @example cy.loginByCognitoApi('usernae', 'password')
+       */
+      loginByCognitoApi(username: string, password: string): Chainable<Element>;
+    }
+  }
+}
+
 import "@testing-library/cypress/add-commands";
-
-// Import commands.js using ES2015 syntax:
 import "./commands";
-
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
