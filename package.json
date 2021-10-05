@@ -74,7 +74,7 @@
     "jest-watch-typeahead": "0.6.4",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "11.0.0",
-    "msw": "0.32.1",
+    "msw": "^0.33.1",
     "postcss": "^8.2.13",
     "postcss-import": "^14.0.2",
     "prettier": "2.3.1",

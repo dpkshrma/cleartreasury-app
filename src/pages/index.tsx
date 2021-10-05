@@ -3,12 +3,22 @@ import { GetServerSideProps } from "next";
 import { withSSRContext } from "aws-amplify";
 import { Client } from "./_app";
 import Page from "../components/page/Page";
+import { useRouter } from "next/router";
 
 type Props = {
   client: Client;
+  authenticated: boolean;
 };
 
-const Dashboard = ({ client }: Props): JSX.Element => {
+const Dashboard = ({ client, authenticated }: Props): JSX.Element => {
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (!authenticated) {
+      router.push("/login");
+    }
+  }, [authenticated]);
+
   return (
     <Page>
       <div className="m-12">
@@ -19,7 +29,7 @@ const Dashboard = ({ client }: Props): JSX.Element => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { Auth } = withSSRContext({ req });
 
   try {
@@ -32,10 +42,16 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
     };
   } catch (err) {
-    res.writeHead(302, { Location: "/login" });
-    res.end();
+    // res.writeHead(302, { Location: "/login" });
+    // res.end();
+    return {
+      props: {
+        authenticated: false,
+        user: null,
+      },
+    };
   }
-  return { props: {} };
+  // return { props: {} };
 };
 
 export default Dashboard;
