@@ -16,17 +16,17 @@ const PaymentDetails = ({ details }: PaymentDetailsProps): JSX.Element => {
         domestic payment to Clear Treasury using the following details:
       </p>
       <div className="flex justify-between mb-4">
-        <span className="text-lg theme-color-primary">Bank name</span>
-        <span className="text-lg theme-color-on-surface">
-          {details.beneficiary?.bank_name}
-        </span>
-      </div>
-      <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">
           Bank account holders name
         </span>
         <span className="text-lg theme-color-on-surface">
           {details.beneficiary?.account_name}
+        </span>
+      </div>
+      <div className="flex justify-between mb-4">
+        <span className="text-lg theme-color-primary">Bank name</span>
+        <span className="text-lg theme-color-on-surface">
+          {details.beneficiary?.bankname}
         </span>
       </div>
       <div className="flex justify-between mb-4">
@@ -41,7 +41,7 @@ const PaymentDetails = ({ details }: PaymentDetailsProps): JSX.Element => {
           {details.beneficiary?.sort_code}
         </span>
       </div>
-      {details.beneficiary.swiftNumber !== undefined && (
+      {details.beneficiary.swift !== undefined && (
         <div className="flex justify-between mb-4">
           <span className="text-lg theme-color-primary">Bic/SWIFT code</span>
           <span className="text-lg theme-color-on-surface">BarcgB00</span>
