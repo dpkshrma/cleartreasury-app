@@ -1,5 +1,6 @@
-describe("Sign In", () => {
-  it("should allow a user to sign in", () => {
+describe("Transfer Page", () => {
+  it("should render the transfer page", () => {
     cy.authVisit("/transfer");
+    cy.findAllByText("Make a transfer").should("be.visible");
   });
 });

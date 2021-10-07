@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import mockData from "../../__mocks__/cognito";
 
 describe("Sign In", () => {
   beforeEach(() => {
@@ -11,12 +12,12 @@ describe("Sign In", () => {
 
       const token = jwt.sign(
         {
-          sub: "uuid",
+          sub: mockData.cognitoUser.sub,
           token_use: "access",
           scope: "aws.cognito.signin.user.admin",
           auth_time: Date.now(),
           exp: Date.now() + 3600,
-          username: "uuid",
+          username: mockData.cognitoUser.sub,
         },
         "secret"
       );
@@ -26,31 +27,12 @@ describe("Sign In", () => {
           "https://cognito-idp.eu-west-2.amazonaws.com/",
           (req, res, ctx) => {
             if (req.body.AuthFlow) {
-              return res(
-                ctx.status(200),
-                ctx.json({
-                  ChallengeName: "PASSWORD_VERIFIER",
-                  ChallengeParameters: {
-                    SALT: "KtUod66Bf",
-                    SECRET_BLOCK: "71uCgBfwD",
-                    SRP_B: "ujD_NNRbW",
-                    USERNAME: "158jNELVw",
-                    USER_ID_FOR_SRP: "8F8bT1xX6",
-                  },
-                })
-              );
+              return res(ctx.status(200), ctx.json(mockData.cognitoAuthFlow));
             }
             if (req.body.ChallengeName === "PASSWORD_VERIFIER") {
               return res(
                 ctx.status(200),
-                ctx.json({
-                  ChallengeName: "SMS_MFA",
-                  ChallengeParameters: {
-                    CODE_DELIVERY_DELIVERY_MEDIUM: "SMS",
-                    CODE_DELIVERY_DESTINATION: "+********0123",
-                  },
-                  Session: "",
-                })
+                ctx.json(mockData.cognitoPasswordVerifier)
               );
             }
             if (req.body.ChallengeName === "SMS_MFA") {
@@ -70,40 +52,7 @@ describe("Sign In", () => {
               );
             }
             if (req.body.AccessToken) {
-              return res(
-                ctx.status(200),
-                ctx.json({
-                  MFAOptions: [
-                    {
-                      AttributeName: "phone_number",
-                      DeliveryMedium: "SMS",
-                    },
-                  ],
-                  UserAttributes: [
-                    {
-                      Name: "sub",
-                      Value: "uuid",
-                    },
-                    {
-                      Name: "email_verified",
-                      Value: "True",
-                    },
-                    {
-                      Name: "phone_number_verified",
-                      Value: "true",
-                    },
-                    {
-                      Name: "phone_number",
-                      Value: "+4400000001234",
-                    },
-                    {
-                      Name: "email",
-                      Value: "test-users+1626444065@clearcurrency.co.uk",
-                    },
-                  ],
-                  Username: "uuid",
-                })
-              );
+              return res(ctx.status(200), ctx.json(mockData.cognitoUserInfo));
             }
           }
         )
@@ -113,12 +62,7 @@ describe("Sign In", () => {
         rest.post(
           "https://cognito-identity.eu-west-2.amazonaws.com/",
           (req, res, ctx) => {
-            return res(
-              ctx.status(200),
-              ctx.json({
-                IdentityId: "eu-west-2:uuid",
-              })
-            );
+            return res(ctx.status(200), ctx.json(mockData.cognitoIdentity));
           }
         )
       );
@@ -128,22 +72,14 @@ describe("Sign In", () => {
       delete req.headers["if-none-match"];
       return req.continue((res) => {
         res.body.pageProps.authenticated = true;
-        res.body.pageProps.user = {
-          sub: "LA-EVW81B",
-          email_verified: true,
-          phone_number_verified: true,
-          phone_number: "+4400000001234",
-          email: "test-users+1626444065@clearcurrency.co.uk",
-        };
+        res.body.pageProps.user = mockData.cognitoUser;
       });
     });
 
     cy.location("pathname", { timeout: 30000 }).should("equal", "/login");
 
-    cy.findByLabelText(/Email/i).type(
-      "test-users+rory_1626444065@clearcurrency.co.uk"
-    );
-    cy.findByLabelText(/Password/i).type("4WC_y2lRQ");
+    cy.findByLabelText(/Email/i).type(mockData.cognitoUser.email);
+    cy.findByLabelText(/Password/i).type(mockData.cognitoUserPassword);
     cy.findByRole("button", { name: /Sign in/i }).click();
 
     cy.location("pathname", { timeout: 30000 }).should(
@@ -151,7 +87,9 @@ describe("Sign In", () => {
       "/authenticate"
     );
 
-    cy.findByLabelText(/Authentication code/i).type("123456");
+    cy.findByLabelText(/Authentication code/i).type(
+      mockData.cognitoMfaPasscode
+    );
     cy.findByRole("button", { name: /Sign in/i }).click();
 
     cy.findByText(/Which account/i).should("be.visible");
