@@ -1,9 +1,5 @@
 import jwt from "jsonwebtoken";
 
-type Window = Cypress.AUTWindow & {
-  msw: any;
-};
-
 describe("Sign In", () => {
   beforeEach(() => {
     cy.visit("/");

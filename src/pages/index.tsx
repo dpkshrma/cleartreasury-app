@@ -12,12 +12,19 @@ type Props = {
 
 const Dashboard = ({ client, authenticated }: Props): JSX.Element => {
   const router = useRouter();
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     if (!authenticated) {
       router.push("/login");
+    } else {
+      setLoading(false);
     }
   }, [authenticated]);
+
+  if (loading) {
+    return <Page>Loading...</Page>;
+  }
 
   return (
     <Page>

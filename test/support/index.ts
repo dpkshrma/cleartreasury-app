@@ -19,6 +19,10 @@
 // Must be declared global to be detected by typescript (allows import/export)
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
+  interface Window {
+    msw: any;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       /**
@@ -26,6 +30,11 @@ declare global {
        * @example cy.loginByCognitoApi('usernae', 'password')
        */
       loginByCognitoApi(username: string, password: string): Chainable<Element>;
+      /**
+       * Custom command to bypass AWS Cognito login during path visit
+       * @example cy.authVisit('/transfer')
+       */
+      authVisit(path: string): Chainable<Element>;
     }
   }
 }
