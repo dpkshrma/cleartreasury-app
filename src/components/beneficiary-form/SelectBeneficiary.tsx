@@ -122,7 +122,10 @@ const SelectBeneficiary = ({
               <div className="flex col-start-1 col-end-4">
                 <div className="mr-4">
                   <div className="max-h-11">
-                    <Flag country={item.country_code.toLowerCase()} size="lg" />
+                    <Flag
+                      country={item.currency.slice(0, -1).toLowerCase()}
+                      size="lg"
+                    />
                   </div>
 
                   <p className="text-base text-gray-800 text-center">
