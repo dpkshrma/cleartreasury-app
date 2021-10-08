@@ -1,10 +1,9 @@
 import * as React from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { CognitoUser } from "@aws-amplify/auth";
 import { Auth, withSSRContext } from "aws-amplify";
 import { Input, Alert } from "@clear-treasury/design-system";
-import Page from "../components/page/Page";
 import { LoginFormErrors, SignInForm } from "../components/login-form";
 import { NewPasswordForm } from "../components/login-form/NewPasswordForm";
 
@@ -15,6 +14,7 @@ interface FormState {
 
 type Props = {
   setContext: (user: CognitoUser) => void;
+  authenticated: boolean;
 };
 
 const Login = (props: Props): JSX.Element => {
@@ -28,6 +28,14 @@ const Login = (props: Props): JSX.Element => {
   const userEmail = React.useRef<HTMLInputElement | null>(null);
   const userPassword = React.useRef<HTMLInputElement | null>(null);
   const userNewPassword = React.useRef<HTMLInputElement | null>(null);
+
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (props.authenticated) {
+      router.push("/");
+    }
+  }, [props.authenticated]);
 
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -88,7 +96,7 @@ const Login = (props: Props): JSX.Element => {
       } else {
         setUser(authData);
         props.setContext(authData);
-        Router.push("/authenticate");
+        router.push("/authenticate");
       }
     } catch (error) {
       setLoading(false);
@@ -121,7 +129,7 @@ const Login = (props: Props): JSX.Element => {
   }
 
   return (
-    <Page backgroundColor={Page.Color.TEAL}>
+    <div className="flex h-screen bg-teal-600">
       <div className="max-w-md w-full m-auto p-0">
         <img
           className="h-12 w-full mb-8"
@@ -172,7 +180,7 @@ const Login = (props: Props): JSX.Element => {
           </form>
         </div>
       </div>
-    </Page>
+    </div>
   );
 };
 
@@ -183,10 +191,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     await Auth.currentAuthenticatedUser();
 
     return {
-      redirect: {
-        destination: "/",
-        permanent: false,
+      props: {
+        authenticated: true,
       },
+      // redirect: {
+      //   destination: "/",
+      //   permanent: false,
+      // },
     };
   } catch (err) {
     return {

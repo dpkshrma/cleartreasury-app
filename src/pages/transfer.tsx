@@ -13,6 +13,7 @@ import ConfirmPayForm, {
   Trade,
 } from "../components/confirm-pay-form/ConfirmPayForm";
 import PaymentDetails from "../components/confirm-pay-form/PaymentDetails";
+import { useRouter } from "next/router";
 
 export type FormData = {
   quote?: Quote;
@@ -20,9 +21,28 @@ export type FormData = {
   trade?: Trade;
 };
 
-const Transfer = ({ client }: { client: Client }): JSX.Element => {
+interface Props {
+  client: Client;
+  authenticated: boolean;
+}
+
+const Transfer = ({ client, authenticated }: Props): JSX.Element => {
+  const router = useRouter();
   const [formData, setFormData] = React.useState<FormData>({});
   const [stepNumber, setStepNumber] = React.useState<number>();
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    if (!authenticated) {
+      router.push("/login");
+    } else {
+      setLoading(false);
+    }
+  }, [authenticated]);
+
+  if (loading) {
+    return <Page>Loading...</Page>;
+  }
 
   return (
     <Page title="Make a transfer">
@@ -68,7 +88,7 @@ const Transfer = ({ client }: { client: Client }): JSX.Element => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { Auth } = withSSRContext({ req });
 
   try {
@@ -81,10 +101,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
     };
   } catch (err) {
-    res.writeHead(302, { Location: "/login" });
-    res.end();
+    return {
+      props: {
+        authenticated: false,
+        user: null,
+      },
+    };
   }
-  return { props: {} };
 };
 
 export default Transfer;

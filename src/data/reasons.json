@@ -1,5 +1,5 @@
 {
-  "OPTIONS_REASON_PERSONAL": [
+  "PRIVATE": [
     {
       "value": "Property Purchase",
       "label": "Property Purchase"
@@ -49,7 +49,7 @@
       "label": "Other"
     }
   ],
-  "OPTIONS_REASON_BUSINESS": [
+  "CORPORATE": [
     {
       "value": "Paying suppliers",
       "label": "Paying suppliers"
