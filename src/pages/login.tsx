@@ -1,26 +1,16 @@
 import * as React from "react";
-import Link from "next/link";
 import Router from "next/router";
 import { GetServerSideProps } from "next";
 import { CognitoUser } from "@aws-amplify/auth";
 import { Auth, withSSRContext } from "aws-amplify";
-import { Button, Input, Alert } from "@clear-treasury/design-system";
+import { Input, Alert } from "@clear-treasury/design-system";
 import Page from "../components/page/Page";
-
-type Error = {
-  message: string;
-};
-
-type Errors = {
-  alert?: Error;
-  email?: Error;
-  password?: Error;
-  newPassword?: Error;
-};
+import { LoginFormErrors, SignInForm } from "../components/login-form";
+import { NewPasswordForm } from "../components/login-form/NewPasswordForm";
 
 interface FormState {
   formType: "signIn" | "newPasswordRequired";
-  errors: Errors;
+  errors: LoginFormErrors;
 }
 
 type Props = {
@@ -53,7 +43,7 @@ const Login = (props: Props): JSX.Element => {
   }
 
   function validateForm() {
-    const errors: Errors = {};
+    const errors: LoginFormErrors = {};
 
     if (!userEmail?.current?.value) {
       errors.email = { message: "You must enter an email" };
@@ -95,19 +85,17 @@ const Login = (props: Props): JSX.Element => {
           formType: "newPasswordRequired",
         }));
         setUser(authData);
-        setLoading(false);
       } else {
         setUser(authData);
         props.setContext(authData);
         Router.push("/authenticate");
       }
     } catch (error) {
+      setLoading(false);
       setFormState(() => ({
         ...formState,
         errors: { alert: { message: error.message } },
       }));
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -132,46 +120,6 @@ const Login = (props: Props): JSX.Element => {
     }
   }
 
-  const SignInForm = () => (
-    <>
-      <Input
-        type="password"
-        name="password"
-        label="Password"
-        placeholder="Enter your password"
-        ref={userPassword}
-        errors={formState.errors}
-      />
-
-      <Link href="/reset-password">
-        <a className="text-green-700 text-sm mb-16 cursor-pointer">
-          Forgot your password?
-        </a>
-      </Link>
-
-      <Button size={Button.Size.LARGE} loading={loading}>
-        Sign in
-      </Button>
-    </>
-  );
-
-  const SetPasswordForm = () => (
-    <>
-      <Input
-        type="password"
-        name="newPassword"
-        label="Change your password"
-        placeholder="Enter your new password"
-        ref={userNewPassword}
-        errors={formState.errors}
-      />
-
-      <Button size={Button.Size.LARGE} loading={loading}>
-        Set new password
-      </Button>
-    </>
-  );
-
   return (
     <Page backgroundColor={Page.Color.TEAL}>
       <div className="max-w-md w-full m-auto p-0">
@@ -187,7 +135,6 @@ const Login = (props: Props): JSX.Element => {
               ? "Set your password"
               : "Sign in to your account"}
           </h1>
-
           <form
             onSubmit={handleSubmit}
             className="flex justify-center flex-col space-y-6"
@@ -198,7 +145,6 @@ const Login = (props: Props): JSX.Element => {
                 status={Alert.Status.CRITICAL}
               />
             )}
-
             <Input
               type="email"
               name="email"
@@ -209,9 +155,19 @@ const Login = (props: Props): JSX.Element => {
               errors={formState.errors}
             />
 
-            {formState.formType === "signIn" && <SignInForm />}
+            {formState.formType === "signIn" && (
+              <SignInForm
+                loading={loading}
+                errors={formState.errors}
+                passwordRef={userPassword}
+              />
+            )}
             {formState.formType === "newPasswordRequired" && (
-              <SetPasswordForm />
+              <NewPasswordForm
+                loading={loading}
+                errors={formState.errors}
+                passwordRef={userNewPassword}
+              />
             )}
           </form>
         </div>
