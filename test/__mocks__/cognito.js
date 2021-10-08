@@ -56,7 +56,7 @@ module.exports = {
       },
       {
         Name: "email",
-        Value: "test-users+1626444065@clearcurrency.co.uk",
+        Value: "test1@test.com",
       },
     ],
     Username: "uuid",
@@ -66,7 +66,7 @@ module.exports = {
     email_verified: true,
     phone_number_verified: true,
     phone_number: "+4400000001234",
-    email: "test-users+1626444065@clearcurrency.co.uk",
+    email: "test1@test.com",
   },
   cognitoUserPassword: "4WC_y2lRQ",
   cognitoMfaPasscode: "123456",
