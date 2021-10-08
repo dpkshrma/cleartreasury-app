@@ -1,19 +1,31 @@
 import React, { Ref } from "react";
 import Link from "next/link";
 import { Input, Button } from "@clear-treasury/design-system";
+import { LoginFormErrors } from "./types";
 
 export interface SignInFormProps {
   passwordRef: Ref<HTMLInputElement | null>;
-  errors: any;
+  emailRef: Ref<HTMLInputElement | null>;
+  errors: LoginFormErrors;
   loading: boolean;
 }
 
 export const SignInForm: React.FunctionComponent<SignInFormProps> = ({
+  emailRef,
   passwordRef,
   errors,
   loading,
 }) => (
   <>
+    <Input
+      type="email"
+      name="email"
+      label="Email address"
+      placeholder="Enter your email"
+      ref={emailRef}
+      errors={errors}
+    />
+
     <Input
       type="password"
       name="password"

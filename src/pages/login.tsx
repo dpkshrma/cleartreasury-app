@@ -3,9 +3,8 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { CognitoUser } from "@aws-amplify/auth";
 import { Auth, withSSRContext } from "aws-amplify";
-import { Input, Alert } from "@clear-treasury/design-system";
-import { LoginFormErrors, SignInForm } from "../components/login-form";
-import { NewPasswordForm } from "../components/login-form/NewPasswordForm";
+import { LoginForm } from "../components/login-form";
+import { LoginFormErrors } from "../components/login-form/types";
 
 interface FormState {
   formType: "signIn" | "newPasswordRequired";
@@ -143,41 +142,15 @@ const Login = (props: Props): JSX.Element => {
               ? "Set your password"
               : "Sign in to your account"}
           </h1>
-          <form
+          <LoginForm
+            emailRef={userEmail}
+            passwordRef={userPassword}
+            newPasswordRef={userNewPassword}
+            loading={loading}
             onSubmit={handleSubmit}
-            className="flex justify-center flex-col space-y-6"
-          >
-            {formState.errors.alert && (
-              <Alert
-                text={formState.errors.alert.message}
-                status={Alert.Status.CRITICAL}
-              />
-            )}
-            <Input
-              type="email"
-              name="email"
-              label="Email address"
-              placeholder="Enter your email"
-              ref={userEmail}
-              disabled={formState.formType === "newPasswordRequired"}
-              errors={formState.errors}
-            />
-
-            {formState.formType === "signIn" && (
-              <SignInForm
-                loading={loading}
-                errors={formState.errors}
-                passwordRef={userPassword}
-              />
-            )}
-            {formState.formType === "newPasswordRequired" && (
-              <NewPasswordForm
-                loading={loading}
-                errors={formState.errors}
-                passwordRef={userNewPassword}
-              />
-            )}
-          </form>
+            errors={formState.errors}
+            formType={formState.formType}
+          />
         </div>
       </div>
     </div>
@@ -194,10 +167,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       props: {
         authenticated: true,
       },
-      // redirect: {
-      //   destination: "/",
-      //   permanent: false,
-      // },
     };
   } catch (err) {
     return {
