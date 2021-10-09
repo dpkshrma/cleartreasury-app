@@ -4,7 +4,6 @@ import { GetServerSideProps } from "next";
 import { CognitoUser } from "@aws-amplify/auth";
 import { Auth, withSSRContext } from "aws-amplify";
 import { Button, Input, Alert } from "@clear-treasury/design-system";
-import Page from "../components/page/Page";
 
 type Error = {
   message: string;
@@ -179,7 +178,7 @@ const Verify = (props: Props): JSX.Element => {
   );
 
   return (
-    <Page backgroundColor={Page.Color.TEAL}>
+    <div className="flex h-screen bg-teal-600">
       <div className="max-w-md w-full m-auto p-0">
         <img
           className="h-12 w-full mb-8"
@@ -222,7 +221,7 @@ const Verify = (props: Props): JSX.Element => {
           </form>
         </div>
       </div>
-    </Page>
+    </div>
   );
 };
 

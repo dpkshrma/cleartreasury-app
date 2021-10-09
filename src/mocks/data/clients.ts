@@ -2,9 +2,9 @@ const clients = [
   {
     cli_id: 1,
     cli_reference: "ref_1",
-    cli_name: "Client 1",
+    cli_name: "Test User",
     ctc_first_name: "Test",
-    ctc_last_name: "User_1",
+    ctc_last_name: "User",
     cli_email: "test1@test.com",
     cty_value: "PRIVATE",
   },
@@ -29,9 +29,9 @@ const clients = [
   {
     cli_id: 4,
     cli_reference: "ref_4",
-    cli_name: "Client 4",
+    cli_name: "Test Coporate Ltd",
     ctc_first_name: "Test",
-    ctc_last_name: "User_1",
+    ctc_last_name: "User",
     cli_email: "test1@test.com",
     cty_value: "CORPORATE",
   },

@@ -2,53 +2,35 @@ import * as React from "react";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { Button, Flag, Input, Select } from "@clear-treasury/design-system";
 import { SelectChangeHandler } from "@clear-treasury/design-system/dist/components/select/Select";
+import { Error } from "@clear-treasury/design-system/dist/components/form-field/FormField";
 import { Client } from "../../pages/_app";
+import { Beneficiary } from "./BeneficiaryForm";
 
 // TODO: pull this from the API eventually
 import currencies from "../../data/currencies.json";
 import countries from "../../data/countries.json";
 import reasons from "../../data/reasons.json";
 
-type Error = {
-  message: string;
-};
-
 type Errors = {
-  beneficiaryName?: Error;
+  nickname?: Error;
   email?: Error;
   currency?: Error;
   countries?: Error;
   account_name?: Error;
-  bank_name?: Error;
+  bankname?: Error;
   address?: Error;
   account_number?: Error;
-  swiftNumber?: Error;
+  swift?: Error;
   sort_code?: Error;
   iban?: Error;
-  routingNumber?: Error;
+  routing_number?: Error;
 };
 
 export interface AddBeneficiaryProps {
   client?: Client;
-  onComplete?: (formData: AddBeneficiaryData) => void;
+  onComplete?: (beneficiary: Beneficiary) => void;
   stepBack?: (stepNumber: number) => void;
   data: any;
-}
-
-export interface AddBeneficiaryData {
-  beneficiaryName?: string;
-  email: string;
-  currency: string;
-  country_code: string;
-  account_name?: string;
-  bank_name?: string;
-  address?: string;
-  account_number?: string;
-  swiftNumber?: string;
-  sort_code?: string;
-  iban?: string;
-  routingNumber?: string;
-  reason?: string;
 }
 
 const currencyList: any[] = currencies.map(({ CurrencyCode }) => ({
@@ -77,18 +59,18 @@ const AddBeneficiaryForm = ({
   stepBack,
   data,
 }: AddBeneficiaryProps): JSX.Element => {
-  const beneficiaryName = React.useRef<HTMLInputElement | null>(null);
+  const nickname = React.useRef<HTMLInputElement | null>(null);
   const email = React.useRef<HTMLInputElement | null>(null);
   const currency = React.useRef<HTMLInputElement | null>(null);
   const country_code = React.useRef<HTMLInputElement | null>(null);
   const account_name = React.useRef<HTMLInputElement | null>(null);
-  const bank_name = React.useRef<HTMLInputElement | null>(null);
+  const bankname = React.useRef<HTMLInputElement | null>(null);
   const address = React.useRef<HTMLInputElement | null>(null);
   const account_number = React.useRef<HTMLInputElement | null>(null);
-  const swiftNumber = React.useRef<HTMLInputElement | null>(null);
+  const swift = React.useRef<HTMLInputElement | null>(null);
   const sort_code = React.useRef<HTMLInputElement | null>(null);
   const iban = React.useRef<HTMLInputElement | null>(null);
-  const routingNumber = React.useRef<HTMLInputElement | null>(null);
+  const routing_number = React.useRef<HTMLInputElement | null>(null);
   const reason = React.useRef<HTMLInputElement | null>(null);
 
   const [errors, setErrors] = React.useState<Errors>({});
@@ -104,19 +86,18 @@ const AddBeneficiaryForm = ({
     if (!isValid) return false;
 
     onComplete({
-      // TODO: add more details to this payload
-      beneficiaryName: beneficiaryName.current.value,
+      nickname: nickname.current.value,
       email: email.current.value,
       currency: currency.current.value,
       country_code: country_code.current.value,
       account_name: account_name.current.value,
-      bank_name: bank_name.current.value,
+      bankname: bankname.current.value,
       address: address.current?.value,
       account_number: account_number.current?.value,
-      swiftNumber: swiftNumber.current?.value,
+      swift: swift.current?.value,
       sort_code: sort_code.current?.value,
       iban: iban.current?.value,
-      routingNumber: routingNumber.current?.value,
+      routing_number: routing_number.current?.value,
       reason: reason.current.value,
     });
   };
@@ -136,8 +117,8 @@ const AddBeneficiaryForm = ({
       /[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}/
     );
 
-    if (!beneficiaryName.current.value) {
-      errors.beneficiaryName = { message: "You must enter this field" };
+    if (!nickname.current.value) {
+      errors.nickname = { message: "You must enter this field" };
     }
 
     if (!email.current.value) {
@@ -148,8 +129,8 @@ const AddBeneficiaryForm = ({
       errors.account_name = { message: "You must enter this field" };
     }
 
-    if (!bank_name.current.value) {
-      errors.bank_name = { message: "You must enter this field" };
+    if (!bankname.current.value) {
+      errors.bankname = { message: "You must enter this field" };
     }
 
     if (!account_number.current.value) {
@@ -163,8 +144,8 @@ const AddBeneficiaryForm = ({
         errors.address = { message: "You must enter this field" };
       }
 
-      if (!routingNumber.current.value) {
-        errors.routingNumber = { message: "You must enter this field" };
+      if (!routing_number.current.value) {
+        errors.routing_number = { message: "You must enter this field" };
       }
     }
 
@@ -177,10 +158,10 @@ const AddBeneficiaryForm = ({
     }
 
     if (bankDetails !== "GBP" && bankDetails !== "USD") {
-      if (!swiftNumber.current.value) {
-        errors.swiftNumber = { message: "You must enter this field" };
-      } else if (!swiftRegex.test(swiftNumber.current.value)) {
-        errors.swiftNumber = { message: "Please check your swift number" };
+      if (!swift.current.value) {
+        errors.swift = { message: "You must enter this field" };
+      } else if (!swiftRegex.test(swift.current.value)) {
+        errors.swift = { message: "Please check your swift number" };
       }
     }
 
@@ -220,9 +201,9 @@ const AddBeneficiaryForm = ({
       </div>
 
       <Input
-        ref={beneficiaryName}
+        ref={nickname}
         type="text"
-        name="beneficiaryName"
+        name="nickname"
         label="Beneficiary name"
         placeholder="Enter the beneficiary name"
         hint="This is your reference for the account"
@@ -253,10 +234,11 @@ const AddBeneficiaryForm = ({
           }
           onChange={currencyChange}
         />
+
         <Select
           ref={country_code}
           name="countries"
-          label="Destination Country"
+          label="Destination country"
           options={countriesList}
           defaultValue={
             data.beneficiary == undefined
@@ -284,9 +266,9 @@ const AddBeneficiaryForm = ({
       />
 
       <Input
-        ref={bank_name}
+        ref={bankname}
         type="text"
-        name="bank_name"
+        name="bankname"
         label="Bank name"
         placeholder="Bank name"
         errors={errors}
@@ -304,6 +286,7 @@ const AddBeneficiaryForm = ({
           value={data.beneficiary?.address}
         />
       )}
+
       <Input
         ref={account_number}
         type="text"
@@ -316,9 +299,9 @@ const AddBeneficiaryForm = ({
 
       {bankDetails !== "GBP" && bankDetails !== "USD" && (
         <Input
-          ref={swiftNumber}
+          ref={swift}
           type="text"
-          name="swiftNumber"
+          name="swift"
           label="Swift number"
           placeholder="Swift number"
           errors={errors}
@@ -355,9 +338,9 @@ const AddBeneficiaryForm = ({
         )}
       {bankDetails === "USD" && (
         <Input
-          ref={routingNumber}
+          ref={routing_number}
           type="text"
-          name="routingNumber"
+          name="routing_number"
           label="Routing number"
           placeholder="Routing number"
           errors={errors}
@@ -391,9 +374,8 @@ const AddBeneficiaryForm = ({
 
       <div className="flex justify-between">
         <Button
-          size={Button.Size.SMALL}
-          emphasis={Button.Emphasis.TRANSPARENT}
           onClick={() => stepBack(0)}
+          emphasis={Button.Emphasis.TRANSPARENT}
         >
           <ArrowLeftIcon width="16" />
           Back

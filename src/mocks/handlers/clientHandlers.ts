@@ -23,7 +23,7 @@ export const clientHandlers = [
     } else {
       // Return 2 clients
       const fakeClients = clients
-        .filter((client) => client.ctc_last_name === "User_1")
+        .filter((client) => client.cli_email === "test1@test.com")
         .map((client) => ({
           ...client,
           cli_email: req.body.variables.cli_email,

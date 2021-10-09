@@ -8,12 +8,18 @@ function randomInRange(min, max) {
 
 export const quoteHandlers = [
   graphql.query("getQuote", (req, res, ctx) => {
-    const { currency_buy, currency_sell, sell_amount, value_date } =
-      req.variables;
+    const { currency_buy, currency_sell, value_date } = req.variables;
+    let { sell_amount, buy_amount } = req.variables;
 
     const quote_rate = randomInRange(1.0, 1.5);
 
-    const buy_amount = sell_amount * quote_rate;
+    if (buy_amount) {
+      sell_amount = buy_amount * quote_rate;
+    }
+
+    if (sell_amount) {
+      buy_amount = sell_amount * quote_rate;
+    }
 
     return res(
       ctx.data({
