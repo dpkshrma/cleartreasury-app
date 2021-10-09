@@ -13,7 +13,10 @@ describe("Dashboard page", () => {
       ctc_last_name: "User",
     };
 
-    const { asFragment } = render(<Dashboard client={client} />, {});
+    const { asFragment } = render(
+      <Dashboard client={client} authenticated={true} />,
+      {}
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 
@@ -27,7 +30,10 @@ describe("Dashboard page", () => {
       ctc_last_name: "User",
     };
 
-    const { asFragment } = render(<Dashboard client={client} />, {});
+    const { asFragment } = render(
+      <Dashboard client={client} authenticated={true} />,
+      {}
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 });
