@@ -34,12 +34,14 @@ export interface BeneficiaryFormProps {
   client?: Client;
   onComplete?: (formData: Beneficiary) => void;
   stepBack?: (stepNumber: number) => void;
+  data: any;
 }
 
 const BeneficiaryForm = ({
   client,
   onComplete,
   stepBack,
+  data,
 }: BeneficiaryFormProps): JSX.Element => {
   const [addBeneficiary, setAddBeneficiary] = React.useState<boolean>(false);
   const [formData, setFormData] = React.useState<BeneficiaryFormData>({
@@ -75,49 +77,6 @@ const BeneficiaryForm = ({
     }
   };
 
-  // const RenderBeneficiary = () => {
-  //   if (
-  //     beneficiaryList.length > 0 &&
-  //     !formData.addBeneficiary &&
-  //     formData.beneficiary == null
-  //   ) {
-  //     return (
-  //       <SelectBeneficiary
-  //         beneficiariesList={beneficiariesList}
-  //         client={client}
-  //         stepBack={stepBack}
-  //         onComplete={(beneficiary) =>
-  //           setFormData({
-  //             ...formData,
-  //             beneficiary,
-  //             addBeneficiary: false,
-  //           })
-  //         }
-  //         beneficiaryForm={() => {
-  //           setFormData({ ...formData, addBeneficiary: true });
-  //         }}
-  //       />
-  //     );
-  //   } else if (formData.addBeneficiary && formData.beneficiary == null) {
-  //     return (
-  //       <AddBeneficiaryForm
-  //         client={client}
-  //         stepBack={(stepNumber) => stepBackControl(stepNumber)}
-  //         onComplete={(beneficiary) => {
-  //           setFormData({ ...formData, beneficiary });
-  //         }}
-  //       />
-  //     );
-  //   } else if (formData.beneficiary && formData.beneficiary !== null) {
-  //     return (
-  //       <VerificationForm
-  //         onComplete={(verified) => setFormData({ ...formData, verified })}
-  //       />
-  //     );
-  //   } else {
-  //   }
-  // };
-
   if (addBeneficiary) {
     if (!formData.beneficiary) {
       return (
@@ -143,8 +102,8 @@ const BeneficiaryForm = ({
       client={client}
       beneficiaries={beneficiariesList}
       stepBack={stepBack}
-      addBeneficiary={() => setAddBeneficiary(true)}
-      onComplete={(beneficiary) => onComplete(beneficiary)}
+      data={data}
+      onComplete={(beneficiary) => setFormData({ ...formData, beneficiary })}
     />
   );
 };

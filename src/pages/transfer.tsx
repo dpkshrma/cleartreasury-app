@@ -62,6 +62,7 @@ const Transfer = ({ client, authenticated }: Props): JSX.Element => {
           form={
             <BeneficiaryForm
               client={client}
+              data={formData}
               stepBack={(step: number) => setStepNumber(step)}
               onComplete={(beneficiary) =>
                 setFormData({ ...formData, beneficiary })
@@ -76,6 +77,7 @@ const Transfer = ({ client, authenticated }: Props): JSX.Element => {
                 <ConfirmPayForm
                   client={client}
                   data={formData}
+                  stepBack={(step: number) => setStepNumber(step)}
                   onComplete={(trade) => setFormData({ ...formData, trade })}
                 />
               }

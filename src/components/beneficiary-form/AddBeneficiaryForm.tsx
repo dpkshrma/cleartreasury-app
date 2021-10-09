@@ -9,7 +9,7 @@ import { Beneficiary } from "./BeneficiaryForm";
 // TODO: pull this from the API eventually
 import currencies from "../../data/currencies.json";
 import countries from "../../data/countries.json";
-// import reasons from "../../data/reasons.json";
+import reasons from "../../data/reasons.json";
 
 type Errors = {
   nickname?: Error;
@@ -30,6 +30,7 @@ export interface AddBeneficiaryProps {
   client?: Client;
   onComplete?: (beneficiary: Beneficiary) => void;
   stepBack?: (stepNumber: number) => void;
+  data: any;
 }
 
 const currencyList: any[] = currencies.map(({ CurrencyCode }) => ({
@@ -49,12 +50,14 @@ const countriesList: any[] = countries.map(({ CountryName, ISO2 }) => ({
 const defaultValues = {
   currency: "GBP",
   country_code: "United Kingdom",
+  reason: "Property Purchase",
 };
 
 const AddBeneficiaryForm = ({
-  // client,
+  client,
   onComplete,
   stepBack,
+  data,
 }: AddBeneficiaryProps): JSX.Element => {
   const nickname = React.useRef<HTMLInputElement | null>(null);
   const email = React.useRef<HTMLInputElement | null>(null);
@@ -68,6 +71,7 @@ const AddBeneficiaryForm = ({
   const sort_code = React.useRef<HTMLInputElement | null>(null);
   const iban = React.useRef<HTMLInputElement | null>(null);
   const routing_number = React.useRef<HTMLInputElement | null>(null);
+  const reason = React.useRef<HTMLInputElement | null>(null);
 
   const [errors, setErrors] = React.useState<Errors>({});
 
@@ -94,6 +98,7 @@ const AddBeneficiaryForm = ({
       sort_code: sort_code.current?.value,
       iban: iban.current?.value,
       routing_number: routing_number.current?.value,
+      reason: reason.current.value,
     });
   };
 
@@ -177,6 +182,12 @@ const AddBeneficiaryForm = ({
     }
   };
 
+  React.useEffect(() => {
+    if (data.beneficiary) {
+      setBankDetails(data.beneficiary.currency);
+    }
+  }, [data.beneficiary]);
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="block w-full">
@@ -197,6 +208,7 @@ const AddBeneficiaryForm = ({
         placeholder="Enter the beneficiary name"
         hint="This is your reference for the account"
         errors={errors}
+        value={data.beneficiary?.beneficiaryName}
       />
 
       <Input
@@ -206,6 +218,7 @@ const AddBeneficiaryForm = ({
         label="Email address"
         placeholder="Enter their email address"
         errors={errors}
+        value={data.beneficiary?.email}
       />
 
       <div className="grid grid-cols-2 gap-6 mb-8">
@@ -214,7 +227,11 @@ const AddBeneficiaryForm = ({
           name="currencies"
           label="Currency"
           options={currencyList}
-          defaultValue={defaultValues.currency}
+          defaultValue={
+            data.beneficiary == undefined
+              ? defaultValues.currency
+              : data.beneficiary.currency
+          }
           onChange={currencyChange}
         />
 
@@ -223,7 +240,11 @@ const AddBeneficiaryForm = ({
           name="countries"
           label="Destination country"
           options={countriesList}
-          defaultValue={defaultValues.country_code}
+          defaultValue={
+            data.beneficiary == undefined
+              ? defaultValues.country_code
+              : data.beneficiary.country_code
+          }
         />
       </div>
 
@@ -241,6 +262,7 @@ const AddBeneficiaryForm = ({
         placeholder="Bank account name"
         hint="This is the name as it appears on their bank account"
         errors={errors}
+        value={data.beneficiary?.account_name}
       />
 
       <Input
@@ -250,6 +272,7 @@ const AddBeneficiaryForm = ({
         label="Bank name"
         placeholder="Bank name"
         errors={errors}
+        value={data.beneficiary?.bank_name}
       />
 
       {bankDetails === "USD" && (
@@ -260,6 +283,7 @@ const AddBeneficiaryForm = ({
           label="Bank address"
           placeholder="Bank address"
           errors={errors}
+          value={data.beneficiary?.address}
         />
       )}
 
@@ -270,6 +294,7 @@ const AddBeneficiaryForm = ({
         label="Account number"
         placeholder="Account number"
         errors={errors}
+        value={data.beneficiary?.account_number}
       />
 
       {bankDetails !== "GBP" && bankDetails !== "USD" && (
@@ -280,6 +305,7 @@ const AddBeneficiaryForm = ({
           label="Swift number"
           placeholder="Swift number"
           errors={errors}
+          value={data.beneficiary?.swiftNumber}
         />
       )}
       {bankDetails === "GBP" && (
@@ -290,6 +316,7 @@ const AddBeneficiaryForm = ({
           label="Sort code"
           placeholder="Sort code"
           errors={errors}
+          value={data.beneficiary?.sort_code}
         />
       )}
 
@@ -306,6 +333,7 @@ const AddBeneficiaryForm = ({
             label="IBAN"
             placeholder="IBAN"
             errors={errors}
+            value={data.beneficiary?.iban}
           />
         )}
       {bankDetails === "USD" && (
@@ -316,30 +344,33 @@ const AddBeneficiaryForm = ({
           label="Routing number"
           placeholder="Routing number"
           errors={errors}
+          value={data.beneficiary?.routingNumber}
         />
       )}
 
-      {/*
-        // TODO: Beneficiary reason for transfer still TBD...
-        <h2 className="text-2xl mb-2">Reason for transfer</h2>
+      {/* // TODO: Beneficiary reason for transfer still TBD... */}
+      <h2 className="text-2xl mb-2">Reason for transfer</h2>
 
-        <p className="text-l text-gray-500 mb-8">
-          Please provide a reason for your payments to this beneficiary
-        </p>
+      <p className="text-l text-gray-500 mb-8">
+        Please provide a reason for your payments to this beneficiary
+      </p>
 
-        <div className="border-b border-gray-200 pb-8">
-          <Select
-            name="select"
-            options={
-              client.cty_value === "PRIVATE"
-                ? reasons.OPTIONS_REASON_PERSONAL
-                : reasons.OPTIONS_REASON_BUSINESS
-            }
-          />
-        </div>
-      */}
-
-      <hr className="pb-2" />
+      <div className="border-b border-gray-200 pb-8">
+        <Select
+          ref={reason}
+          name="select"
+          options={
+            client.cty_value === "PRIVATE"
+              ? reasons.OPTIONS_REASON_PERSONAL
+              : reasons.OPTIONS_REASON_BUSINESS
+          }
+          defaultValue={
+            data.beneficiary == undefined
+              ? defaultValues.reason
+              : data.beneficiary.reason
+          }
+        />
+      </div>
 
       <div className="flex justify-between">
         <Button
