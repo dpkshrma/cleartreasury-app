@@ -77,15 +77,15 @@ module.exports = {
     CodeDeliveryDetails: {
       AttributeName: "email",
       DeliveryMedium: "EMAIL",
-      Destination: "t***@e***.com"
-    }
+      Destination: "t***@e***.com",
+    },
   },
   cognitoIntiatePwdResetFailure: {
     __type: "UserNotFoundException",
-    message: "Username/client id combination not found."
+    message: "Username/client id combination not found.",
   },
   cognitoSubmitPwdFailure: {
     __type: "ExpiredCodeException",
-    message: "Invalid code provided, please request a code again."
-  }
+    message: "Invalid code provided, please request a code again.",
+  },
 };
