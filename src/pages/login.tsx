@@ -238,10 +238,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       props: {
         authenticated: true,
       },
-      // redirect: {
-      //   destination: "/",
-      //   permanent: false,
-      // },
     };
   } catch (err) {
     return {
