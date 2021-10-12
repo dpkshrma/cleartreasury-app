@@ -16,6 +16,6 @@ const Template: Story<QuoteFormProps> = (args) => <QuoteForm {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  /* eslint-disable-next-line no-console */
+  // eslint-disable-next-line no-console
   onComplete: (data: QuoteFormData) => console.log(data),
 };
