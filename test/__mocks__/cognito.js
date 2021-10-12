@@ -73,4 +73,19 @@ module.exports = {
   cognitoIdentity: {
     IdentityId: "eu-west-2:uuid",
   },
+  cognitoIntiatePwdResetSuccess: {
+    CodeDeliveryDetails: {
+      AttributeName: "email",
+      DeliveryMedium: "EMAIL",
+      Destination: "t***@e***.com"
+    }
+  },
+  cognitoIntiatePwdResetFailure: {
+    __type: "UserNotFoundException",
+    message: "Username/client id combination not found."
+  },
+  cognitoSubmitPwdFailure: {
+    __type: "ExpiredCodeException",
+    message: "Invalid code provided, please request a code again."
+  }
 };

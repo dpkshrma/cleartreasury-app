@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   typescript: {
     check: true, // type-check stories during Storybook build
@@ -15,4 +17,12 @@ module.exports = {
       },
     },
   ],
+  webpackFinal: async (config) => {
+    config.module.rules.push({
+      test: /\.scss$/,
+      use: ['style-loader', 'css-loader', 'sass-loader'],
+      include: path.resolve(__dirname, '../'),
+    });
+    return config;
+  },
 };
