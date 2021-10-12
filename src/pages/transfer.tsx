@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 export type FormData = {
   quote?: Quote;
   beneficiary?: Beneficiary;
+  reason?: string;
   trade?: Trade;
 };
 
@@ -28,6 +29,7 @@ interface Props {
 
 const Transfer = ({ client, authenticated }: Props): JSX.Element => {
   const router = useRouter();
+
   const [formData, setFormData] = React.useState<FormData>({});
   const [stepNumber, setStepNumber] = React.useState<number>();
   const [loading, setLoading] = React.useState(true);
@@ -62,10 +64,9 @@ const Transfer = ({ client, authenticated }: Props): JSX.Element => {
           form={
             <BeneficiaryForm
               client={client}
-              data={formData}
               stepBack={(step: number) => setStepNumber(step)}
               onComplete={(beneficiary) =>
-                setFormData({ ...formData, beneficiary })
+                setFormData({ ...formData, ...beneficiary })
               }
             />
           }

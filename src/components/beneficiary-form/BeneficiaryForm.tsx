@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Client } from "../../pages/_app";
+import { useQuery } from "../../hooks/useQuery";
 import { useMutation } from "../../hooks/useMutation";
+import { GET_BENEFICIARIES } from "../../graphql/beneficiaries/queries";
 import { CREATE_BENEFICIARY } from "../../graphql/beneficiaries/mutations";
+import SelectBeneficiary from "./SelectBeneficiary";
 import AddBeneficiaryForm from "./AddBeneficiaryForm";
 import VerificationForm from "./VerificationForm";
-import SelectBeneficiary from "./SelectBeneficiary";
-import { GET_BENEFICIARIES } from "../../graphql/beneficiaries/queries";
-import { useQuery } from "../../hooks/useQuery";
 
 export type Beneficiary = {
   id?: string;
@@ -27,30 +27,33 @@ export type Beneficiary = {
 
 interface BeneficiaryFormData {
   beneficiary: Beneficiary;
-  verified: boolean;
+  reason: string;
 }
 
 export interface BeneficiaryFormProps {
   client?: Client;
-  onComplete?: (formData: Beneficiary) => void;
+  onComplete?: (formData: BeneficiaryFormData) => void;
   stepBack?: (stepNumber: number) => void;
-  data: any;
 }
 
 const BeneficiaryForm = ({
   client,
   onComplete,
   stepBack,
-  data,
 }: BeneficiaryFormProps): JSX.Element => {
   const [addBeneficiary, setAddBeneficiary] = React.useState<boolean>(false);
+  const [verified, setVerified] = React.useState<boolean>(false);
   const [formData, setFormData] = React.useState<BeneficiaryFormData>({
     beneficiary: null,
-    verified: false,
+    reason: null,
   });
 
-  const { data: beneficiary } = useMutation(
-    formData.beneficiary && formData.verified ? CREATE_BENEFICIARY : null,
+  const { data: beneficiariesList = [] } = useQuery(GET_BENEFICIARIES, {
+    client_ref: client.cli_reference,
+  });
+
+  const { data: newBeneficiary } = useMutation(
+    formData.beneficiary && verified ? CREATE_BENEFICIARY : null,
     {
       input: {
         ...formData.beneficiary,
@@ -59,15 +62,17 @@ const BeneficiaryForm = ({
     }
   );
 
-  const { data: beneficiariesList = [] } = useQuery(GET_BENEFICIARIES, {
-    client_ref: client.cli_reference,
-  });
+  React.useEffect(() => {
+    if (addBeneficiary && verified && newBeneficiary) {
+      onComplete({ ...newBeneficiary, ...formData.beneficiary });
+    }
+  }, [addBeneficiary, verified, newBeneficiary]);
 
   React.useEffect(() => {
-    if (formData.verified && beneficiary) {
-      onComplete({ ...beneficiary, ...formData.beneficiary });
+    if (!addBeneficiary && formData.beneficiary && formData.reason) {
+      onComplete(formData);
     }
-  }, [formData.verified, beneficiary]);
+  }, [addBeneficiary, formData.beneficiary, formData.reason]);
 
   const stepBackControl = (stepNumber: number) => {
     if (beneficiariesList.length > 0) {
@@ -83,27 +88,24 @@ const BeneficiaryForm = ({
         <AddBeneficiaryForm
           client={client}
           stepBack={stepBackControl}
-          onComplete={(beneficiary) =>
-            setFormData({ ...formData, beneficiary })
-          }
+          onComplete={setFormData}
         />
       );
     } else {
-      return (
-        <VerificationForm
-          onComplete={(verified) => setFormData({ ...formData, verified })}
-        />
-      );
+      return <VerificationForm onComplete={setVerified} />;
     }
   }
 
   return (
     <SelectBeneficiary
       client={client}
-      beneficiaries={beneficiariesList}
       stepBack={stepBack}
-      data={data}
-      onComplete={(beneficiary) => setFormData({ ...formData, beneficiary })}
+      beneficiaries={beneficiariesList}
+      onComplete={setFormData}
+      addBeneficiary={() => {
+        setFormData({ beneficiary: null, reason: null });
+        setAddBeneficiary(true);
+      }}
     />
   );
 };
