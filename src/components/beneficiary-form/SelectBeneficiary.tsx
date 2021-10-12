@@ -19,9 +19,15 @@ import reasons from "../../data/reasons.json";
 export interface SelectBeneficiaryProps {
   client?: Client;
   stepBack?: (stepNumber: number) => void;
-  onComplete?: (beneficiary: Beneficiary) => void;
   beneficiaries: Beneficiary[];
   addBeneficiary: () => void;
+  onComplete?: ({
+    beneficiary,
+    reason,
+  }: {
+    beneficiary: Beneficiary;
+    reason: string;
+  }) => void;
 }
 
 type Errors = {
@@ -33,8 +39,8 @@ const SelectBeneficiary = ({
   client,
   stepBack,
   onComplete,
-  beneficiaries = [],
   addBeneficiary,
+  beneficiaries = [],
 }: SelectBeneficiaryProps): JSX.Element => {
   const search = React.useRef<HTMLInputElement | null>(null);
   const reason = React.useRef<HTMLInputElement | null>(null);
@@ -46,19 +52,8 @@ const SelectBeneficiary = ({
     Beneficiary[]
   >([]);
 
-  const currencyList: any[] = [];
-
-  beneficiaries?.forEach(({ currency }) => {
-    const index = currencyList.findIndex((item) => item.value === currency);
-    if (index == -1) {
-      currencyList.push({
-        value: currency,
-        label: `${currency}`,
-        selectedLabel: currency,
-        icon: <Flag country={currency.slice(0, -1).toLowerCase()} />,
-      });
-    }
-  });
+  const currencyList: Set<string> = new Set();
+  beneficiaries?.forEach(({ currency }) => currencyList.add(currency));
 
   const currencyChange: SelectChangeHandler = ({ selectedItem }) => {
     // TODO: probably shouldn't be clearing the filter on currency change
@@ -102,7 +97,7 @@ const SelectBeneficiary = ({
 
     if (!reason.current.value) {
       setErrors({
-        reason: { message: "Select a reason" },
+        reason: { message: "You must select a reason" },
       });
 
       return false;
@@ -110,7 +105,10 @@ const SelectBeneficiary = ({
 
     const selectedBeneficiary = beneficiaries[bindIndex];
 
-    onComplete(selectedBeneficiary);
+    onComplete({
+      beneficiary: selectedBeneficiary,
+      reason: reason.current.value,
+    });
   };
 
   const BeneficiaryList = ({ data }) => {
@@ -206,8 +204,13 @@ const SelectBeneficiary = ({
           <Select
             ref={currency}
             name="currencies"
-            options={currencyList}
             onChange={currencyChange}
+            options={Array.from(currencyList).map((currency) => ({
+              value: currency,
+              label: `${currency}`,
+              selectedLabel: currency,
+              icon: <Flag country={currency.slice(0, -1).toLowerCase()} />,
+            }))}
           />
         </div>
       </div>

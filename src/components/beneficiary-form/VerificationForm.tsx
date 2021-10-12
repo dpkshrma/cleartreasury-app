@@ -4,9 +4,13 @@ import { useApp } from "../../pages/_app";
 import { useQuery } from "../../hooks/useQuery";
 import { REQUEST_CODE, VERIFY_CODE } from "../../graphql/verify/queries";
 
-// type Errors = {
-//   verificationCode?: Error;
-// };
+type Error = {
+  message: string;
+};
+
+type Errors = {
+  verificationCode?: Error;
+};
 
 interface QueryVariables {
   To: string;
@@ -19,17 +23,15 @@ interface VerificationFormProps {
 }
 
 const VerificationForm = ({
-  // stepBack,
   onComplete,
 }: VerificationFormProps): JSX.Element => {
   const authContext: any = useApp();
   const verificationCode = React.useRef<HTMLInputElement | null>(null);
+  const [errors, setErrors] = React.useState<Errors>({});
 
   const [queryVariables, setQueryVariables] = React.useState<QueryVariables>({
     To: authContext.phone_number,
   });
-
-  // const [errors, setErrors] = React.useState<Errors>({});
 
   const { data } = useQuery(
     queryVariables.Code ? VERIFY_CODE : REQUEST_CODE,
@@ -44,6 +46,17 @@ const VerificationForm = ({
 
   const verifyCode = (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (!verificationCode.current.value) {
+      setErrors({
+        verificationCode: {
+          message: "You must enter a verification code",
+        },
+      });
+
+      return false;
+    }
+
     setQueryVariables({
       ...queryVariables,
       Code: verificationCode.current.value,
@@ -68,7 +81,7 @@ const VerificationForm = ({
         name="verificationCode"
         label="Verification code"
         placeholder="Enter code"
-        // errors={errors}
+        errors={errors}
       />
 
       <hr className="pb-2" />
