@@ -32,8 +32,8 @@ export type Trade = {
 interface ConfirmPayFormProps {
   data?: FormData;
   client?: Client;
+  stepBack?: (step?: number) => void;
   onComplete?: (tradeData: any) => void;
-  stepBack?: (stepNumber: number) => void;
 }
 
 const ConfirmPayForm = ({
@@ -159,7 +159,7 @@ const ConfirmPayForm = ({
         <h3 className="text-lg">Beneficiary</h3>
         <span
           className="text-green-400 cursor-pointer"
-          onClick={() => stepBack(1)}
+          onClick={() => stepBack()}
         >
           Change
         </span>

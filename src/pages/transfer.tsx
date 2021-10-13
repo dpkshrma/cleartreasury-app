@@ -31,7 +31,6 @@ const Transfer = ({ client, authenticated }: Props): JSX.Element => {
   const router = useRouter();
 
   const [formData, setFormData] = React.useState<FormData>({});
-  const [stepNumber, setStepNumber] = React.useState<number>();
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -48,7 +47,7 @@ const Transfer = ({ client, authenticated }: Props): JSX.Element => {
 
   return (
     <Page title="Make a transfer">
-      <Steps nav={<Step />} goBack={stepNumber}>
+      <Steps nav={<Step />}>
         <Steps.Step
           stepTitle="Amount"
           form={
@@ -64,7 +63,10 @@ const Transfer = ({ client, authenticated }: Props): JSX.Element => {
           form={
             <BeneficiaryForm
               client={client}
-              stepBack={(step: number) => setStepNumber(step)}
+              selected={{
+                beneficiary: formData.beneficiary,
+                reason: formData.reason,
+              }}
               onComplete={(beneficiary) =>
                 setFormData({ ...formData, ...beneficiary })
               }
@@ -78,7 +80,6 @@ const Transfer = ({ client, authenticated }: Props): JSX.Element => {
                 <ConfirmPayForm
                   client={client}
                   data={formData}
-                  stepBack={(step: number) => setStepNumber(step)}
                   onComplete={(trade) => setFormData({ ...formData, trade })}
                 />
               }
