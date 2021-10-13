@@ -62,9 +62,13 @@ const Steps = ({
             React.cloneElement(child, {
               key: index,
               stepBack: (step: number) => {
-                isNaN(step)
-                  ? setActiveStep(activeStep - 1)
-                  : setActiveStep(step);
+                if (step === activeStep) {
+                  stepBack(step);
+                } else {
+                  isNaN(step)
+                    ? setActiveStep(activeStep - 1)
+                    : setActiveStep(step);
+                }
               },
               onComplete: (data) => {
                 child.props.form?.props.onComplete &&

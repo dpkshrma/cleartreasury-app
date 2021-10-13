@@ -106,7 +106,12 @@ const ConfirmPayForm = ({
       </p>
       <div className="flex justify-between mb-4 border-b border-gray-200 pb-4">
         <h3 className="text-lg">Your quote</h3>
-        <span className="text-green-400 cursor-pointer">Change</span>
+        <span
+          className="text-green-400 cursor-pointer"
+          onClick={() => stepBack(0)}
+        >
+          Change
+        </span>
       </div>
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">You Send</span>
