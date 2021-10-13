@@ -2,14 +2,10 @@ import * as React from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { CognitoUser } from "@aws-amplify/auth";
-import { Auth, withSSRContext } from "aws-amplify";
-import { LoginForm } from "../components/login-form";
-import { LoginFormErrors } from "../components/login-form/types";
-
-interface FormState {
-  formType: "signIn" | "newPasswordRequired";
-  errors: LoginFormErrors;
-}
+import { withSSRContext } from "aws-amplify";
+import { NewPasswordForm } from "../components/auth-form/NewPasswordForm";
+import { SignInForm } from "../components/auth-form/SignInForm";
+import AuthForm from "../components/auth-form/AuthForm";
 
 type Props = {
   setContext: (user: CognitoUser) => void;
@@ -17,17 +13,6 @@ type Props = {
 };
 
 const Login = (props: Props): JSX.Element => {
-  const [user, setUser]: any = React.useState();
-  const [loading, setLoading] = React.useState(false);
-  const [formState, setFormState] = React.useState<FormState>({
-    formType: "signIn",
-    errors: {},
-  });
-
-  const userEmail = React.useRef<HTMLInputElement | null>(null);
-  const userPassword = React.useRef<HTMLInputElement | null>(null);
-  const userNewPassword = React.useRef<HTMLInputElement | null>(null);
-
   const router = useRouter();
 
   React.useEffect(() => {
@@ -36,96 +21,10 @@ const Login = (props: Props): JSX.Element => {
     }
   }, [props.authenticated]);
 
-  function handleSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-
-    const isValid = validateForm();
-    if (!isValid) return false;
-
-    if (formState.formType == "signIn") {
-      signIn();
-    } else if (formState.formType == "newPasswordRequired") {
-      newPasswordRequired();
-    }
-  }
-
-  function validateForm() {
-    const errors: LoginFormErrors = {};
-
-    if (!userEmail?.current?.value) {
-      errors.email = { message: "You must enter an email" };
-    }
-
-    if (formState.formType === "signIn" && !userPassword?.current?.value) {
-      errors.password = {
-        message: "You must enter a password",
-      };
-    }
-
-    if (
-      formState.formType === "newPasswordRequired" &&
-      !userNewPassword?.current?.value
-    ) {
-      errors.newPassword = { message: "You must enter a password" };
-    }
-
-    if (Object.keys(errors).length) {
-      setFormState({ ...formState, errors });
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  async function signIn() {
-    setLoading(true);
-
-    try {
-      const authData = await Auth.signIn(
-        userEmail.current.value,
-        userPassword.current.value
-      );
-
-      if (authData.challengeName == "NEW_PASSWORD_REQUIRED") {
-        setFormState(() => ({
-          ...formState,
-          formType: "newPasswordRequired",
-        }));
-        setUser(authData);
-      } else {
-        setUser(authData);
-        props.setContext(authData);
-        router.push("/authenticate");
-      }
-    } catch (error) {
-      setLoading(false);
-      setFormState(() => ({
-        ...formState,
-        errors: { alert: { message: error.message } },
-      }));
-    }
-  }
-
-  async function newPasswordRequired() {
-    setLoading(true);
-
-    try {
-      const userData = await Auth.completeNewPassword(
-        user,
-        userNewPassword.current.value,
-        { email: userEmail.current.value }
-      );
-
-      setUser(userData);
-    } catch (error) {
-      setFormState(() => ({
-        ...formState,
-        errors: { alert: { message: error.message } },
-      }));
-    } finally {
-      setLoading(false);
-    }
-  }
+  const onSubmit = (authData: CognitoUser) => {
+    props.setContext(authData);
+    router.push("/authenticate");
+  };
 
   return (
     <div className="flex h-screen bg-teal-600">
@@ -135,23 +34,10 @@ const Login = (props: Props): JSX.Element => {
           src="/clear_full_logo_light.svg"
           alt="Clear Currency"
         />
-
-        <div className="p-6 space-y-6 bg-white rounded-md flex justify-center flex-col shadow-md">
-          <h1 className="block w-full text-center text-gray-800 text-2xl">
-            {formState.formType === "newPasswordRequired"
-              ? "Set your password"
-              : "Sign in to your account"}
-          </h1>
-          <LoginForm
-            emailRef={userEmail}
-            passwordRef={userPassword}
-            newPasswordRef={userNewPassword}
-            loading={loading}
-            onSubmit={handleSubmit}
-            errors={formState.errors}
-            formType={formState.formType}
-          />
-        </div>
+        <AuthForm onSignIn={onSubmit} onNewPasswordSet={onSubmit}>
+          <SignInForm />
+          <NewPasswordForm />
+        </AuthForm>
       </div>
     </div>
   );

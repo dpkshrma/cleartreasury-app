@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Meta, Story } from "@storybook/react";
 import { NewPasswordForm, NewPasswordFormProps } from "./NewPasswordForm";
+import { FormType } from "./types";
 
 const Template: Story<NewPasswordFormProps> = (args) => (
   <NewPasswordForm {...args} />
@@ -9,9 +10,8 @@ const Template: Story<NewPasswordFormProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   loading: false,
-  emailRef: React.createRef(),
-  newPasswordRef: React.createRef(),
   errors: {},
+  formType: FormType.newPasswordForm,
 };
 
 export default {
