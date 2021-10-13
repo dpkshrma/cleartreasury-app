@@ -16,22 +16,31 @@ export const NewPasswordForm: FunctionComponent<NewPasswordFormProps> = ({
 }) => {
   if (formType !== FormType.newPasswordForm) return null;
 
-  const { register } = useFormContext();
+  const formContext = useFormContext();
+  let emailInputProps = {};
+  let passwordInputProps = {};
+  if (formContext) {
+    emailInputProps = formContext.register("email");
+    passwordInputProps = formContext.register("password");
+  }
+
   return (
     <>
       <Input
         type="email"
+        name="email"
         label="Email address"
         placeholder="Enter your email"
         errors={errors}
-        {...register("email")}
+        {...emailInputProps}
       />
       <Input
         type="password"
+        name="newPassword"
         label="Change your password"
         placeholder="Enter your new password"
         errors={errors}
-        {...register("newPassword")}
+        {...passwordInputProps}
       />
 
       <Button size={Button.Size.LARGE} loading={loading}>

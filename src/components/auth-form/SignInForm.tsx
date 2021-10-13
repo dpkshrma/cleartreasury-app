@@ -17,23 +17,33 @@ export const SignInForm: FunctionComponent<SignInFormProps> = ({
 }) => {
   if (formType !== FormType.signInForm) return null;
 
-  const { register } = useFormContext();
+  const formContext = useFormContext();
+  let emailInputProps = {};
+  let passwordInputProps = {};
+
+  if (formContext) {
+    emailInputProps = formContext.register("email");
+    passwordInputProps = formContext.register("password");
+  }
+
   return (
     <>
       <Input
-        type="text"
+        type="email"
+        name="email"
         label="Email address"
         placeholder="Enter your email"
         errors={errors}
-        {...register("email")}
+        {...emailInputProps}
       />
 
       <Input
         type="password"
+        name="password"
         label="Password"
         placeholder="Enter your password"
         errors={errors}
-        {...register("password")}
+        {...passwordInputProps}
       />
 
       <Link href="/reset-password">
