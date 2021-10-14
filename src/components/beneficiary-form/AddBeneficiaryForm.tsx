@@ -9,7 +9,7 @@ import { Beneficiary } from "./BeneficiaryForm";
 // TODO: pull this from the API eventually
 import currencies from "../../data/currencies.json";
 import countries from "../../data/countries.json";
-// import reasons from "../../data/reasons.json";
+import reasons from "../../data/reasons.json";
 
 type Errors = {
   nickname?: Error;
@@ -24,12 +24,19 @@ type Errors = {
   sort_code?: Error;
   iban?: Error;
   routing_number?: Error;
+  reason?: Error;
 };
 
 export interface AddBeneficiaryProps {
   client?: Client;
-  onComplete?: (beneficiary: Beneficiary) => void;
   stepBack?: (stepNumber: number) => void;
+  onComplete?: ({
+    beneficiary,
+    reason,
+  }: {
+    beneficiary: Beneficiary;
+    reason: string;
+  }) => void;
 }
 
 const currencyList: any[] = currencies.map(({ CurrencyCode }) => ({
@@ -49,10 +56,11 @@ const countriesList: any[] = countries.map(({ CountryName, ISO2 }) => ({
 const defaultValues = {
   currency: "GBP",
   country_code: "United Kingdom",
+  reason: "Property Purchase",
 };
 
 const AddBeneficiaryForm = ({
-  // client,
+  client,
   onComplete,
   stepBack,
 }: AddBeneficiaryProps): JSX.Element => {
@@ -68,6 +76,7 @@ const AddBeneficiaryForm = ({
   const sort_code = React.useRef<HTMLInputElement | null>(null);
   const iban = React.useRef<HTMLInputElement | null>(null);
   const routing_number = React.useRef<HTMLInputElement | null>(null);
+  const reason = React.useRef<HTMLInputElement | null>(null);
 
   const [errors, setErrors] = React.useState<Errors>({});
 
@@ -82,18 +91,21 @@ const AddBeneficiaryForm = ({
     if (!isValid) return false;
 
     onComplete({
-      nickname: nickname.current.value,
-      email: email.current.value,
-      currency: currency.current.value,
-      country_code: country_code.current.value,
-      account_name: account_name.current.value,
-      bankname: bankname.current.value,
-      address: address.current?.value,
-      account_number: account_number.current?.value,
-      swift: swift.current?.value,
-      sort_code: sort_code.current?.value,
-      iban: iban.current?.value,
-      routing_number: routing_number.current?.value,
+      beneficiary: {
+        nickname: nickname.current.value,
+        email: email.current.value,
+        currency: currency.current.value,
+        country_code: country_code.current.value,
+        account_name: account_name.current.value,
+        bankname: bankname.current.value,
+        address: address.current?.value,
+        account_number: account_number.current?.value,
+        swift: swift.current?.value,
+        sort_code: sort_code.current?.value,
+        iban: iban.current?.value,
+        routing_number: routing_number.current?.value,
+      },
+      reason: reason.current.value,
     });
   };
 
@@ -168,6 +180,10 @@ const AddBeneficiaryForm = ({
       }
     }
 
+    if (!reason.current.value) {
+      errors.reason = { message: "You must select a reason for this transfer" };
+    }
+
     if (Object.keys(errors).length) {
       setErrors(errors);
       return false;
@@ -193,7 +209,7 @@ const AddBeneficiaryForm = ({
         ref={nickname}
         type="text"
         name="nickname"
-        label="Beneficiary name"
+        label="Beneficiary name (Optional)"
         placeholder="Enter the beneficiary name"
         hint="This is your reference for the account"
         errors={errors}
@@ -272,7 +288,7 @@ const AddBeneficiaryForm = ({
         errors={errors}
       />
 
-      {bankDetails !== "GBP" && bankDetails !== "USD" && (
+      {!["GBP", "USD"].includes(bankDetails) && (
         <Input
           ref={swift}
           type="text"
@@ -282,6 +298,7 @@ const AddBeneficiaryForm = ({
           errors={errors}
         />
       )}
+
       {bankDetails === "GBP" && (
         <Input
           ref={sort_code}
@@ -293,21 +310,17 @@ const AddBeneficiaryForm = ({
         />
       )}
 
-      {bankDetails !== "GBP" &&
-        bankDetails !== "AUD" &&
-        bankDetails !== "NZD" &&
-        bankDetails !== "ZAR" &&
-        bankDetails !== "CA" &&
-        bankDetails !== "UGX" && (
-          <Input
-            ref={iban}
-            type="text"
-            name="iban"
-            label="IBAN"
-            placeholder="IBAN"
-            errors={errors}
-          />
-        )}
+      {!["GBP", "AUD", "NZD", "ZAR", "CA", "UGX"].includes(bankDetails) && (
+        <Input
+          ref={iban}
+          type="text"
+          name="iban"
+          label="IBAN"
+          placeholder="IBAN"
+          errors={errors}
+        />
+      )}
+
       {bankDetails === "USD" && (
         <Input
           ref={routing_number}
@@ -319,27 +332,21 @@ const AddBeneficiaryForm = ({
         />
       )}
 
-      {/*
-        // TODO: Beneficiary reason for transfer still TBD...
-        <h2 className="text-2xl mb-2">Reason for transfer</h2>
+      <h2 className="text-2xl mb-2">Reason for transfer</h2>
 
-        <p className="text-l text-gray-500 mb-8">
-          Please provide a reason for your payments to this beneficiary
-        </p>
+      <p className="text-l text-gray-500 mb-8">
+        Please provide a reason for your transfer to this beneficiary
+      </p>
 
-        <div className="border-b border-gray-200 pb-8">
-          <Select
-            name="select"
-            options={
-              client.cty_value === "PRIVATE"
-                ? reasons.OPTIONS_REASON_PERSONAL
-                : reasons.OPTIONS_REASON_BUSINESS
-            }
-          />
-        </div>
-      */}
-
-      <hr className="pb-2" />
+      <div className="border-b border-gray-200 pb-8">
+        <Select
+          ref={reason}
+          name="reason"
+          options={reasons[client.cty_value]}
+          placeholder="Select a reason for this transer"
+          errors={errors}
+        />
+      </div>
 
       <div className="flex justify-between">
         <Button

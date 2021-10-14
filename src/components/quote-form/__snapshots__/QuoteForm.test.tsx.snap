@@ -12,14 +12,14 @@ exports[`Quote Form matches snapshot 1`] = `
     </h1>
     <div
       class="w-full relative "
+      role="group"
     >
-      <label
+      <span
         class="text-base text-gray-700 inline-block mb-2"
-        for="sell"
-        id="sell"
+        id="money-input-label"
       >
         You send
-      </label>
+      </span>
       <div
         class="flex items-stretch"
       >
@@ -27,26 +27,33 @@ exports[`Quote Form matches snapshot 1`] = `
           class="w-full relative "
         >
           <input
+            aria-label="sell amount"
             class="form-input border border-gray-300 bg-white mb-2 p-3 w-full focus:ring-teal-100 focus:border-teal-300 disabled:cursor-not-allowed placeholder-gray-400 rounded-l"
             id="sell_amount"
             name="sell_amount"
             type="text"
-            value="1000"
+            value="1000.00"
           />
         </div>
         <div
           class="w-40"
         >
+          <label
+            class="sr-only"
+            id="sell_currency-label"
+          >
+            sell currency
+          </label>
           <div
             class="w-full relative "
           >
             <button
               aria-expanded="false"
               aria-haspopup="listbox"
-              aria-labelledby="downshift-0-label downshift-0-toggle-button"
+              aria-labelledby="sell_currency-label sell_currency-toggle-button"
               class="form-select border border-gray-300 focus:ring-teal-100 focus:border-teal-300 disabled:cursor-not-allowed w-full mb-2 p-3 text-left whitespace-nowrap text-theme-color-on-primary bg-theme-color-primary rounded-r"
               data-testid="sell_currency"
-              id="downshift-0-toggle-button"
+              id="sell_currency-toggle-button"
               name="sell_currency"
               type="button"
               value="GBP"
@@ -55,7 +62,7 @@ exports[`Quote Form matches snapshot 1`] = `
                 class="flex space-x-2"
               >
                 <span
-                  class="flag-icon-gb pl-6 bg-left bg-contain bg-no-repeat"
+                  class="flag-icon-gb pl-6 bg-left bg-contain bg-no-repeat inline-block w-6 h-6"
                 />
                 <span>
                   GBP
@@ -63,9 +70,9 @@ exports[`Quote Form matches snapshot 1`] = `
               </div>
             </button>
             <ul
-              aria-labelledby="downshift-0-label"
+              aria-labelledby="sell_currency-label"
               class="absolute max-h-56 mt-1 overflow-auto z-10 w-full"
-              id="downshift-0-menu"
+              id="sell_currency-menu"
               role="listbox"
               tabindex="-1"
             />
@@ -75,14 +82,14 @@ exports[`Quote Form matches snapshot 1`] = `
     </div>
     <div
       class="w-full relative "
+      role="group"
     >
-      <label
+      <span
         class="text-base text-gray-700 inline-block mb-2"
-        for="buy"
-        id="buy"
+        id="money-input-label"
       >
         They recieve
-      </label>
+      </span>
       <div
         class="flex items-stretch"
       >
@@ -90,6 +97,7 @@ exports[`Quote Form matches snapshot 1`] = `
           class="w-full relative "
         >
           <input
+            aria-label="buy amount"
             class="form-input border border-gray-300 bg-white mb-2 p-3 w-full focus:ring-teal-100 focus:border-teal-300 disabled:cursor-not-allowed placeholder-gray-400 rounded-l"
             id="buy_amount"
             name="buy_amount"
@@ -100,16 +108,22 @@ exports[`Quote Form matches snapshot 1`] = `
         <div
           class="w-40"
         >
+          <label
+            class="sr-only"
+            id="buy_currency-label"
+          >
+            buy currency
+          </label>
           <div
             class="w-full relative "
           >
             <button
               aria-expanded="false"
               aria-haspopup="listbox"
-              aria-labelledby="downshift-1-label downshift-1-toggle-button"
+              aria-labelledby="buy_currency-label buy_currency-toggle-button"
               class="form-select border border-gray-300 focus:ring-teal-100 focus:border-teal-300 disabled:cursor-not-allowed w-full mb-2 p-3 text-left whitespace-nowrap text-theme-color-on-primary bg-theme-color-primary rounded-r"
               data-testid="buy_currency"
-              id="downshift-1-toggle-button"
+              id="buy_currency-toggle-button"
               name="buy_currency"
               type="button"
               value="EUR"
@@ -118,7 +132,7 @@ exports[`Quote Form matches snapshot 1`] = `
                 class="flex space-x-2"
               >
                 <span
-                  class="flag-icon-eu pl-6 bg-left bg-contain bg-no-repeat"
+                  class="flag-icon-eu pl-6 bg-left bg-contain bg-no-repeat inline-block w-6 h-6"
                 />
                 <span>
                   EUR
@@ -126,9 +140,9 @@ exports[`Quote Form matches snapshot 1`] = `
               </div>
             </button>
             <ul
-              aria-labelledby="downshift-1-label"
+              aria-labelledby="buy_currency-label"
               class="absolute max-h-56 mt-1 overflow-auto z-10 w-full"
-              id="downshift-1-menu"
+              id="buy_currency-menu"
               role="listbox"
               tabindex="-1"
             />
@@ -145,46 +159,9 @@ exports[`Quote Form matches snapshot 1`] = `
         Exchange rate
       </p>
       <div
-        class="flex"
+        class="flex space-x-4"
       >
-        <div
-          class="flex"
-        >
-          <div
-            class="mr-2 mt-1"
-          >
-            <div
-              class="circular w-6 h-6 relative"
-            >
-              <div
-                class="circle"
-              >
-                <div
-                  class="bar right absolute bg-white h-full w-full transform rotate-180 rounded-full clip-rect-bar"
-                >
-                  <div
-                    class="progress absolute bg-green-500 h-full w-full rounded-full clip-rect-progress transition"
-                    style="animation: rotate 10s linear both; animation-delay: 10s;"
-                  />
-                </div>
-                <div
-                  class="bar left absolute bg-white h-full w-full rounded-full clip-rect-bar"
-                >
-                  <div
-                    class="progress absolute bg-green-500 h-full w-full rounded-full clip-rect-progress"
-                    style="animation: rotate 10s linear both;"
-                  />
-                </div>
-              </div>
-              <div
-                class="w-5 h-5 absolute bg-white top-1/2 left-1/2 -mt-2.5 -ml-2.5 rounded-full"
-              />
-            </div>
-          </div>
-          <span
-            class="ml-2 text-lg text-gray-400"
-          />
-        </div>
+        <span />
       </div>
     </div>
     <div
@@ -196,12 +173,12 @@ exports[`Quote Form matches snapshot 1`] = `
         The rate quoted is a live rate, valid for 20 seconds. You will be asked to accept a confirmed rate as part of the transfer process.
       </span>
       <button
-        class="inline-flex items-center justify-center
+        class="inline-flex items-center justify-center gap-2
     border border-transparent
     ring-theme-button-primary
     text-center leading-snug
     rounded-theme-radius
-    focus:outline-none focus:ring-2 focus:ring-offset-2
+    focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-transparent
     transition-all duration-300
     hover:shadow-md hover:cursor-pointer bg-theme-button-primary text-theme-color-on-primary hover:bg-theme-button-primary-hover py-3 px-8"
       >

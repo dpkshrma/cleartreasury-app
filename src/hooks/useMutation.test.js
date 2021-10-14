@@ -1,32 +1,70 @@
-import { renderHook } from "@testing-library/react-hooks";
-import Amplify from "aws-amplify";
+import gql from "graphql-tag";
+import { API } from "aws-amplify";
+import { graphql } from "msw";
 import { setupServer } from "msw/node";
-import { useQuery } from "./useQuery";
-import { clientHandlers } from "../mocks/handlers/clientHandlers";
-import { CREATE_CLIENT } from "../graphql/clients/mutations";
+import { renderHook } from "@testing-library/react-hooks";
+import { useMutation } from "./useMutation";
 
-const server = setupServer(clientHandlers[2]);
+const MOCK_MUTATION = gql`
+  mutation mockMutation($input: MockMutationInput!) {
+    mockMutation(input: $input) {
+      message
+    }
+  }
+`;
+
+const mockMutationHandler = graphql.mutation(
+  "mockMutation",
+  (req, res, ctx) => {
+    return res(
+      ctx.data({
+        mockMutation: {
+          message: req.variables.input.message,
+        },
+      })
+    );
+  }
+);
+
+const server = setupServer(mockMutationHandler);
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-Amplify.configure({
-  API: {
-    graphql_endpoint: "https://backend.dev.com/",
-  },
+test("should not call the API if not given a query", async () => {
+  jest.spyOn(API, "graphql");
+
+  const { result } = renderHook(() => useMutation(null));
+
+  expect(API.graphql).not.toHaveBeenCalled();
+  expect(result.current.data).toBe(null);
+  expect(result.current.error).toBe(null);
+  expect(result.current.loading).toBe(false);
 });
 
-test("should create new user", async () => {
-  const data = {
-    id: 4,
-    reference: "123454",
-    email: "test4@test.com",
-    name: "test4",
+test.todo(
+  "should error when calling a mutation that requires variables but none are given"
+);
+
+test.todo("should error when calling a query with the wrong variables");
+
+test.todo("should call a query without variables");
+
+test("should call a mutation with input data", async () => {
+  const inputData = {
+    message: "Success",
   };
+
   const { result, waitForNextUpdate } = renderHook(() =>
-    useQuery(CREATE_CLIENT, data)
+    useMutation(MOCK_MUTATION, inputData)
   );
+
+  expect(result.current.loading).toBe(true);
+
   await waitForNextUpdate();
-  expect(result.current.data).toMatchObject(data);
+
+  expect(result.current.loading).toBe(false);
+  expect(result.current.error).toBeNull();
+  expect(result.current.data).toMatchObject(inputData);
 });

@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Client } from "../../pages/_app";
+import { useQuery } from "../../hooks/useQuery";
 import { useMutation } from "../../hooks/useMutation";
+import { GET_BENEFICIARIES } from "../../graphql/beneficiaries/queries";
 import { CREATE_BENEFICIARY } from "../../graphql/beneficiaries/mutations";
+import SelectBeneficiary from "./SelectBeneficiary";
 import AddBeneficiaryForm from "./AddBeneficiaryForm";
 import VerificationForm from "./VerificationForm";
-import SelectBeneficiary from "./SelectBeneficiary";
-import { GET_BENEFICIARIES } from "../../graphql/beneficiaries/queries";
-import { useQuery } from "../../hooks/useQuery";
 
 export type Beneficiary = {
   id?: string;
@@ -25,30 +25,37 @@ export type Beneficiary = {
   cnaps?: string;
 };
 
-interface BeneficiaryFormData {
+export interface BeneficiaryFormData {
   beneficiary: Beneficiary;
-  verified: boolean;
+  reason: string;
 }
 
 export interface BeneficiaryFormProps {
-  client?: Client;
-  onComplete?: (formData: Beneficiary) => void;
-  stepBack?: (stepNumber: number) => void;
+  client: Client;
+  stepBack?: (step: number) => void;
+  onComplete?: (formData: BeneficiaryFormData) => void;
+  selected?: BeneficiaryFormData;
 }
 
 const BeneficiaryForm = ({
   client,
-  onComplete,
   stepBack,
+  onComplete,
+  selected,
 }: BeneficiaryFormProps): JSX.Element => {
   const [addBeneficiary, setAddBeneficiary] = React.useState<boolean>(false);
+  const [verified, setVerified] = React.useState<boolean>(false);
   const [formData, setFormData] = React.useState<BeneficiaryFormData>({
     beneficiary: null,
-    verified: false,
+    reason: null,
   });
 
-  const { data: beneficiary } = useMutation(
-    formData.beneficiary && formData.verified ? CREATE_BENEFICIARY : null,
+  const { data: beneficiariesList = [] } = useQuery(GET_BENEFICIARIES, {
+    client_ref: client.cli_reference,
+  });
+
+  const { data: newBeneficiary } = useMutation(
+    formData.beneficiary && verified ? CREATE_BENEFICIARY : null,
     {
       input: {
         ...formData.beneficiary,
@@ -57,94 +64,52 @@ const BeneficiaryForm = ({
     }
   );
 
-  const { data: beneficiariesList = [] } = useQuery(GET_BENEFICIARIES, {
-    client_ref: client.cli_reference,
-  });
-
+  // Existing Beneficiary selected
   React.useEffect(() => {
-    if (formData.verified && beneficiary) {
-      onComplete({ ...beneficiary, ...formData.beneficiary });
+    if (addBeneficiary && verified && newBeneficiary) {
+      onComplete({ ...newBeneficiary, ...formData.beneficiary });
     }
-  }, [formData.verified, beneficiary]);
+  }, [addBeneficiary, verified, newBeneficiary]);
 
-  const stepBackControl = (stepNumber: number) => {
-    if (beneficiariesList.length > 0) {
-      setAddBeneficiary(false);
-    } else {
-      stepBack(stepNumber);
+  // New beneficiary added
+  React.useEffect(() => {
+    if (!addBeneficiary && formData.beneficiary && formData.reason) {
+      onComplete(formData);
     }
-  };
-
-  // const RenderBeneficiary = () => {
-  //   if (
-  //     beneficiaryList.length > 0 &&
-  //     !formData.addBeneficiary &&
-  //     formData.beneficiary == null
-  //   ) {
-  //     return (
-  //       <SelectBeneficiary
-  //         beneficiariesList={beneficiariesList}
-  //         client={client}
-  //         stepBack={stepBack}
-  //         onComplete={(beneficiary) =>
-  //           setFormData({
-  //             ...formData,
-  //             beneficiary,
-  //             addBeneficiary: false,
-  //           })
-  //         }
-  //         beneficiaryForm={() => {
-  //           setFormData({ ...formData, addBeneficiary: true });
-  //         }}
-  //       />
-  //     );
-  //   } else if (formData.addBeneficiary && formData.beneficiary == null) {
-  //     return (
-  //       <AddBeneficiaryForm
-  //         client={client}
-  //         stepBack={(stepNumber) => stepBackControl(stepNumber)}
-  //         onComplete={(beneficiary) => {
-  //           setFormData({ ...formData, beneficiary });
-  //         }}
-  //       />
-  //     );
-  //   } else if (formData.beneficiary && formData.beneficiary !== null) {
-  //     return (
-  //       <VerificationForm
-  //         onComplete={(verified) => setFormData({ ...formData, verified })}
-  //       />
-  //     );
-  //   } else {
-  //   }
-  // };
+  }, [addBeneficiary, formData.beneficiary, formData.reason]);
 
   if (addBeneficiary) {
-    if (!formData.beneficiary) {
-      return (
-        <AddBeneficiaryForm
-          client={client}
-          stepBack={stepBackControl}
-          onComplete={(beneficiary) =>
-            setFormData({ ...formData, beneficiary })
-          }
-        />
-      );
-    } else {
+    if (formData.beneficiary) {
       return (
         <VerificationForm
-          onComplete={(verified) => setFormData({ ...formData, verified })}
+          onComplete={(verified) => {
+            setAddBeneficiary(false);
+            setVerified(verified);
+          }}
         />
       );
     }
+
+    return (
+      <AddBeneficiaryForm
+        client={client}
+        stepBack={() => setAddBeneficiary(false)}
+        onComplete={setFormData}
+      />
+    );
   }
 
   return (
     <SelectBeneficiary
       client={client}
+      selected={selected}
       beneficiaries={beneficiariesList}
       stepBack={stepBack}
-      addBeneficiary={() => setAddBeneficiary(true)}
-      onComplete={(beneficiary) => onComplete(beneficiary)}
+      onComplete={setFormData}
+      addBeneficiary={() => {
+        setFormData({ beneficiary: null, reason: null });
+        setAddBeneficiary(true);
+      }}
     />
   );
 };

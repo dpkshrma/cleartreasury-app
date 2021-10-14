@@ -32,6 +32,7 @@ export type Trade = {
 interface ConfirmPayFormProps {
   data?: FormData;
   client?: Client;
+  stepBack?: (step?: number) => void;
   onComplete?: (tradeData: any) => void;
 }
 
@@ -39,6 +40,7 @@ const ConfirmPayForm = ({
   data,
   client,
   onComplete,
+  stepBack,
 }: ConfirmPayFormProps): JSX.Element => {
   const [quoting, setQuoting] = React.useState(false);
   const [bookTrade, setBookTrade] = React.useState(false);
@@ -96,13 +98,21 @@ const ConfirmPayForm = ({
   };
 
   return (
-    <form onSubmit={submitHandler} className="space-y-6">
+    <form onSubmit={submitHandler}>
       <h2 className="text-2xl mb-2">Confirm and book</h2>
       <p className="text-l text-gray-500 mb-14">
         By confirming your quote below you are entering into a legal contract to
         trade as per our terms and conditions.
       </p>
-      <h3 className="text-lg mb-4 border-b border-gray-200 pb-4">Your quote</h3>
+      <div className="flex justify-between mb-4 border-b border-gray-200 pb-4">
+        <h3 className="text-lg">Your quote</h3>
+        <span
+          className="text-green-400 cursor-pointer"
+          onClick={() => stepBack(0)}
+        >
+          Change
+        </span>
+      </div>
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">You Send</span>
         <span className="text-lg theme-color-on-surface">
@@ -150,9 +160,15 @@ const ConfirmPayForm = ({
           {formatValueDate()}
         </span>
       </div>
-      <h3 className="text-lg mb-4 border-b border-gray-200 pb-4">
-        Beneficiary
-      </h3>
+      <div className="flex justify-between mb-4 border-b border-gray-200 pb-4">
+        <h3 className="text-lg">Beneficiary</h3>
+        <span
+          className="text-green-400 cursor-pointer"
+          onClick={() => stepBack()}
+        >
+          Change
+        </span>
+      </div>
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">Name</span>
         <span className="text-lg theme-color-on-surface">

@@ -1,8 +1,8 @@
 import * as React from "react";
+import { API } from "aws-amplify";
 import { DocumentNode } from "graphql-tag-ts";
 import isDeepEqual from "fast-deep-equal/react";
-import { API, graphqlOperation } from "aws-amplify";
-import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api-graphql";
 
 type MutationState = {
   data: any;
@@ -20,7 +20,7 @@ export const useMutation = (
   onSuccess?: (data: any) => void,
   onError?: (error: any) => void
 ): MutationState => {
-  const [data, setData] = React.useState<GraphQLResult>();
+  const [data, setData] = React.useState<GraphQLResult | null>(null);
   const [loading, setLoading] = React.useState<boolean>(!!query);
   const [error, setError] = React.useState(null);
 
@@ -36,9 +36,14 @@ export const useMutation = (
         try {
           setLoading(true);
 
-          const { data }: any = await API.graphql(
-            graphqlOperation(query, inputData)
-          );
+          const { data }: any = await API.graphql({
+            query,
+            variables: { input: inputData },
+            authMode:
+              process.env.NODE_ENV === "test"
+                ? GRAPHQL_AUTH_MODE.API_KEY
+                : GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+          });
 
           const queryName = query.definitions[0].name.value;
 

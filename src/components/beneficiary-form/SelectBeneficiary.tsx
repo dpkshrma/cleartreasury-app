@@ -5,7 +5,7 @@ import { SelectChangeHandler } from "@clear-treasury/design-system/dist/componen
 import { Error } from "@clear-treasury/design-system/dist/components/form-field/FormField";
 import { Client } from "../../pages/_app";
 import Toggle from "../toggle/Toggle";
-import { Beneficiary } from "./BeneficiaryForm";
+import { Beneficiary, BeneficiaryFormData } from "./BeneficiaryForm";
 import {
   Alert,
   Button,
@@ -18,10 +18,17 @@ import reasons from "../../data/reasons.json";
 
 export interface SelectBeneficiaryProps {
   client?: Client;
+  selected?: BeneficiaryFormData;
   stepBack?: (stepNumber: number) => void;
-  onComplete?: (beneficiary: Beneficiary) => void;
   beneficiaries: Beneficiary[];
   addBeneficiary: () => void;
+  onComplete?: ({
+    beneficiary,
+    reason,
+  }: {
+    beneficiary: Beneficiary;
+    reason: string;
+  }) => void;
 }
 
 type Errors = {
@@ -31,34 +38,25 @@ type Errors = {
 
 const SelectBeneficiary = ({
   client,
+  selected,
   stepBack,
   onComplete,
-  beneficiaries = [],
   addBeneficiary,
+  beneficiaries = [],
 }: SelectBeneficiaryProps): JSX.Element => {
   const search = React.useRef<HTMLInputElement | null>(null);
   const reason = React.useRef<HTMLInputElement | null>(null);
   const currency = React.useRef<HTMLInputElement | null>(null);
 
   const [errors, setErrors] = React.useState<Errors>({});
-  const [bindIndex, setBindIndex] = React.useState<number | null>(null);
+  const [active, setActive] = React.useState<string>(selected?.beneficiary?.id);
+
   const [filteredBeneficiaries, setFilteredBeneficiaries] = React.useState<
     Beneficiary[]
   >([]);
 
-  const currencyList: any[] = [];
-
-  beneficiaries?.forEach(({ currency }) => {
-    const index = currencyList.findIndex((item) => item.value === currency);
-    if (index == -1) {
-      currencyList.push({
-        value: currency,
-        label: `${currency}`,
-        selectedLabel: currency,
-        icon: <Flag country={currency.slice(0, -1).toLowerCase()} />,
-      });
-    }
-  });
+  const currencyList: Set<string> = new Set();
+  beneficiaries?.forEach(({ currency }) => currencyList.add(currency));
 
   const currencyChange: SelectChangeHandler = ({ selectedItem }) => {
     // TODO: probably shouldn't be clearing the filter on currency change
@@ -67,16 +65,6 @@ const SelectBeneficiary = ({
     setFilteredBeneficiaries(
       beneficiaries.filter((item) => item.currency == selectedItem.value)
     );
-  };
-
-  const toggleReason = (index: number) => {
-    setErrors({ ...errors, reason: undefined });
-
-    if (index === bindIndex) {
-      setBindIndex(null);
-    } else {
-      setBindIndex(index);
-    }
   };
 
   const searchBeneficiaries = (event: any) => {
@@ -92,7 +80,7 @@ const SelectBeneficiary = ({
   };
 
   const handleSubmit = () => {
-    if (!bindIndex) {
+    if (!active) {
       setErrors({
         form: { message: "Choose a beneficiary or add a new one" },
       });
@@ -102,22 +90,25 @@ const SelectBeneficiary = ({
 
     if (!reason.current.value) {
       setErrors({
-        reason: { message: "Select a reason" },
+        reason: { message: "You must select a reason" },
       });
 
       return false;
     }
 
-    const selectedBeneficiary = beneficiaries[bindIndex];
+    const selectedBeneficiary = beneficiaries.find(({ id }) => id === active);
 
-    onComplete(selectedBeneficiary);
+    onComplete({
+      beneficiary: selectedBeneficiary,
+      reason: reason.current.value,
+    });
   };
 
   const BeneficiaryList = ({ data }) => {
     return (
       <div className="space-y-4">
-        {data?.map((item: any, index: any) => (
-          <div className="bg-gray-100" key={index}>
+        {data?.map((item: Beneficiary) => (
+          <div className="bg-gray-100" key={item.id}>
             <div className="grid grid-cols-4 gap-1 border-b border-gray-200 p-4">
               <div className="flex col-start-1 col-end-4">
                 <div className="mr-4">
@@ -152,14 +143,21 @@ const SelectBeneficiary = ({
 
               <div className="col-span-1 flex justify-end flex-wrap content-center">
                 <Toggle
-                  id={index}
-                  checked={bindIndex == index ? true : false}
-                  onChange={() => toggleReason(index)}
+                  id={item.id}
+                  checked={active === item.id}
+                  onChange={() => {
+                    if (reason?.current?.value) {
+                      reason.current.value = undefined;
+                    }
+
+                    setErrors({ ...errors, reason: undefined });
+                    setActive(item.id);
+                  }}
                 />
               </div>
             </div>
 
-            {bindIndex == index && (
+            {item.id === active && (
               <div className="p-4">
                 <p className="text-lg text-gray-700 mb-2">
                   Reason for transfer
@@ -168,12 +166,13 @@ const SelectBeneficiary = ({
                 <Select
                   ref={reason}
                   name="reason"
-                  placeholder="Please select a reason for this transfer"
-                  options={reasons[client.cty_value]}
                   errors={errors}
-                  // TODO: Add input for "Other"
+                  options={reasons[client.cty_value]}
+                  defaultValue={item.id === active && selected?.reason}
+                  placeholder="Please select a reason for this transfer"
                 />
               </div>
+              // TODO: Add input for "Other"
             )}
           </div>
         ))}
@@ -206,8 +205,13 @@ const SelectBeneficiary = ({
           <Select
             ref={currency}
             name="currencies"
-            options={currencyList}
             onChange={currencyChange}
+            options={Array.from(currencyList).map((currency) => ({
+              value: currency,
+              label: `${currency}`,
+              selectedLabel: currency,
+              icon: <Flag country={currency.slice(0, -1).toLowerCase()} />,
+            }))}
           />
         </div>
       </div>
