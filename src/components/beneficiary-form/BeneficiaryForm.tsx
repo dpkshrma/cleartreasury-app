@@ -25,21 +25,23 @@ export type Beneficiary = {
   cnaps?: string;
 };
 
-interface BeneficiaryFormData {
+export interface BeneficiaryFormData {
   beneficiary: Beneficiary;
   reason: string;
 }
 
 export interface BeneficiaryFormProps {
-  client?: Client;
+  client: Client;
+  stepBack?: (step: number) => void;
   onComplete?: (formData: BeneficiaryFormData) => void;
-  stepBack?: (stepNumber: number) => void;
+  selected?: BeneficiaryFormData;
 }
 
 const BeneficiaryForm = ({
   client,
-  onComplete,
   stepBack,
+  onComplete,
+  selected,
 }: BeneficiaryFormProps): JSX.Element => {
   const [addBeneficiary, setAddBeneficiary] = React.useState<boolean>(false);
   const [verified, setVerified] = React.useState<boolean>(false);
@@ -62,45 +64,47 @@ const BeneficiaryForm = ({
     }
   );
 
+  // Existing Beneficiary selected
   React.useEffect(() => {
     if (addBeneficiary && verified && newBeneficiary) {
       onComplete({ ...newBeneficiary, ...formData.beneficiary });
     }
   }, [addBeneficiary, verified, newBeneficiary]);
 
+  // New beneficiary added
   React.useEffect(() => {
     if (!addBeneficiary && formData.beneficiary && formData.reason) {
       onComplete(formData);
     }
   }, [addBeneficiary, formData.beneficiary, formData.reason]);
 
-  const stepBackControl = (stepNumber: number) => {
-    if (beneficiariesList.length > 0) {
-      setAddBeneficiary(false);
-    } else {
-      stepBack(stepNumber);
-    }
-  };
-
   if (addBeneficiary) {
-    if (!formData.beneficiary) {
+    if (formData.beneficiary) {
       return (
-        <AddBeneficiaryForm
-          client={client}
-          stepBack={stepBackControl}
-          onComplete={setFormData}
+        <VerificationForm
+          onComplete={(verified) => {
+            setAddBeneficiary(false);
+            setVerified(verified);
+          }}
         />
       );
-    } else {
-      return <VerificationForm onComplete={setVerified} />;
     }
+
+    return (
+      <AddBeneficiaryForm
+        client={client}
+        stepBack={() => setAddBeneficiary(false)}
+        onComplete={setFormData}
+      />
+    );
   }
 
   return (
     <SelectBeneficiary
       client={client}
-      stepBack={stepBack}
+      selected={selected}
       beneficiaries={beneficiariesList}
+      stepBack={stepBack}
       onComplete={setFormData}
       addBeneficiary={() => {
         setFormData({ beneficiary: null, reason: null });

@@ -70,9 +70,9 @@ const Sidebar = ({
         </Link>
 
         <div className="p-4 flex flex-col">
-          <Link href="/transfer">
-            <Button>Make a transfer</Button>
-          </Link>
+          <Button href="/transfer" as={Link}>
+            <a>Make a transfer</a>
+          </Button>
         </div>
 
         <nav>

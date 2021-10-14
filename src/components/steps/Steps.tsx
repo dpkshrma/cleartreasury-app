@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 import { State } from "./Step";
 import Surface from "../surface/Surface";
 
@@ -11,8 +11,8 @@ type StepItemProps = {
 type StepsProps = {
   nav?: React.ReactElement;
   children: React.ReactElement[];
+  stepBack?(step?: number): void;
   onComplete?(): void;
-  goBack?: number;
 };
 
 const Step = ({ form, children, ...props }: StepItemProps): JSX.Element => {
@@ -22,17 +22,15 @@ const Step = ({ form, children, ...props }: StepItemProps): JSX.Element => {
 const Steps = ({
   nav,
   children,
+  stepBack,
   onComplete,
-  goBack,
 }: StepsProps): JSX.Element => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [formState, setFormState] = useState({});
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [formState, setFormState] = React.useState({});
 
   React.useEffect(() => {
-    if (goBack !== undefined) {
-      setActiveStep(goBack);
-    }
-  }, [goBack]);
+    if (activeStep < 0) stepBack();
+  }, [activeStep]);
 
   const Nav = (): JSX.Element | null =>
     nav ? (
@@ -63,6 +61,15 @@ const Steps = ({
             index === activeStep &&
             React.cloneElement(child, {
               key: index,
+              stepBack: (step: number) => {
+                if (step === activeStep) {
+                  stepBack(step);
+                } else {
+                  isNaN(step)
+                    ? setActiveStep(activeStep - 1)
+                    : setActiveStep(step);
+                }
+              },
               onComplete: (data) => {
                 child.props.form?.props.onComplete &&
                   child.props.form.props.onComplete(data);

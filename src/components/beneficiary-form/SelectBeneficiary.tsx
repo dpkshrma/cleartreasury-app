@@ -5,7 +5,7 @@ import { SelectChangeHandler } from "@clear-treasury/design-system/dist/componen
 import { Error } from "@clear-treasury/design-system/dist/components/form-field/FormField";
 import { Client } from "../../pages/_app";
 import Toggle from "../toggle/Toggle";
-import { Beneficiary } from "./BeneficiaryForm";
+import { Beneficiary, BeneficiaryFormData } from "./BeneficiaryForm";
 import {
   Alert,
   Button,
@@ -18,6 +18,7 @@ import reasons from "../../data/reasons.json";
 
 export interface SelectBeneficiaryProps {
   client?: Client;
+  selected?: BeneficiaryFormData;
   stepBack?: (stepNumber: number) => void;
   beneficiaries: Beneficiary[];
   addBeneficiary: () => void;
@@ -37,6 +38,7 @@ type Errors = {
 
 const SelectBeneficiary = ({
   client,
+  selected,
   stepBack,
   onComplete,
   addBeneficiary,
@@ -47,7 +49,8 @@ const SelectBeneficiary = ({
   const currency = React.useRef<HTMLInputElement | null>(null);
 
   const [errors, setErrors] = React.useState<Errors>({});
-  const [bindIndex, setBindIndex] = React.useState<number | null>(null);
+  const [active, setActive] = React.useState<string>(selected?.beneficiary?.id);
+
   const [filteredBeneficiaries, setFilteredBeneficiaries] = React.useState<
     Beneficiary[]
   >([]);
@@ -64,16 +67,6 @@ const SelectBeneficiary = ({
     );
   };
 
-  const toggleReason = (index: number) => {
-    setErrors({ ...errors, reason: undefined });
-
-    if (index === bindIndex) {
-      setBindIndex(null);
-    } else {
-      setBindIndex(index);
-    }
-  };
-
   const searchBeneficiaries = (event: any) => {
     if (!event.target.value.length) {
       setFilteredBeneficiaries([]);
@@ -87,7 +80,7 @@ const SelectBeneficiary = ({
   };
 
   const handleSubmit = () => {
-    if (!bindIndex) {
+    if (!active) {
       setErrors({
         form: { message: "Choose a beneficiary or add a new one" },
       });
@@ -103,7 +96,7 @@ const SelectBeneficiary = ({
       return false;
     }
 
-    const selectedBeneficiary = beneficiaries[bindIndex];
+    const selectedBeneficiary = beneficiaries.find(({ id }) => id === active);
 
     onComplete({
       beneficiary: selectedBeneficiary,
@@ -114,8 +107,8 @@ const SelectBeneficiary = ({
   const BeneficiaryList = ({ data }) => {
     return (
       <div className="space-y-4">
-        {data?.map((item: any, index: any) => (
-          <div className="bg-gray-100" key={index}>
+        {data?.map((item: Beneficiary) => (
+          <div className="bg-gray-100" key={item.id}>
             <div className="grid grid-cols-4 gap-1 border-b border-gray-200 p-4">
               <div className="flex col-start-1 col-end-4">
                 <div className="mr-4">
@@ -150,14 +143,21 @@ const SelectBeneficiary = ({
 
               <div className="col-span-1 flex justify-end flex-wrap content-center">
                 <Toggle
-                  id={index}
-                  checked={bindIndex == index ? true : false}
-                  onChange={() => toggleReason(index)}
+                  id={item.id}
+                  checked={active === item.id}
+                  onChange={() => {
+                    if (reason?.current?.value) {
+                      reason.current.value = undefined;
+                    }
+
+                    setErrors({ ...errors, reason: undefined });
+                    setActive(item.id);
+                  }}
                 />
               </div>
             </div>
 
-            {bindIndex == index && (
+            {item.id === active && (
               <div className="p-4">
                 <p className="text-lg text-gray-700 mb-2">
                   Reason for transfer
@@ -166,12 +166,13 @@ const SelectBeneficiary = ({
                 <Select
                   ref={reason}
                   name="reason"
-                  placeholder="Please select a reason for this transfer"
-                  options={reasons[client.cty_value]}
                   errors={errors}
-                  // TODO: Add input for "Other"
+                  options={reasons[client.cty_value]}
+                  defaultValue={item.id === active && selected?.reason}
+                  placeholder="Please select a reason for this transfer"
                 />
               </div>
+              // TODO: Add input for "Other"
             )}
           </div>
         ))}
