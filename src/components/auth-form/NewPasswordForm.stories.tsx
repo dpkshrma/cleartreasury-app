@@ -8,9 +8,7 @@ const Template: Story<NewPasswordFormProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  loading: false,
-  errors: {},
-  formType: "newPasswordForm",
+  onSubmit: () => null,
 };
 
 export default {

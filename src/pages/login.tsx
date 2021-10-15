@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { CognitoUser } from "@aws-amplify/auth";
@@ -7,6 +7,11 @@ import { NewPasswordForm } from "../components/auth-form/NewPasswordForm";
 import { SignInForm } from "../components/auth-form/SignInForm";
 import AuthForm from "../components/auth-form/AuthForm";
 
+enum AuthState {
+  signIn = "signIn",
+  newPasswordRequired = "newPasswordRequired",
+}
+
 type Props = {
   setContext: (user: CognitoUser) => void;
   authenticated: boolean;
@@ -14,6 +19,8 @@ type Props = {
 
 const Login = (props: Props): JSX.Element => {
   const router = useRouter();
+  const [authState, setAuthState] = useState<AuthState>(AuthState.signIn);
+  const [user, setUser] = useState<CognitoUser>();
 
   React.useEffect(() => {
     if (props.authenticated) {
@@ -22,8 +29,16 @@ const Login = (props: Props): JSX.Element => {
   }, [props.authenticated]);
 
   const onSubmit = (authData: CognitoUser) => {
-    props.setContext(authData);
-    router.push("/authenticate");
+    // TODO: needs work (https://clear-treasury.atlassian.net/browse/PAY-80)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (authData.challengeName == "NEW_PASSWORD_REQUIRED") {
+      setAuthState(AuthState.newPasswordRequired);
+      setUser(authData);
+    } else {
+      props.setContext(authData);
+      router.push("/authenticate");
+    }
   };
 
   return (
@@ -34,9 +49,11 @@ const Login = (props: Props): JSX.Element => {
           src="/clear_full_logo_light.svg"
           alt="Clear Currency"
         />
-        <AuthForm onSignIn={onSubmit} onNewPasswordSet={onSubmit}>
-          <SignInForm />
-          <NewPasswordForm />
+        <AuthForm>
+          {authState === AuthState.signIn && <SignInForm onSubmit={onSubmit} />}
+          {authState === AuthState.newPasswordRequired && (
+            <NewPasswordForm onSubmit={onSubmit} user={user} />
+          )}
         </AuthForm>
       </div>
     </div>

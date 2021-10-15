@@ -6,9 +6,7 @@ const Template: Story<SignInFormProps> = (args) => <SignInForm {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  loading: false,
-  errors: {},
-  formType: "signInForm",
+  onSubmit: () => null,
 };
 
 export default {
