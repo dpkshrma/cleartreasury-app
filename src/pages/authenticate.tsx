@@ -48,7 +48,6 @@ const Authenticate = (): JSX.Element => {
       "SMS_MFA"
     )
       .then((res: any) => {
-        setLoading(false);
         setUser(res);
         return res;
       })

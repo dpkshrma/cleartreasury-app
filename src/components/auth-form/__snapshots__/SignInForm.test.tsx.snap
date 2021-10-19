@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignInForm should match snapshot 1`] = `
+<DocumentFragment>
+  <form
+    class="flex justify-center flex-col space-y-6"
+  >
+    <h1
+      class="block w-full text-center text-gray-800 text-2xl"
+    >
+      Sign in to your account
+    </h1>
+    <div
+      class="w-full relative "
+    >
+      <label
+        class="text-base text-gray-700 inline-block mb-2"
+        for="email"
+        id="email-label"
+      >
+        Email address
+      </label>
+      <input
+        class="form-input border border-gray-300 bg-white mb-2 p-3 w-full focus:ring-teal-100 focus:border-teal-300 disabled:cursor-not-allowed placeholder-gray-400 rounded"
+        id="email"
+        name="email"
+        placeholder="Enter your email"
+        type="email"
+        value=""
+      />
+    </div>
+    <div
+      class="w-full relative "
+    >
+      <label
+        class="text-base text-gray-700 inline-block mb-2"
+        for="password"
+        id="password-label"
+      >
+        Password
+      </label>
+      <input
+        class="form-input border border-gray-300 bg-white mb-2 p-3 w-full focus:ring-teal-100 focus:border-teal-300 disabled:cursor-not-allowed placeholder-gray-400 rounded"
+        id="password"
+        name="password"
+        placeholder="Enter your password"
+        type="password"
+        value=""
+      />
+    </div>
+    <a
+      class="text-green-700 text-sm mb-16 cursor-pointer"
+      href="/reset-password"
+    >
+      Forgot your password?
+    </a>
+    <button
+      class="inline-flex items-center justify-center gap-2
+    border border-transparent
+    ring-theme-button-primary
+    text-center leading-snug
+    rounded-theme-radius
+    focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-transparent
+    transition-all duration-300
+    hover:shadow-md hover:cursor-pointer bg-theme-button-primary text-theme-color-on-primary hover:bg-theme-button-primary-hover py-3 px-8"
+    >
+      Sign in
+    </button>
+  </form>
+</DocumentFragment>
+`;

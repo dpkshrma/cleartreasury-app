@@ -30,6 +30,7 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.18.0",
     "@clear-treasury/design-system": "^1.0.0-alpha.39",
     "@heroicons/react": "^1.0.1",
+    "@hookform/resolvers": "^2.8.2",
     "@sanity/block-content-to-react": "^3.0.0",
     "@sanity/client": "^2.11.0",
     "aws-amplify": "^3.4.3",
@@ -42,7 +43,9 @@
     "react-countdown-circle-timer": "^2.5.3",
     "react-dom": "17.0.2",
     "sass": "^1.42.1",
-    "sass-loader": "^10.2.0"
+    "sass-loader": "^10.2.0",
+    "react-hook-form": "^7.17.3",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
