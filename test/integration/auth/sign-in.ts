@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import * as uuid from "uuid";
 import mockData from "../../__mocks__/cognito";
 
 describe("Sign In", () => {
@@ -15,9 +16,26 @@ describe("Sign In", () => {
           sub: mockData.cognitoUser.sub,
           token_use: "access",
           scope: "aws.cognito.signin.user.admin",
-          auth_time: Date.now(),
-          exp: Date.now() + 3600,
+          auth_time: Date.now() / 1000,
+          exp: Date.now() / 1000 + 3600,
           username: mockData.cognitoUser.sub,
+        },
+        "secret"
+      );
+      const accessToken = jwt.sign(
+        {
+          origin_jti: uuid.v4(),
+          sub: uuid.v4(),
+          event_id: uuid.v4(),
+          token_use: "access",
+          scope: "aws.cognito.signin.user.admin",
+          iss: "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2",
+          auth_time: Date.now() / 1000,
+          exp: 1633441412,
+          iat: 1633437812,
+          jti: uuid.v4(),
+          client_id: "ab1c23de4fg5678l90hijkl1m",
+          username: uuid.v4(),
         },
         "secret"
       );
@@ -40,8 +58,7 @@ describe("Sign In", () => {
                 ctx.status(200),
                 ctx.json({
                   AuthenticationResult: {
-                    AccessToken:
-                      "eyJraWQiOiJvV3NoTkR0Y3NONStmM1NGaWEwNDBLcUh5QXZcL2c0dk1tdU5ZWFdoT2F4UT0iLCJhbGciOiJSUzI1NiJ9.eyJvcmlnaW5fanRpIjoiMTViODRhMTQtODhlMy00MDg5LTg1MTMtMTgwY2JlNWUwODFiIiwic3ViIjoiMTVmYTQ1OWEtYzllYy00NmRhLTgwM2UtMWY2NzI5MjdlMGUyIiwiZXZlbnRfaWQiOiI2M2Y2NjgwZS03YmI2LTQ3YjItODNlMy00ZDNiMzk4NDY1MWYiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6ImF3cy5jb2duaXRvLnNpZ25pbi51c2VyLmFkbWluIiwiYXV0aF90aW1lIjoxNjMzNDM3ODEyLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0yLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtMl9ySGs1TkFzTFYiLCJleHAiOjE2MzM0NDE0MTIsImlhdCI6MTYzMzQzNzgxMiwianRpIjoiZDlhZTVlNWQtZmExZi00NTUyLTgxZWItZjdkNjdjYjIxMWNhIiwiY2xpZW50X2lkIjoiYmo1czg0bmY1cGo2NDc4bDk1bWZ0ZWE0dCIsInVzZXJuYW1lIjoiMTVmYTQ1OWEtYzllYy00NmRhLTgwM2UtMWY2NzI5MjdlMGUyIn0.N4aiob6cjVv6O-qxGKTv_vKZ-GI2Y9d3Lig-G2bePDJGtsGNbmMtBkVGMzdxHH_5gZGvZqCGEKKnXwKuIuN48RqX8HdmP-T4oa5SVDUjRcFrzDfLtb7CCv4IFSR3jsufXWNHQk-04ur12g_k0RPHnZhg1iuHYDv48MqdDEOBzY3wvpSh2FulftlSdy0JJwJ7mpmrivM_u5BcE8x5M1SYHXlkpRVyRzpkufMOQSlF8qNHZ5co2GeXFLi7e7KOepQMa71FjFD27djOMBORQxWeRF9lKCC_SyQ0UirTxiBde4goVmkUD2uRCzzLn8b-x-OE0OW68J7qsBuyZfuuYmE8pA",
+                    AccessToken: accessToken,
                     ExpiresIn: 3600,
                     IdToken: token,
                     RefreshToken: token,
@@ -71,8 +88,10 @@ describe("Sign In", () => {
     cy.intercept("/_next/data/development/index.json", (req) => {
       delete req.headers["if-none-match"];
       return req.continue((res) => {
-        res.body.pageProps.authenticated = true;
-        res.body.pageProps.user = mockData.cognitoUser;
+        if (res.body.pageProps) {
+          res.body.pageProps.authenticated = true;
+          res.body.pageProps.user = mockData.cognitoUser;
+        }
       });
     });
 

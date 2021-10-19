@@ -17,19 +17,6 @@ module.exports = {
     },
     Session: "",
   },
-  cognitoSmsMfa: {
-    AuthenticationResult: {
-      AccessToken:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzM2MDA5ODd9.8t89bF3-kLHwp7k8l84vw9U-LpAt4pVN2p0dOEn3fIw",
-      ExpiresIn: 3600,
-      IdToken:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzM2MDA5ODd9.8t89bF3-kLHwp7k8l84vw9U-LpAt4pVN2p0dOEn3fIw",
-      RefreshToken:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzM2MDA5ODd9.8t89bF3-kLHwp7k8l84vw9U-LpAt4pVN2p0dOEn3fIw",
-      TokenType: "Bearer",
-    },
-    ChallengeParameters: {},
-  },
   cognitoUserInfo: {
     MFAOptions: [
       {
