@@ -2,7 +2,6 @@ import * as React from "react";
 import { Auth } from "aws-amplify";
 import { ThumbUpIcon } from "@heroicons/react/solid";
 import { Alert, Button } from "@clear-treasury/design-system";
-import styles from "./reset-password.module.scss";
 import { useRouter } from "next/router";
 import InitiatePasswordResetForm from "../components/reset-password-form/InitiatePasswordResetForm";
 import SubmitNewPasswordForm from "../components/reset-password-form/SubmitNewPasswordForm";
@@ -130,10 +129,7 @@ const ResetPasswordPage = (): JSX.Element => {
     switch (formType) {
       case FormType.codeSend:
         return (
-          <div
-            className={`${styles.alertContainer}`}
-            data-testid="code-sent-alert"
-          >
+          <div data-testid="code-sent-alert">
             <Alert
               status={Alert.Status.PRIMARY}
               text="Please check your email and follow the instructions in the message we have just sent to you."
