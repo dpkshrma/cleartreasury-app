@@ -1,41 +1,49 @@
 import { Button, Input } from "@clear-treasury/design-system";
-import React, { FunctionComponent, Ref } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import React, { FunctionComponent } from "react";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
 
 export interface SubmitNewPasswordFormProps {
-  onSubmit: () => void;
+  onSubmit: (data: any) => void;
   loading: boolean;
   invalidCode: boolean;
-  passwordRef: Ref<HTMLInputElement | null>;
 }
+
+const schema = yup
+  .object({
+    newPassword: yup.string().min(8).required(),
+  })
+  .required();
 
 const SubmitNewPasswordForm: FunctionComponent<SubmitNewPasswordFormProps> = ({
   loading,
-  passwordRef,
   invalidCode,
   onSubmit,
 }) => {
+  const form = useForm({ resolver: yupResolver(schema) });
+
   return (
-    <React.Fragment>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
       <div className="mb-6">
         <Input
           name="newPassword"
           type="password"
           label="Password"
           placeholder="Password 8+ characters"
-          ref={passwordRef}
+          {...form.register("newPassword")}
         />
       </div>
       <Button
         loading={loading}
         size={Button.Size.LARGE}
-        onClick={onSubmit}
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         disabled={invalidCode || loading}
       >
         Submit
       </Button>
-    </React.Fragment>
+    </form>
   );
 };
 

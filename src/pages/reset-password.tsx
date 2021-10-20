@@ -44,8 +44,6 @@ const ResetPasswordPage = (): JSX.Element => {
   const [formState, setFormState] = React.useState<FormState>(initialFormState);
   const [queryData, setQueryData] = React.useState(null);
   const { formType, alert, alertStatus, alertMessage, alertIcon } = formState;
-  const userEmail = React.useRef<HTMLInputElement | null>(null);
-  const userNewPassword = React.useRef<HTMLInputElement | null>(null);
   const invalidResetLinkErrMsg = "Invalid reset password link";
 
   React.useEffect(() => {
@@ -77,10 +75,10 @@ const ResetPasswordPage = (): JSX.Element => {
     }
   }, [router.isReady]);
 
-  async function sendResetCode() {
+  async function sendResetCode(data) {
     try {
       setLoading(true);
-      await Auth.forgotPassword(userEmail.current.value);
+      await Auth.forgotPassword(data.email);
       setFormState(() => ({
         ...formState,
         formType: FormType.codeSend,
@@ -99,13 +97,13 @@ const ResetPasswordPage = (): JSX.Element => {
     }
   }
 
-  async function submitNewPassword() {
+  async function submitNewPassword(data) {
     try {
       setLoading(true);
       await Auth.forgotPasswordSubmit(
         queryData.email,
         queryData.passcode,
-        userNewPassword.current.value
+        data.newPassword
       );
       setFormState(() => ({
         ...formState,
@@ -147,7 +145,6 @@ const ResetPasswordPage = (): JSX.Element => {
           <InitiatePasswordResetForm
             onSubmit={sendResetCode}
             loading={loading}
-            emailRef={userEmail}
           />
         );
       case FormType.submitNewPassword:
@@ -156,7 +153,6 @@ const ResetPasswordPage = (): JSX.Element => {
             loading={loading}
             invalidCode={invalidCode}
             onSubmit={submitNewPassword}
-            passwordRef={userNewPassword}
           />
         );
       case FormType.signIn:

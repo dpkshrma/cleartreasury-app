@@ -1,17 +1,27 @@
 import { Alert, Button, Input } from "@clear-treasury/design-system";
-import React, { FunctionComponent, Ref } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import React, { FunctionComponent } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 import styles from "./reset-password-form.module.scss";
 
 export interface InitiatePasswordResetFormProps {
-  onSubmit: () => void;
+  onSubmit: (data: any) => void;
   loading: boolean;
-  emailRef: Ref<HTMLInputElement | null>;
 }
 
+const schema = yup
+  .object({
+    email: yup.string().email().required(),
+  })
+  .required();
+
 const InitiatePasswordResetForm: FunctionComponent<InitiatePasswordResetFormProps> =
-  ({ onSubmit, emailRef, loading }) => {
+  ({ onSubmit, loading }) => {
+    const form = useForm({ resolver: yupResolver(schema) });
+
     return (
-      <React.Fragment>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className={`mb-6 ${styles.alertContainer}`}>
           <Alert
             status={Alert.Status.PRIMARY}
@@ -24,20 +34,19 @@ const InitiatePasswordResetForm: FunctionComponent<InitiatePasswordResetFormProp
             type="email"
             label="Email address"
             placeholder="Enter your email"
-            ref={emailRef}
+            {...form.register("email")}
           />
         </div>
         <Button
           loading={loading}
           size={Button.Size.LARGE}
-          onClick={onSubmit}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           disabled={loading}
         >
           Send Code
         </Button>
-      </React.Fragment>
+      </form>
     );
   };
 
