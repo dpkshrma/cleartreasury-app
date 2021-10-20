@@ -3,7 +3,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import React, { FunctionComponent } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import styles from "./reset-password-form.module.scss";
 
 export interface InitiatePasswordResetFormProps {
   onSubmit: (data: any) => void;
@@ -22,7 +21,7 @@ const InitiatePasswordResetForm: FunctionComponent<InitiatePasswordResetFormProp
 
     return (
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className={`mb-6 ${styles.alertContainer}`}>
+        <div className="mb-6">
           <Alert
             status={Alert.Status.PRIMARY}
             text="Please enter the email address you used to sign up and we will send you a link to reset your password"
