@@ -31,6 +31,7 @@ export const SignInForm: FunctionComponent<SignInFormProps> = ({
 
   async function onSignInSubmit(formData) {
     try {
+      setLoading(true);
       const authData = await Auth.signIn(
         formData[FormFields.email],
         formData[FormFields.password]

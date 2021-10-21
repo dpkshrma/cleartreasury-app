@@ -1,12 +1,17 @@
+import Auth from "@aws-amplify/auth";
 import { Alert, Button, Input } from "@clear-treasury/design-system";
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
+interface ResetPasswordFormData {
+  email: string;
+}
+
 export interface InitiatePasswordResetFormProps {
-  onSubmit: (data: any) => void;
-  loading: boolean;
+  onSuccess: (data: any) => void;
+  onFailure: (error: Error) => void;
 }
 
 const schema = yup
@@ -16,11 +21,24 @@ const schema = yup
   .required();
 
 const InitiatePasswordResetForm: FunctionComponent<InitiatePasswordResetFormProps> =
-  ({ onSubmit, loading }) => {
+  ({ onSuccess, onFailure }) => {
+    const [loading, setLoading] = useState(false);
     const form = useForm({ resolver: yupResolver(schema) });
 
+    async function sendResetCode(data: ResetPasswordFormData) {
+      try {
+        setLoading(true);
+        await Auth.forgotPassword(data.email);
+        onSuccess(data);
+      } catch (error) {
+        onFailure(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
     return (
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(sendResetCode)}>
         <div className="mb-6">
           <Alert
             status={Alert.Status.PRIMARY}

@@ -15,8 +15,6 @@ const Template: Story<SubmitNewPasswordFormProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  onSubmit: () => null,
-  loading: false,
-  invalidCode: false,
-  passwordRef: React.createRef(),
+  onSuccess: () => null,
+  onFailure: () => null,
 };

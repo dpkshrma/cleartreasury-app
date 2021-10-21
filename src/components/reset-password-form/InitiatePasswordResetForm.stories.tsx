@@ -15,7 +15,6 @@ const Template: Story<InitiatePasswordResetFormProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  onSubmit: () => null,
-  loading: false,
-  emailRef: React.createRef(),
+  onSuccess: () => null,
+  onFailure: () => null,
 };
