@@ -1,95 +1,111 @@
-import * as React from "react";
-import Link from "next/link";
-import { Auth } from "aws-amplify";
-import { Button, Input } from "@clear-treasury/design-system";
+import React, { useState, useEffect } from "react";
+import { ThumbUpIcon } from "@heroicons/react/solid";
+import { Alert, Button } from "@clear-treasury/design-system";
+import { useRouter } from "next/router";
+import InitiatePasswordResetForm from "../components/reset-password-form/InitiatePasswordResetForm";
+import SubmitNewPasswordForm from "../components/reset-password-form/SubmitNewPasswordForm";
+import ResetPasswordForm from "../components/reset-password-form/ResetPasswordForm";
+import { AlertProps } from "@clear-treasury/design-system/dist/components/alert/Alert";
 
-const initialFormState = {
-  password: "",
-  email: "",
-  passwordCode: "",
-  newPassword: "",
-  formType: "resetPassword",
-};
+enum FormType {
+  resetPassword = "resetPassword",
+  codeSend = "codeSend",
+  submitNewPassword = "submitNewPassword",
+  signIn = "signIn",
+}
 
-const ResetPassword = (): JSX.Element => {
-  const [formState, setFormState] = React.useState(initialFormState);
-  const { formType } = formState;
-  const userEmail = React.useRef<HTMLInputElement | null>(null);
-  const userPasswordCode = React.useRef<HTMLInputElement | null>(null);
-  const userNewPassword = React.useRef<HTMLInputElement | null>(null);
+const ResetPasswordPage = (): JSX.Element => {
+  const router = useRouter();
+  const [alert, setAlert] = useState<AlertProps>();
+  const [formType, setFormType] = useState<FormType>(FormType.resetPassword);
+  const [isPageReady, setIsPageReady] = useState(false);
 
-  async function sendResetCode() {
-    await Auth.forgotPassword(userEmail.current.value).then(() => {
-      setFormState(() => ({ ...formState, formType: "codeSend" }));
+  useEffect(() => {
+    if (!router.isReady) return;
+    setIsPageReady(true);
+    if (router.query.code) {
+      setFormType(FormType.submitNewPassword);
+    }
+  }, [router.isReady]);
+
+  const onSendResetCodeSuccess = () => {
+    setFormType(FormType.codeSend);
+    setAlert(null);
+  };
+
+  const onSendResetCodeFailure = (error) => {
+    setFormType(FormType.resetPassword);
+    setAlert({
+      text: error.message,
+      status: Alert.Status.CRITICAL,
     });
-  }
+  };
 
-  async function resetPassword() {
-    await Auth.forgotPasswordSubmit(
-      userEmail.current.value,
-      userPasswordCode.current.value,
-      userNewPassword.current.value
-    ).then(() => {
-      setFormState(() => ({ ...formState, formType: "signIn" }));
+  const onNewPasswordSuccess = () => {
+    setFormType(FormType.signIn);
+    setAlert({
+      text: "Password succesfully updated",
+      status: Alert.Status.POSITIVE,
+      icon: ThumbUpIcon,
     });
+  };
+
+  const onNewPasswordFailure = (error: Error) => {
+    setFormType(FormType.submitNewPassword);
+    setAlert({
+      text: error.message,
+      status: Alert.Status.CRITICAL,
+    });
+  };
+
+  const renderForm = () => {
+    switch (formType) {
+      case FormType.codeSend:
+        return (
+          <div data-testid="code-sent-alert">
+            <Alert
+              status={Alert.Status.PRIMARY}
+              text="Please check your email and follow the instructions in the message we have just sent to you."
+            />
+          </div>
+        );
+      case FormType.resetPassword:
+        return (
+          <InitiatePasswordResetForm
+            onSuccess={onSendResetCodeSuccess}
+            onFailure={onSendResetCodeFailure}
+          />
+        );
+      case FormType.submitNewPassword:
+        return (
+          <SubmitNewPasswordForm
+            onSuccess={onNewPasswordSuccess}
+            onFailure={onNewPasswordFailure}
+          />
+        );
+      case FormType.signIn:
+        return (
+          <Button
+            size={Button.Size.LARGE}
+            onClick={() => router.push("/login")}
+          >
+            Sign in
+          </Button>
+        );
+      default:
+        return null;
+    }
+  };
+
+  if (!isPageReady) {
+    return <div>Loading...</div>;
   }
 
   return (
     <div className="flex h-screen bg-teal-600">
-      <div className="max-w-md w-full m-auto p-0">
-        <img
-          className="h-12 w-full mb-8"
-          src="/clear_full_logo_light.svg"
-          alt="Clear Currency"
-        />
-        <div className="p-6 bg-white rounded-md flex justify-center flex-col shadow-md">
-          <h1 className="block w-full text-center mb-6 text-gray-800 text-2xl">
-            Reset your password
-          </h1>
-          <Input
-            name="email"
-            type="email"
-            label="Email address"
-            placeholder="Enter your email"
-            ref={userEmail}
-          />
-          {formType === "resetPassword" && (
-            <React.Fragment>
-              <Link href="/login">
-                <a className="text-gray-600 text-sm mb-16 cursor-pointer">
-                  Back to Sign In
-                </a>
-              </Link>
-              <Button size={Button.Size.LARGE} onClick={sendResetCode}>
-                Send Code
-              </Button>
-            </React.Fragment>
-          )}
-          {formType === "codeSend" && (
-            <React.Fragment>
-              <Input
-                name="passwordCode"
-                type="text"
-                label="Enter verification code"
-                placeholder="Enter your code"
-                ref={userPasswordCode}
-              />
-              <Input
-                name="newPassword"
-                type="password"
-                label="Enter new password"
-                placeholder="Enter your new password"
-                ref={userNewPassword}
-              />
-              <Button size={Button.Size.LARGE} onClick={resetPassword}>
-                Send Code
-              </Button>
-            </React.Fragment>
-          )}
-        </div>
-      </div>
+      <ResetPasswordForm alert={alert}>{renderForm()}</ResetPasswordForm>
     </div>
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordPage;
