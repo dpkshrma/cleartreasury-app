@@ -1,5 +1,5 @@
 import { graphql } from "msw";
-import beneficiaries from "../data/beneficiaries";
+import beneficiaries from "../data/beneficiaries.json";
 
 export const beneficiaryHandlers = [
   graphql.mutation("createBeneficiary", (req, res, ctx) => {

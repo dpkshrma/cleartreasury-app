@@ -1,23 +1,25 @@
 import * as React from "react";
-import { withSSRContext } from "aws-amplify";
+import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import { withSSRContext } from "aws-amplify";
+import { Client } from "./_app";
 import Page from "../components/page/Page";
 import Steps from "../components/steps/Steps";
 import Step from "../components/steps/Step";
 import QuoteForm, { Quote } from "../components/quote-form/QuoteForm";
-import { Client } from "./_app";
 import BeneficiaryForm, {
   Beneficiary,
 } from "../components/beneficiary-form/BeneficiaryForm";
 import ConfirmPayForm, {
+  Payment,
   Trade,
 } from "../components/confirm-pay-form/ConfirmPayForm";
 import PaymentDetails from "../components/confirm-pay-form/PaymentDetails";
-import { useRouter } from "next/router";
 
 export type FormData = {
   quote?: Quote;
   beneficiary?: Beneficiary;
+  payment?: Payment;
   reason?: string;
   trade?: Trade;
 };
@@ -79,8 +81,12 @@ const Transfer = ({ client, authenticated }: Props): JSX.Element => {
               form={
                 <ConfirmPayForm
                   client={client}
-                  data={formData}
-                  onComplete={(trade) => setFormData({ ...formData, trade })}
+                  quote={formData.quote}
+                  reason={formData.reason}
+                  beneficiary={formData.beneficiary}
+                  onComplete={({ trade, payment }) =>
+                    setFormData({ ...formData, trade, payment })
+                  }
                 />
               }
             />

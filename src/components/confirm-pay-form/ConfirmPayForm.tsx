@@ -3,12 +3,13 @@ import Link from "next/link";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { Button } from "@clear-treasury/design-system";
 import { Client } from "../../pages/_app";
-import { FormData } from "../../pages/transfer";
-import { GET_QUOTE } from "../../graphql/quotes/queries";
-import { BOOK_TRADE } from "../../graphql/trades/mutations";
 import { useQuery } from "../../hooks/useQuery";
 import { useMutation } from "../../hooks/useMutation";
+import { GET_QUOTE } from "../../graphql/quotes/queries";
+import { BOOK_TRADE } from "../../graphql/trades/mutations";
+import { INSTRUCT_PAYMENT } from "../../graphql/payments/mutations";
 import { Quote, QuoteFormData } from "../quote-form/QuoteForm";
+import { Beneficiary } from "../beneficiary-form/BeneficiaryForm";
 
 export type Trade = {
   ID: number;
@@ -29,36 +30,64 @@ export type Trade = {
   our_swift_code: string;
 };
 
+export type Payment = {
+  beneficiary_id: string;
+  currency: string;
+  purpose: string;
+  amount: string;
+  payment_reference: string;
+  trade_ref: string;
+  payment_guid: string;
+  status: "Pending" | "Paid" | "Failed" | "Rejected";
+};
+
 interface ConfirmPayFormProps {
-  data?: FormData;
-  client?: Client;
+  quote: Quote;
+  client: Client;
+  reason: string;
+  beneficiary: Beneficiary;
   stepBack?: (step?: number) => void;
-  onComplete?: (tradeData: any) => void;
+  onComplete?: ({ trade, payment }: { trade: Trade; payment: Payment }) => void;
 }
 
 const ConfirmPayForm = ({
-  data,
+  quote,
   client,
+  reason,
+  beneficiary,
   onComplete,
   stepBack,
 }: ConfirmPayFormProps): JSX.Element => {
   const [quoting, setQuoting] = React.useState(false);
   const [bookTrade, setBookTrade] = React.useState(false);
+  const [instructPayment, setInstructPayment] = React.useState(false);
 
   const [formData, setFormData] = React.useState<QuoteFormData>({
-    currency_sell: data.quote.currency_sell,
-    currency_buy: data.quote.currency_buy,
-    sell_amount: data.quote.sell_amount,
+    currency_sell: quote.currency_sell,
+    currency_buy: quote.currency_buy,
+    sell_amount: quote.sell_amount,
     client_ref: client?.cli_reference,
-    value_date: data.quote.value_date,
+    value_date: quote.value_date,
   });
 
   const { data: newQuote, loading } = useQuery<Quote>(GET_QUOTE, formData);
   const { data: trade } = useMutation<Trade>(bookTrade ? BOOK_TRADE : null, {
-    input: {
-      formData,
-    },
+    quote_id: newQuote?.ID ?? quote.ID,
+    quote_rate: newQuote?.quote_rate ?? quote.quote_rate,
+    client_rate: newQuote?.quote_rate ?? quote.quote_rate,
+    client_ref: quote.client_ref,
   });
+  const { data: payment } = useMutation<Payment>(
+    instructPayment ? INSTRUCT_PAYMENT : null,
+    {
+      beneficiary_id: beneficiary.id,
+      trade_ref: trade?.ID,
+      client_ref: quote.client_ref,
+      currency: quote.currency_buy || quote.currency_sell,
+      amount: quote.buy_amount || quote.sell_amount,
+      purpose: reason,
+    }
+  );
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -67,25 +96,26 @@ const ConfirmPayForm = ({
 
   React.useEffect(() => {
     // TODO: We need a more reliable way of requoting. The API returns the same ID so we need to tie this to something else (quote timestamps?)
-    if (!loading && quoting) {
-      setQuoting(false);
-    }
+    if (!loading && quoting) setQuoting(false);
   }, [loading, quoting]);
 
   React.useEffect(() => {
     // TODO: error handling
-    if (trade) {
-      onComplete(trade);
-    }
+    if (trade) setInstructPayment(true);
   }, [trade]);
+
+  React.useEffect(() => {
+    // TODO: error handling
+    if (payment) onComplete({ trade, payment });
+  }, [payment]);
 
   const formatValueDate = () => {
     const output = [
-      data.quote.value_date.slice(0, 4),
+      quote.value_date.slice(0, 4),
       "/",
-      data.quote.value_date.slice(4, 6),
+      quote.value_date.slice(4, 6),
       "/",
-      data.quote.value_date.slice(6, 8),
+      quote.value_date.slice(6, 8),
     ].join("");
 
     const today = new Date(output);
@@ -116,13 +146,13 @@ const ConfirmPayForm = ({
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">You Send</span>
         <span className="text-lg theme-color-on-surface">
-          {data.quote.sell_amount.toFixed(2)} {data.quote.currency_sell}
+          {quote.sell_amount.toFixed(2)} {quote.currency_sell}
         </span>
       </div>
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">They recieve</span>
         <span className="text-lg theme-color-on-surface">
-          {data.quote.buy_amount.toFixed(2)} {data.quote.currency_buy}
+          {quote.buy_amount.toFixed(2)} {quote.currency_buy}
         </span>
       </div>
       <div className="flex justify-between mb-5">
@@ -139,8 +169,8 @@ const ConfirmPayForm = ({
             size={36}
             strokeWidth={2}
             duration={20}
-            isPlaying={data.quote?.quote_rate}
             key={!quoting && `${newQuote?.ID}_${quoting}`}
+            isPlaying={quote?.quote_rate}
             colors={[
               ["#01A783", 0.5],
               ["#E6AE05", 0.25],
@@ -151,7 +181,7 @@ const ConfirmPayForm = ({
               setFormData({ ...formData, timestamp: Date.now() });
             }}
           />
-          <span>{data.quote?.quote_rate.toFixed(4)}</span>
+          <span>{quote?.quote_rate.toFixed(4)}</span>
         </div>
       </div>
       <div className="flex justify-between mb-14">
@@ -172,13 +202,13 @@ const ConfirmPayForm = ({
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">Name</span>
         <span className="text-lg theme-color-on-surface">
-          {data.beneficiary.account_name}
+          {beneficiary.account_name}
         </span>
       </div>
       <div className="flex justify-between mb-14">
         <span className="text-lg theme-color-primary">Email</span>
         <span className="text-lg theme-color-on-surface">
-          {data.beneficiary.email}
+          {beneficiary.email}
         </span>
       </div>
       <div className="flex justify-center">

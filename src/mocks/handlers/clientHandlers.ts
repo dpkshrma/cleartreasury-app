@@ -1,5 +1,5 @@
 import { graphql } from "msw";
-import clients from "../data/clients";
+import clients from "../data/clients.json";
 
 export const clientHandlers = [
   graphql.query("getClient", (req, res, ctx) => {

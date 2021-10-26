@@ -70,7 +70,10 @@ const BeneficiaryForm = ({
   // Existing Beneficiary selected
   React.useEffect(() => {
     if (addBeneficiary && verified && newBeneficiary) {
-      onComplete({ ...newBeneficiary, ...formData.beneficiary });
+      onComplete({
+        beneficiary: { ...newBeneficiary, ...formData.beneficiary },
+        reason: formData.reason,
+      });
     }
   }, [addBeneficiary, verified, newBeneficiary]);
 

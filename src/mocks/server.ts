@@ -4,6 +4,7 @@ import { quoteHandlers } from "./handlers/quoteHandlers";
 import { verifyHandlers } from "./handlers/verifyHandlers";
 import { beneficiaryHandlers } from "./handlers/beneficiaryHandlers";
 import { tradeHandlers } from "./handlers/tradeHandlers";
+import { paymentHandlers } from "./handlers/paymentHandlers";
 
 // Setup requests interception using the given handlers.
 export const server = setupServer(
@@ -11,5 +12,6 @@ export const server = setupServer(
   ...quoteHandlers,
   ...verifyHandlers,
   ...beneficiaryHandlers,
-  ...tradeHandlers
+  ...tradeHandlers,
+  ...paymentHandlers
 );
