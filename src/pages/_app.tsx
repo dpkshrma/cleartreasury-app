@@ -51,7 +51,7 @@ const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
     }
   };
 
-  const { data: clients, loading: clientsLoading } = useQuery(
+  const { data: clients, loading: clientsLoading } = useQuery<Client[]>(
     user ? GET_CLIENTS : null,
     {
       cli_email: user?.email,
