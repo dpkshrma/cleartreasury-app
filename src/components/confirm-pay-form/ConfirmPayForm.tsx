@@ -8,7 +8,7 @@ import { GET_QUOTE } from "../../graphql/quotes/queries";
 import { BOOK_TRADE } from "../../graphql/trades/mutations";
 import { useQuery } from "../../hooks/useQuery";
 import { useMutation } from "../../hooks/useMutation";
-import { QuoteFormData } from "../quote-form/QuoteForm";
+import { Quote, QuoteFormData } from "../quote-form/QuoteForm";
 
 export type Trade = {
   ID: number;
@@ -53,8 +53,8 @@ const ConfirmPayForm = ({
     value_date: data.quote.value_date,
   });
 
-  const { data: quote, loading } = useQuery(GET_QUOTE, formData);
-  const { data: trade } = useMutation(bookTrade ? BOOK_TRADE : null, {
+  const { data: newQuote, loading } = useQuery<Quote>(GET_QUOTE, formData);
+  const { data: trade } = useMutation<Trade>(bookTrade ? BOOK_TRADE : null, {
     input: {
       formData,
     },
@@ -139,8 +139,8 @@ const ConfirmPayForm = ({
             size={36}
             strokeWidth={2}
             duration={20}
-            key={!quoting && `${quote?.ID}_${quoting}`}
             isPlaying={data.quote?.quote_rate}
+            key={!quoting && `${newQuote?.ID}_${quoting}`}
             colors={[
               ["#01A783", 0.5],
               ["#E6AE05", 0.25],

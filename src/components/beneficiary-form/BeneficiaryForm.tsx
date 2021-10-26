@@ -50,11 +50,14 @@ const BeneficiaryForm = ({
     reason: null,
   });
 
-  const { data: beneficiariesList = [] } = useQuery(GET_BENEFICIARIES, {
-    client_ref: client.cli_reference,
-  });
+  const { data: beneficiariesList = [] } = useQuery<Beneficiary[]>(
+    GET_BENEFICIARIES,
+    {
+      client_ref: client.cli_reference,
+    }
+  );
 
-  const { data: newBeneficiary } = useMutation(
+  const { data: newBeneficiary } = useMutation<{ id: string; message: string }>(
     formData.beneficiary && verified ? CREATE_BENEFICIARY : null,
     {
       input: {

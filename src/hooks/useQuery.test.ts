@@ -5,7 +5,12 @@ import { setupServer } from "msw/node";
 import { renderHook } from "@testing-library/react-hooks";
 import { useQuery } from "./useQuery";
 
-const mockData = [
+type MockData = Array<{
+  id: number;
+  email: string;
+}>;
+
+const mockData: MockData = [
   {
     id: 1,
     email: "test1@example.com",
@@ -48,7 +53,7 @@ afterAll(() => server.close());
 test("should not call the API if not given a query", async () => {
   jest.spyOn(API, "graphql");
 
-  const { result } = renderHook(() => useQuery(null));
+  const { result } = renderHook(() => useQuery<null>(null));
 
   expect(API.graphql).not.toHaveBeenCalled();
   expect(result.current.data).toBe(null);
@@ -68,7 +73,7 @@ test("should call a query with variables", async () => {
   const testEmail = "test1@example.com";
 
   const { result, waitForNextUpdate } = renderHook(() =>
-    useQuery(MOCK_QUERY, { email: testEmail })
+    useQuery<MockData>(MOCK_QUERY, { email: testEmail })
   );
 
   expect(result.current.loading).toBe(true);
@@ -87,7 +92,7 @@ test("should fetch new data when variables change", async () => {
   let testEmail = "test1@example.com";
 
   const { result, rerender, waitForNextUpdate, waitForValueToChange } =
-    renderHook(({ query, variables }) => useQuery(query, variables), {
+    renderHook(({ query, variables }) => useQuery<MockData>(query, variables), {
       initialProps: {
         query: MOCK_QUERY,
         variables: { email: testEmail },

@@ -4,8 +4,8 @@ import isDeepEqual from "fast-deep-equal/react";
 import { API } from "aws-amplify";
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api-graphql";
 
-type QueryState = {
-  data: any;
+type QueryState<Data> = {
+  data: Data;
   loading: boolean;
   error: any;
 };
@@ -14,13 +14,13 @@ type Variables = {
   [name: string]: any;
 };
 
-export const useQuery = (
+export const useQuery = <Data>(
   query?: DocumentNode,
   variables?: Variables,
   onSuccess?: (data: any) => void,
   onError?: (error: any) => void
-): QueryState => {
-  const [data, setData] = React.useState<GraphQLResult | null>(null);
+): QueryState<Data> => {
+  const [data, setData] = React.useState<Data | null>(null);
   const [loading, setLoading] = React.useState<boolean>(!!query);
   const [error, setError] = React.useState(null);
 
@@ -36,14 +36,14 @@ export const useQuery = (
         try {
           setLoading(true);
 
-          const { data }: any = await API.graphql({
+          const { data } = (await API.graphql({
             query,
             variables,
             authMode:
               process.env.NODE_ENV === "test"
                 ? GRAPHQL_AUTH_MODE.API_KEY
                 : GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-          });
+          })) as GraphQLResult<Data>;
 
           const queryName = query.definitions[0].name.value;
 

@@ -66,7 +66,7 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
   });
 
   // TODO: validation, error handling, blah blah :D
-  const { data: quote, loading } = useQuery(GET_QUOTE, formData);
+  const { data: quote, loading } = useQuery<Quote>(GET_QUOTE, formData);
 
   React.useEffect(() => {
     // TODO: We need a more reliable way of requoting. The API returns the same ID for requotes so we need to tie this to something else (quote timestamps?)

@@ -33,7 +33,7 @@ const VerificationForm = ({
     To: authContext.phone_number,
   });
 
-  const { data } = useQuery(
+  const { data } = useQuery<{ status: string }>(
     queryVariables.Code ? VERIFY_CODE : REQUEST_CODE,
     queryVariables
   );

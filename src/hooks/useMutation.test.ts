@@ -5,6 +5,10 @@ import { setupServer } from "msw/node";
 import { renderHook } from "@testing-library/react-hooks";
 import { useMutation } from "./useMutation";
 
+type MockData = {
+  message: string;
+};
+
 const MOCK_MUTATION = gql`
   mutation mockMutation($input: MockMutationInput!) {
     mockMutation(input: $input) {
@@ -35,7 +39,7 @@ afterAll(() => server.close());
 test("should not call the API if not given a query", async () => {
   jest.spyOn(API, "graphql");
 
-  const { result } = renderHook(() => useMutation(null));
+  const { result } = renderHook(() => useMutation<null>(null));
 
   expect(API.graphql).not.toHaveBeenCalled();
   expect(result.current.data).toBe(null);
@@ -57,7 +61,7 @@ test("should call a mutation with input data", async () => {
   };
 
   const { result, waitForNextUpdate } = renderHook(() =>
-    useMutation(MOCK_MUTATION, inputData)
+    useMutation<MockData>(MOCK_MUTATION, inputData)
   );
 
   expect(result.current.loading).toBe(true);
