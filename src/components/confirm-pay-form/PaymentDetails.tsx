@@ -1,10 +1,10 @@
 import * as React from "react";
 import Link from "next/link";
 import { Alert, Button } from "@clear-treasury/design-system";
-import { FormData } from "../../pages/transfer";
+import { TransferData } from "../../pages/transfer";
 
 interface PaymentDetailsProps {
-  details: FormData;
+  details: TransferData;
 }
 
 const PaymentDetails = ({ details }: PaymentDetailsProps): JSX.Element => {

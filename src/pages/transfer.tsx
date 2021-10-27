@@ -16,7 +16,7 @@ import ConfirmPayForm, {
 } from "../components/confirm-pay-form/ConfirmPayForm";
 import PaymentDetails from "../components/confirm-pay-form/PaymentDetails";
 
-export type FormData = {
+export type TransferData = {
   quote?: Quote;
   beneficiary?: Beneficiary;
   payment?: Payment;
@@ -32,7 +32,7 @@ interface Props {
 const Transfer = ({ client, authenticated }: Props): JSX.Element => {
   const router = useRouter();
 
-  const [formData, setFormData] = React.useState<FormData>({});
+  const [formData, setFormData] = React.useState<TransferData>({});
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -80,7 +80,6 @@ const Transfer = ({ client, authenticated }: Props): JSX.Element => {
             <Steps.Step
               form={
                 <ConfirmPayForm
-                  client={client}
                   quote={formData.quote}
                   reason={formData.reason}
                   beneficiary={formData.beneficiary}

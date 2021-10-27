@@ -9,14 +9,11 @@ import { GET_QUOTE } from "../../graphql/quotes/queries";
 // TODO: pull this from the API eventually
 import currencies from "../../data/currencies.json";
 
-export type Quote = QuoteFormData & {
-  ID: string;
-};
-
-export interface QuoteFormData {
+export interface Quote {
+  ID?: string;
   sell_amount?: number;
-  currency_sell: string;
   buy_amount?: number;
+  currency_sell: string;
   currency_buy: string;
   value_date: string;
   client_ref: string;
@@ -57,7 +54,7 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
   const buyCurrency = buy.current?.currency.current?.value;
   const buyAmount = buy.current?.amount.current?.value;
 
-  const [formData, setFormData] = React.useState<QuoteFormData>({
+  const [formData, setFormData] = React.useState<Quote>({
     currency_sell: defaultValues.sell.currency,
     currency_buy: defaultValues.buy.currency,
     sell_amount: parseFloat(defaultValues.sell.amount),
@@ -107,7 +104,7 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    onComplete(quote);
+    onComplete({ ...formData });
   };
 
   return (

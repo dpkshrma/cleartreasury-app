@@ -2,13 +2,13 @@ import * as React from "react";
 import Link from "next/link";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { Button } from "@clear-treasury/design-system";
-import { Client } from "../../pages/_app";
 import { useQuery } from "../../hooks/useQuery";
 import { useMutation } from "../../hooks/useMutation";
 import { GET_QUOTE } from "../../graphql/quotes/queries";
 import { BOOK_TRADE } from "../../graphql/trades/mutations";
 import { INSTRUCT_PAYMENT } from "../../graphql/payments/mutations";
-import { Quote, QuoteFormData } from "../quote-form/QuoteForm";
+import { Quote } from "../quote-form/QuoteForm";
+import { TransferData } from "../../pages/transfer";
 import { Beneficiary } from "../beneficiary-form/BeneficiaryForm";
 
 export type Trade = {
@@ -43,16 +43,24 @@ export type Payment = {
 
 interface ConfirmPayFormProps {
   quote: Quote;
-  client: Client;
   reason: string;
   beneficiary: Beneficiary;
   stepBack?: (step?: number) => void;
-  onComplete?: ({ trade, payment }: { trade: Trade; payment: Payment }) => void;
+  onComplete?: (transferData: TransferData) => void;
 }
+
+const formatValueDate = (date: string) => {
+  date = `${date.slice(0, 4)}/${date.slice(4, 6)}/${date.slice(6, 8)}`;
+
+  return new Date(date).toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
 
 const ConfirmPayForm = ({
   quote,
-  client,
   reason,
   beneficiary,
   onComplete,
@@ -62,13 +70,7 @@ const ConfirmPayForm = ({
   const [bookTrade, setBookTrade] = React.useState(false);
   const [instructPayment, setInstructPayment] = React.useState(false);
 
-  const [formData, setFormData] = React.useState<QuoteFormData>({
-    currency_sell: quote.currency_sell,
-    currency_buy: quote.currency_buy,
-    sell_amount: quote.sell_amount,
-    client_ref: client?.cli_reference,
-    value_date: quote.value_date,
-  });
+  const [formData, setFormData] = React.useState<Quote>(quote);
 
   const { data: newQuote, loading } = useQuery<Quote>(GET_QUOTE, formData);
   const { data: trade } = useMutation<Trade>(bookTrade ? BOOK_TRADE : null, {
@@ -106,34 +108,18 @@ const ConfirmPayForm = ({
 
   React.useEffect(() => {
     // TODO: error handling
-    if (payment) onComplete({ trade, payment });
+    if (payment) onComplete({ quote: newQuote, trade, payment });
   }, [payment]);
-
-  const formatValueDate = () => {
-    const output = [
-      quote.value_date.slice(0, 4),
-      "/",
-      quote.value_date.slice(4, 6),
-      "/",
-      quote.value_date.slice(6, 8),
-    ].join("");
-
-    const today = new Date(output);
-
-    return today.toLocaleDateString("en-GB", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
 
   return (
     <form onSubmit={submitHandler}>
       <h2 className="text-2xl mb-2">Confirm and book</h2>
+
       <p className="text-l text-gray-500 mb-14">
         By confirming your quote below you are entering into a legal contract to
         trade as per our terms and conditions.
       </p>
+
       <div className="flex justify-between mb-4 border-b border-gray-200 pb-4">
         <h3 className="text-lg">Your quote</h3>
         <span
@@ -143,18 +129,23 @@ const ConfirmPayForm = ({
           Change
         </span>
       </div>
+
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">You Send</span>
         <span className="text-lg theme-color-on-surface">
-          {quote.sell_amount.toFixed(2)} {quote.currency_sell}
+          {newQuote?.sell_amount.toFixed(2) || quote.sell_amount?.toFixed(2)}{" "}
+          {quote.currency_sell}
         </span>
       </div>
+
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">They recieve</span>
         <span className="text-lg theme-color-on-surface">
-          {quote.buy_amount.toFixed(2)} {quote.currency_buy}
+          {newQuote?.buy_amount.toFixed(2) || quote.buy_amount?.toFixed(2)}{" "}
+          {quote.currency_buy}
         </span>
       </div>
+
       <div className="flex justify-between mb-5">
         <div>
           <span className="text-lg theme-color-primary block">
@@ -170,7 +161,7 @@ const ConfirmPayForm = ({
             strokeWidth={2}
             duration={20}
             key={!quoting && `${newQuote?.ID}_${quoting}`}
-            isPlaying={quote?.quote_rate}
+            isPlaying={newQuote?.quote_rate}
             colors={[
               ["#01A783", 0.5],
               ["#E6AE05", 0.25],
@@ -181,15 +172,17 @@ const ConfirmPayForm = ({
               setFormData({ ...formData, timestamp: Date.now() });
             }}
           />
-          <span>{quote?.quote_rate.toFixed(4)}</span>
+          <span>{newQuote?.quote_rate?.toFixed(4)}</span>
         </div>
       </div>
+
       <div className="flex justify-between mb-14">
         <span className="text-lg theme-color-primary">Value Date</span>
         <span className="text-lg theme-color-on-surface">
-          {formatValueDate()}
+          {formatValueDate(quote.value_date)}
         </span>
       </div>
+
       <div className="flex justify-between mb-4 border-b border-gray-200 pb-4">
         <h3 className="text-lg">Beneficiary</h3>
         <span
@@ -199,18 +192,21 @@ const ConfirmPayForm = ({
           Change
         </span>
       </div>
+
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">Name</span>
         <span className="text-lg theme-color-on-surface">
           {beneficiary.account_name}
         </span>
       </div>
+
       <div className="flex justify-between mb-14">
         <span className="text-lg theme-color-primary">Email</span>
         <span className="text-lg theme-color-on-surface">
           {beneficiary.email}
         </span>
       </div>
+
       <div className="flex justify-center">
         <Link href="/">
           <a className="border-2 border-gray-700 rounded py-2.5 px-6 mr-6">
