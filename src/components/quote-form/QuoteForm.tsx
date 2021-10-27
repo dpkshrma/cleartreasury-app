@@ -23,6 +23,7 @@ export interface Quote {
 
 export interface QuoteFormProps {
   client?: Client;
+  previousQuote?: Quote;
   onComplete?: (quote: Quote) => void;
 }
 
@@ -43,7 +44,11 @@ const calculateValueDate = () => {
   return today.toLocaleDateString("en-GB").split("/").reverse().join("");
 };
 
-const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
+const QuoteForm = ({
+  client,
+  previousQuote,
+  onComplete,
+}: QuoteFormProps): JSX.Element => {
   const [quoting, setQuoting] = React.useState(false);
 
   const sell = React.useRef<MoneyInputRef | null>(null);
@@ -54,13 +59,15 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
   const buyCurrency = buy.current?.currency.current?.value;
   const buyAmount = buy.current?.amount.current?.value;
 
-  const [formData, setFormData] = React.useState<Quote>({
-    currency_sell: defaultValues.sell.currency,
-    currency_buy: defaultValues.buy.currency,
-    sell_amount: parseFloat(defaultValues.sell.amount),
-    client_ref: client?.cli_reference,
-    value_date: calculateValueDate(),
-  });
+  const [formData, setFormData] = React.useState<Quote>(
+    previousQuote || {
+      currency_sell: defaultValues.sell.currency,
+      currency_buy: defaultValues.buy.currency,
+      sell_amount: parseFloat(defaultValues.sell.amount),
+      client_ref: client?.cli_reference,
+      value_date: calculateValueDate(),
+    }
+  );
 
   // TODO: validation, error handling, blah blah :D
   const { data: quote, loading } = useQuery<Quote>(GET_QUOTE, formData);
@@ -119,7 +126,10 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
         label="You send"
         onChange={sellChange}
         currencies={currencyList}
-        defaultValue={defaultValues.sell}
+        defaultValue={{
+          amount: formData.sell_amount?.toFixed(2).toString() || "",
+          currency: formData.currency_sell,
+        }}
         setAmount={
           formData?.buy_amount ? quote?.sell_amount?.toFixed(2) : sellAmount
         }
@@ -131,7 +141,10 @@ const QuoteForm = ({ client, onComplete }: QuoteFormProps): JSX.Element => {
         name="buy"
         label="They recieve"
         onChange={buyChange}
-        defaultValue={defaultValues.buy}
+        defaultValue={{
+          amount: formData?.buy_amount?.toFixed(2).toString() || "",
+          currency: formData.currency_buy,
+        }}
         currencies={receiveCurrencyList}
         setAmount={
           formData?.sell_amount ? quote?.buy_amount?.toFixed(2) : buyAmount

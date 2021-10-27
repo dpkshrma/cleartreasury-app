@@ -133,7 +133,7 @@ const ConfirmPayForm = ({
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">You Send</span>
         <span className="text-lg theme-color-on-surface">
-          {newQuote?.sell_amount.toFixed(2) || quote.sell_amount?.toFixed(2)}{" "}
+          {quote.sell_amount?.toFixed(2) || newQuote?.sell_amount.toFixed(2)}{" "}
           {quote.currency_sell}
         </span>
       </div>
@@ -141,7 +141,7 @@ const ConfirmPayForm = ({
       <div className="flex justify-between mb-4">
         <span className="text-lg theme-color-primary">They recieve</span>
         <span className="text-lg theme-color-on-surface">
-          {newQuote?.buy_amount.toFixed(2) || quote.buy_amount?.toFixed(2)}{" "}
+          {quote.buy_amount?.toFixed(2) || newQuote?.buy_amount.toFixed(2)}{" "}
           {quote.currency_buy}
         </span>
       </div>

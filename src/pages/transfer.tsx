@@ -56,6 +56,7 @@ const Transfer = ({ client, authenticated }: Props): JSX.Element => {
             <QuoteForm
               // TODO: Move this into a client context
               client={client}
+              previousQuote={formData.quote}
               onComplete={(quote) => setFormData({ ...formData, quote })}
             />
           }
