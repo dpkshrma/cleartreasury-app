@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { CheckIcon } from "@heroicons/react/solid";
 import classNames from "classnames";
 

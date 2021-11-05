@@ -1,5 +1,5 @@
-import * as nextRouter from "next/router";
 import * as React from "react";
+import * as nextRouter from "next/router";
 import { render } from "../../../test/testUtils";
 import * as Stories from "./InitiatePasswordResetForm.stories";
 

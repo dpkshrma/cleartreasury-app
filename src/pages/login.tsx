@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import * as React from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
-import { CognitoUser } from "@aws-amplify/auth";
 import { withSSRContext } from "aws-amplify";
+import { CognitoUser } from "@aws-amplify/auth";
 import { NewPasswordForm } from "../components/auth-form/NewPasswordForm";
 import { SignInForm } from "../components/auth-form/SignInForm";
 import AuthForm from "../components/auth-form/AuthForm";
@@ -19,8 +19,8 @@ type Props = {
 
 const Login = (props: Props): JSX.Element => {
   const router = useRouter();
-  const [authState, setAuthState] = useState<AuthState>(AuthState.signIn);
-  const [user, setUser] = useState<CognitoUser>();
+  const [authState, setAuthState] = React.useState<AuthState>(AuthState.signIn);
+  const [user, setUser] = React.useState<CognitoUser>();
 
   React.useEffect(() => {
     if (props.authenticated) {

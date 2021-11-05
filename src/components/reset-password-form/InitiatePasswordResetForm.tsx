@@ -1,7 +1,7 @@
+import * as React from "react";
 import Auth from "@aws-amplify/auth";
 import { Alert, Button, Input } from "@clear-treasury/design-system";
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { FunctionComponent, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -20,9 +20,9 @@ const schema = yup
   })
   .required();
 
-const InitiatePasswordResetForm: FunctionComponent<InitiatePasswordResetFormProps> =
+const InitiatePasswordResetForm: React.FunctionComponent<InitiatePasswordResetFormProps> =
   ({ onSuccess, onFailure }) => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = React.useState(false);
     const form = useForm({ resolver: yupResolver(schema) });
 
     async function sendResetCode(data: ResetPasswordFormData) {

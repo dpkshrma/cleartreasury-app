@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from "react";
+import * as React from "react";
 
-const AuthForm: FunctionComponent = ({ children }) => {
+const AuthForm: React.FunctionComponent = ({ children }) => {
   return (
     <div className="p-6 space-y-6 bg-white rounded-md flex justify-center flex-col shadow-md">
       {children}

@@ -1,12 +1,12 @@
+import * as React from "react";
 import { Alert } from "@clear-treasury/design-system";
 import { AlertProps } from "@clear-treasury/design-system/dist/components/alert/Alert";
-import React, { FunctionComponent } from "react";
 
 interface ResetPasswordFormProps {
   alert: AlertProps;
 }
 
-const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({
+const ResetPasswordForm: React.FunctionComponent<ResetPasswordFormProps> = ({
   children,
   alert,
 }) => {

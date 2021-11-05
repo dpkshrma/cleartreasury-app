@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import * as React from "react";
+import { useRouter } from "next/router";
 import { ThumbUpIcon } from "@heroicons/react/solid";
 import { Alert, Button } from "@clear-treasury/design-system";
-import { useRouter } from "next/router";
+import { AlertProps } from "@clear-treasury/design-system/dist/components/alert/Alert";
 import InitiatePasswordResetForm from "../components/reset-password-form/InitiatePasswordResetForm";
 import SubmitNewPasswordForm from "../components/reset-password-form/SubmitNewPasswordForm";
 import ResetPasswordForm from "../components/reset-password-form/ResetPasswordForm";
-import { AlertProps } from "@clear-treasury/design-system/dist/components/alert/Alert";
 
 enum FormType {
   resetPassword = "resetPassword",
@@ -16,11 +16,13 @@ enum FormType {
 
 const ResetPasswordPage = (): JSX.Element => {
   const router = useRouter();
-  const [alert, setAlert] = useState<AlertProps>();
-  const [formType, setFormType] = useState<FormType>(FormType.resetPassword);
-  const [isPageReady, setIsPageReady] = useState(false);
+  const [alert, setAlert] = React.useState<AlertProps>();
+  const [formType, setFormType] = React.useState<FormType>(
+    FormType.resetPassword
+  );
+  const [isPageReady, setIsPageReady] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!router.isReady) return;
     setIsPageReady(true);
     if (router.query.code) {

@@ -1,8 +1,8 @@
+import * as React from "react";
+import Link from "next/link";
 import Auth, { CognitoUser } from "@aws-amplify/auth";
 import { Alert, Button, Input } from "@clear-treasury/design-system";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Link from "next/link";
-import React, { FunctionComponent, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -21,11 +21,11 @@ const schema = yup
   })
   .required();
 
-export const SignInForm: FunctionComponent<SignInFormProps> = ({
+export const SignInForm: React.FunctionComponent<SignInFormProps> = ({
   onSubmit,
 }) => {
-  const [apiError, setApiError] = useState<string>();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [apiError, setApiError] = React.useState<string>();
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   const form = useForm({ resolver: yupResolver(schema) });
 
