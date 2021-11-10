@@ -7,10 +7,15 @@ module.exports = {
   ],
   setupFiles: ["dotenv/config"],
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
-  testPathIgnorePatterns: ["/node_modules/", "/.next/", "/infra/"],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/.next/",
+    "/infra/",
+    "/test/integration/",
+  ],
   modulePathIgnorePatterns: ["/infra/"],
   transform: {
-    "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
     "^.+\\.css$": "<rootDir>/test/config/cssTransform.js",
   },
   transformIgnorePatterns: ["/node_modules/", "/infra/", "\\.(css|sass|scss)$"],

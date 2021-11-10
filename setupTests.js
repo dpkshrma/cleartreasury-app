@@ -3,7 +3,7 @@
 
 // used for __tests__/testing-library.js
 // learn more: https://github.com/testing-library/jest-dom
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 
 // Configure Amplify to use API key for tests
 // All requests in test should be mocked but doing this avoids needing
