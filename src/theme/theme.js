@@ -19,7 +19,7 @@ module.exports = {
 
     "theme-color-on-primary": tokens.colors.white,
     "theme-color-on-secondary": tokens.colors.black,
-    "theme-color-on-background": tokens.colors.black,
+    "theme-color-on-background": tokens.colors.gray[600],
     "theme-color-on-surface": tokens.colors.black,
 
     "theme-button-primary": tokens.colors.green[600],
