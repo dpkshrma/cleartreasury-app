@@ -238,5 +238,21 @@
     "NumberOfDayToDeliver": "0",
     "ValueDateOffset": "0",
     "CutOffTime": "091500"
+  },
+  {
+    "CurrencyCode": "INR",
+    "CurrencyName": "INR",
+    "CurrencyFractionalName": "",
+    "NumberOfDayToDeliver": "0",
+    "ValueDateOffset": "0",
+    "CutOffTime": "091500"
+  },
+  {
+    "CurrencyCode": "CNY",
+    "CurrencyName": "CNY",
+    "CurrencyFractionalName": "",
+    "NumberOfDayToDeliver": "0",
+    "ValueDateOffset": "0",
+    "CutOffTime": "091500"
   }
 ]

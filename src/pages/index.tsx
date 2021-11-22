@@ -1,14 +1,15 @@
-import { parse, format } from "date-fns";
-import { Button } from "@clear-treasury/design-system";
+import { Button, Flag } from "@clear-treasury/design-system";
 import { withSSRContext } from "aws-amplify";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import { ChevronDownIcon } from "@heroicons/react/outline";
 import * as React from "react";
-import { ClockIcon } from "@heroicons/react/outline";
 import Page from "../components/page/Page";
+import currencies from "../data/currencies.json";
 import { GET_TRADE_HISTORY } from "../graphql/trades/queries";
 import { useQuery } from "../hooks/useQuery";
 import { Client } from "./_app";
+import { ChevronUpIcon } from "@heroicons/react/solid";
 
 type Props = {
   client: Client;
@@ -17,20 +18,32 @@ type Props = {
 
 export type TradeHistoryItem = {
   id: string;
-  bought_amount: number;
-  sold_amount: number;
   bought_currency: string;
   sold_currency: string;
-  sent_status: "Success" | "Failed" | "Pending";
-  received_status: "Success" | "Failed" | "Pending";
+  bought_amount: number;
+  sold_amount: number;
+  title: string;
+  status: "Success" | "Failed" | "Pending";
   remittance_type: "In" | "Out";
   trade_date: string;
+  trade_ref: string;
+  timeline: {
+    title: string;
+    status: string;
+  }[];
 };
 
-const TXN_STATUS_COLOR_MAP = {
-  Pending: "text-yellow-600",
-  Success: "text-green-600",
-  Failed: "text-red-600",
+const StatusPill = ({ value }) => {
+  const color = {
+    pending: "text-yellow-600 bg-yellow-100",
+    success: "text-green-600 bg-green-100",
+    failed: "text-red-600 bg-red-100",
+  }[value.toLowerCase()];
+  return (
+    <div className={`relative py-2 px-4 rounded-full text-xs ${color}`}>
+      {value}
+    </div>
+  );
 };
 
 const WelcomeScreen = () => {
@@ -56,29 +69,16 @@ const WelcomeScreen = () => {
   );
 };
 
-const LeftArrowIcon = ({ className }) => {
+const ArrowIcon: React.FC<{ className?: string }> = ({ className }) => {
+  let classes =
+    "h-11 w-11 stroke-current stroke-1 transform -rotate-45 text-gray-400";
+  if (className) {
+    classes += className;
+  }
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={`h-9 w-9 stroke-current stroke-1 ${className}`}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1}
-        d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"
-      />
-    </svg>
-  );
-};
-const RightArrowIcon = ({ className }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={`h-9 w-9 stroke-current stroke-1 ${className}`}
+      className={classes}
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -94,51 +94,102 @@ const RightArrowIcon = ({ className }) => {
 };
 
 interface TransactionRowProps {
-  iconColor: string;
-  state: "sending" | "receiving";
   data: TradeHistoryItem;
 }
 
-const TransactionRow: React.FunctionComponent<TransactionRowProps> = ({
-  iconColor,
-  data,
-  state,
-}) => {
-  let amount = data.bought_amount;
-  let currency = data.bought_currency;
-  if (state === "receiving") {
-    amount = data.sold_amount;
-    currency = data.sold_currency;
+const TransactionStep = ({ title, status }) => {
+  let statusColor = "gray-400";
+  if (status) {
+    statusColor = {
+      Pending: "yellow-600",
+      Failed: "red-700",
+      Success: "green-700",
+    }[status];
   }
   return (
-    <div className="bg-theme-color-background px-5 py-4 flex justify-items-start mb-2">
-      <div className="flex flex-col items-center">
-        {data.remittance_type === "In" ? (
-          <RightArrowIcon className={iconColor} />
-        ) : (
-          <LeftArrowIcon className={iconColor} />
-        )}
-        <div className="text-xs text-theme-color-on-background">
-          {data.remittance_type === "In" ? "IN" : "OUT"}
+    <div className="flex items-center mb-2">
+      <div className={`rounded-full w-3 h-3 mr-2 mt-1 bg-${statusColor}`} />
+      <div className={`text-${statusColor}`}>{title}</div>
+    </div>
+  );
+};
+
+const flags = currencies.reduce((acc, currency) => {
+  const code = currency.CurrencyCode;
+  acc[code] = <Flag country={code.slice(0, -1).toLowerCase()} size="lg" />;
+  return acc;
+}, {});
+
+const formatAmount = (amt: number) => {
+  return amt && amt.toLocaleString("en-GB", { minimumFractionDigits: 2 });
+};
+
+const TransactionRow: React.FunctionComponent<TransactionRowProps> = ({
+  data,
+}) => {
+  const [expanded, setExpanded] = React.useState(false);
+  const onHeaderClick = () => {
+    setExpanded(!expanded);
+  };
+
+  return (
+    <div className="mb-2 select-none">
+      <div
+        className="bg-theme-color-background px-5 py-4 flex items-center justify-items-start cursor-pointer"
+        onClick={onHeaderClick}
+      >
+        <div className="mr-4 flex flex-col items-center">
+          {flags[data.bought_currency]}
+          <div className="text-sm text-gray-800">{data.bought_currency}</div>
+        </div>
+        <div className="flex flex-col items-center h-full">
+          <ArrowIcon />
+          <div className="text-xs text-gray-400 mt-1">OUT</div>
+        </div>
+        <div className="flex flex-col h-full ml-5">
+          <div className="text-3xl text-gray-600 mb-2">
+            {formatAmount(data.bought_amount)}
+          </div>
+          <div className="text-sm text-gray-500">
+            {formatAmount(data.sold_amount)} {data.sold_currency}
+          </div>
+        </div>
+        <div className="ml-auto flex items-center">
+          <div className="text-gray-500 text-sm mr-2">
+            trade id: {data.trade_ref}
+          </div>
+          <StatusPill value={data.status} />
+          {expanded ? (
+            <ChevronUpIcon height={16} />
+          ) : (
+            <ChevronDownIcon height={16} />
+          )}
         </div>
       </div>
-      <div className="flex flex-col h-full ml-5">
-        <div className="text-base text-teal-700 mb-2">
-          {amount} {currency} recieved
-        </div>
-        <div className="flex items-center">
-          <ClockIcon className="h-5 w-5 stroke-current text-gray-400 mr-1" />
-          <span className="text-sm text-sm text-gray-400">
-            {format(
-              parse(data.trade_date, "yyyyMMdd", new Date()),
-              "do MMMM yyyy"
-            )}
-          </span>
+      <div
+        className={`
+        overflow-hidden
+        transition-max-height
+        duration-500
+        ease-in-out
+        bg-gray-100
+        ${expanded ? "max-h-96" : "max-h-0"}
+      `}
+      >
+        <div className="flex flex-col border-t-2 px-5 py-4">
+          {data.timeline.map((step) => (
+            <TransactionStep
+              key={step.title}
+              title={step.title}
+              status={step.status}
+            />
+          ))}
         </div>
       </div>
     </div>
   );
 };
+
 const RecentTransactions = ({ client, txns }) => {
   return (
     <div>
@@ -148,23 +199,9 @@ const RecentTransactions = ({ client, txns }) => {
       </div>
       <div className="bg-white p-12">
         <div className="mb-8 text-2xl">Recent transactions</div>
-        {txns.map((txn: TradeHistoryItem) => {
-          let state: "sending" | "receiving" = "sending";
-          let status = txn.sent_status;
-          if (status === "Success") {
-            state = "receiving";
-            status = txn.received_status;
-          }
-          const iconColor = TXN_STATUS_COLOR_MAP[status];
-          return (
-            <TransactionRow
-              data={txn}
-              state={state}
-              key={txn.id}
-              iconColor={iconColor}
-            />
-          );
-        })}
+        {txns.map((txn: TradeHistoryItem) => (
+          <TransactionRow key={txn.id} data={txn} />
+        ))}
       </div>
     </div>
   );
@@ -188,13 +225,13 @@ const Dashboard = ({ client, authenticated }: Props): JSX.Element => {
     }
   }, [authenticated]);
 
-  if (loading) {
+  if (loading || txnsLoading) {
     return <Page>Loading...</Page>;
   }
 
   return (
     <Page>
-      {!txnsLoading && !!txns ? (
+      {txns ? (
         <RecentTransactions client={client} txns={txns} />
       ) : (
         <WelcomeScreen />

@@ -25,6 +25,7 @@
       "npm run format"
     ]
   },
+  "proxy": "https://staging-tapi.telstra.com",
   "dependencies": {
     "@aws-amplify/ui-react": "^1.2.1",
     "@aws-sdk/client-cognito-identity-provider": "^3.18.0",

@@ -8,6 +8,9 @@ module.exports = {
     ...designSystem.theme,
     extend: {
       ...designSystem.theme.extend,
+      transitionProperty: {
+        "max-height": "max-height",
+      },
       colors: theme.color,
       borderRadius: theme.borderRadius,
       keyframes: {
